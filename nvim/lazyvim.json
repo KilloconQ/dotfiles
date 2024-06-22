@@ -1,0 +1,11 @@
+{
+  "extras": [
+    "lazyvim.plugins.extras.coding.copilot",
+    "lazyvim.plugins.extras.coding.mini-surround",
+    "lazyvim.plugins.extras.editor.harpoon2"
+  ],
+  "news": {
+    "NEWS.md": "6077"
+  },
+  "version": 6
+}
