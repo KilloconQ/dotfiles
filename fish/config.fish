@@ -14,5 +14,7 @@ alias gstp 'git stash pop'
 alias gsw 'git switch'
 alias gswc 'git switch -c'
 alias v nvim
+alias cl clear
+alias so source
 
 set -gx PROJECT_PATHS ~/workspace ~/src
