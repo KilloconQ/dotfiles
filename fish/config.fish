@@ -16,6 +16,8 @@ alias gswc 'git switch -c'
 alias v nvim
 alias cl clear
 alias so source
+alias ll 'lsd -l'
+alias cat bat
 
 set -gx PROJECT_PATHS ~/workspace ~/src
 eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)

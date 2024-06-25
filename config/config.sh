@@ -46,6 +46,8 @@ brew install neovim
 brew install wezterm
 brew install fzf
 brew install zellij
+brew install bat
+brew install lsd
 
 # Instalar Node.js y npm
 echo "Instalando Node.js y npm..."
