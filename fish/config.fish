@@ -18,3 +18,4 @@ alias cl clear
 alias so source
 
 set -gx PROJECT_PATHS ~/workspace ~/src
+eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)

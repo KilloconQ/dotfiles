@@ -24,12 +24,12 @@ elif [ "$OS" == "Linux" ]; then
 	# Instalar Homebrew si no está instalado
 	if ! command -v brew &>/dev/null; then
 		echo "Instalando Homebrew..."
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+		sudo curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
 	fi
 
 	# Añadir Homebrew al PATH
-	echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>~/.profile
-	eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)                                             21:00:18
+  echo 'eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/.dotfiles/fish/config.fish
 fi
 
 # Actualizar Homebrew y sus paquetes
