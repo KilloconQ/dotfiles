@@ -40,6 +40,7 @@ brew upgrade
 # Instalar herramientas de línea de comandos
 echo "Instalando herramientas de línea de comandos..."
 brew install git
+brew install gh
 brew install wget
 brew install fish
 brew install neovim
@@ -90,10 +91,17 @@ ln -s ~/.dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
 ln -s ~/.dotfiles/fish ~/.config/fish
 ln -s ~/.dotfiles/omf ~/.config/omf
 ln -s ~/.dotfiles/config ~/.config/config
+ln -s ~/.dotfiles/starship/starship.toml ~/.config/starship.toml
 
 # Instalar Oh My Fish
 echo "Instalando Oh My Fish..."
 curl -L https://get.oh-my.fish | fish
+
+# Instalar bun
+curl -fsSL https://bun.sh/install | bash
+
+# Instalar Starship
+brew install starship
 
 # Instalar plugins y temas de Oh My Fish
 echo "Instalando temas y plugins de Oh My Fish..."

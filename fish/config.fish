@@ -18,6 +18,16 @@ alias cl clear
 alias so source
 alias ll 'lsd -l'
 alias cat bat
+alias zwork 'zellij a work'
+alias zlearn 'zellij a learn'
 
-set -gx PROJECT_PATHS ~/workspace ~/src
-eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+set -gx PROJECT_PATHS \
+    ~/dev/Projects.db/ \
+    ~/dev/work \
+    ~/dev/projects/web/bingo \
+    ~/dev/projects/web/svelte-todo-app/ \
+    ~/dev/projects/web/software-almacen/ \
+    ~/dev/projects/web/ecommerce-project/ \
+    ~/dev/projects/mobile/financeTracker/
+
+starship init fish | source
