@@ -31,3 +31,13 @@ set -gx PROJECT_PATHS \
     ~/dev/projects/mobile/financeTracker/
 
 starship init fish | source
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+set -x CHROME_BIN "/mnt/c/Program Files/Google/Chrome/Application/chrome.exe"
+
+# pnpm
+set -gx PNPM_HOME "/home/killoconq/.local/share/pnpm"
+set -Ux PATH $PATH /usr/local/go/bin
+if not string match -q -- $PNPM_HOME $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
+end
+# pnpm end

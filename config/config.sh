@@ -4,32 +4,32 @@
 OS=$(uname -s)
 
 if [ "$OS" == "Darwin" ]; then
-	# macOS
-	echo "Sistema operativo: macOS"
+  # macOS
+  echo "Sistema operativo: macOS"
 
-	# Instalar Homebrew si no está instalado
-	if ! command -v brew &>/dev/null; then
-		echo "Instalando Homebrew..."
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	fi
+  # Instalar Homebrew si no está instalado
+  if ! command -v brew &>/dev/null; then
+    echo "Instalando Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  fi
 
-	# Añadir Homebrew al PATH
-	echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>~/.zprofile
-	eval "$(/opt/homebrew/bin/brew shellenv)"
+  # Añadir Homebrew al PATH
+  echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >>~/.zprofile
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 
 elif [ "$OS" == "Linux" ]; then
-	# Linux (WSL)
-	echo "Sistema operativo: Linux (WSL)"
+  # Linux (WSL)
+  echo "Sistema operativo: Linux (WSL)"
 
-	# Instalar Homebrew si no está instalado
-	if ! command -v brew &>/dev/null; then
-		echo "Instalando Homebrew..."
-		sudo curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
-	fi
+  # Instalar Homebrew si no está instalado
+  if ! command -v brew &>/dev/null; then
+    echo "Instalando Homebrew..."
+    sudo curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
+  fi
 
-	# Añadir Homebrew al PATH
-  eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)                                             21:00:18
-  echo 'eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/.dotfiles/fish/config.fish
+  # Añadir Homebrew al PATH
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>~/.dotfiles/fish/config.fish
 fi
 
 # Actualizar Homebrew y sus paquetes
@@ -59,13 +59,13 @@ LTS_MAJOR_VERSION=$(echo $LTS_VERSION | cut -d. -f1)
 
 # Verificar si brew tiene la fórmula para la versión LTS
 if brew search node@$LTS_MAJOR_VERSION | grep -q "node@$LTS_MAJOR_VERSION"; then
-	# Instalar la versión LTS de Node.js
-	brew install node@$LTS_MAJOR_VERSION
+  # Instalar la versión LTS de Node.js
+  brew install node@$LTS_MAJOR_VERSION
 
-	# Añadir la ruta de la versión LTS de Node.js al PATH para fish shell
-	set -U fish_user_paths "/usr/local/opt/node@$LTS_MAJOR_VERSION/bin" $fish_user_paths
+  # Añadir la ruta de la versión LTS de Node.js al PATH para fish shell
+  set -U fish_user_paths "/usr/local/opt/node@$LTS_MAJOR_VERSION/bin" $fish_user_paths
 else
-	echo "No se encontró la fórmula para node@$LTS_MAJOR_VERSION en Homebrew"
+  echo "No se encontró la fórmula para node@$LTS_MAJOR_VERSION en Homebrew"
 fi
 
 # Verificar la instalación
@@ -79,7 +79,7 @@ npm install -g typescript
 # Cambiar el shell por defecto a fish
 echo "Cambiando el shell por defecto a fish..."
 if ! grep -q "$(which fish)" /etc/shells; then
-	echo "$(which fish)" | sudo tee -a /etc/shells
+  echo "$(which fish)" | sudo tee -a /etc/shells
 fi
 chsh -s $(which fish)
 
