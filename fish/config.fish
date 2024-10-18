@@ -3,12 +3,13 @@ if status is-interactive
 end
 
 alias ga 'git add .'
+alias gw 'git worktree'
 alias gb 'git branch'
 alias gbd 'git branch -D'
 alias gc 'git commit -m'
 alias gpull 'git pull origin'
 alias gpush 'git push origin'
-alias gs 'git status'
+alias gs 'git status -sb'
 alias gst 'git stash'
 alias gstp 'git stash pop'
 alias gsw 'git switch'
