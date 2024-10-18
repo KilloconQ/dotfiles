@@ -3,7 +3,9 @@ if status is-interactive
 end
 
 alias ga 'git add .'
-alias gw 'git worktree'
+alias gwa 'git worktree add'
+alias gwl 'git worktree list'
+alias gwr 'git worktree remove'
 alias gb 'git branch'
 alias gbd 'git branch -D'
 alias gc 'git commit -m'
