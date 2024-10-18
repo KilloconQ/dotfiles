@@ -28,7 +28,7 @@ elif [ "$OS" == "Linux" ]; then
   fi
 
   # Añadir Homebrew al PATH
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" 21:00:18
   echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>~/.dotfiles/fish/config.fish
 fi
 
