@@ -33,7 +33,8 @@ set -gx PROJECT_PATHS \
     ~/dev/projects/web/ecommerce-project/ \
     ~/dev/projects/mobile/financeTracker/
 
-starship init fish | source
+set -gx PATH /usr/local/bin /home/linuxbrew/.linuxbrew/bin $PATH
+
 if test (uname) = Darwin
     # Configuración para macOS
     if test -e /usr/local/bin/brew
@@ -45,3 +46,5 @@ else if test (uname -r | grep -qi "microsoft")
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     end
 end
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"

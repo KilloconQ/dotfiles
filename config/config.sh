@@ -44,7 +44,6 @@ brew install gh
 brew install wget
 brew install fish
 brew install neovim
-brew install wezterm
 brew install fzf
 brew install zellij
 brew install bat
@@ -85,13 +84,13 @@ chsh -s $(which fish)
 
 # Crear enlaces simbólicos en ~/.config
 echo "Creando enlaces simbólicos en ~/.config..."
-ln -s ~/.dotfiles/nvim ~/.config/nvim
-ln -s ~/.dotfiles/zellij ~/.config/zellij
-ln -s ~/.dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
-ln -s ~/.dotfiles/fish ~/.config/fish
-ln -s ~/.dotfiles/omf ~/.config/omf
-ln -s ~/.dotfiles/config ~/.config/config
-ln -s ~/.dotfiles/starship/starship.toml ~/.config/starship.toml
+ln -sb ~/.dotfiles/nvim ~/.config/nvim
+ln -sb ~/.dotfiles/zellij ~/.config/zellij
+ln -sb ~/.dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
+ln -sb ~/.dotfiles/fish ~/.config/fish
+ln -sb ~/.dotfiles/omf ~/.config/omf
+ln -sb ~/.dotfiles/config ~/.config/config
+ln -sb ~/.dotfiles/starship/starship.toml ~/.config/starship.toml
 
 # Instalar Oh My Fish
 echo "Instalando Oh My Fish..."
