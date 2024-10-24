@@ -35,6 +35,16 @@ set -gx PROJECT_PATHS \
 
 set -gx PATH /usr/local/bin /home/linuxbrew/.linuxbrew/bin $PATH
 
-eval "$(/usr/local/bin/brew shellenv)"
+if test (uname) = Darwin
+    # Configuración para macOS
+    if test -e /usr/local/bin/brew
+        eval "$(/usr/local/bin/brew shellenv)"
+    end
+else if test (uname -r | grep -qi "microsoft")
+    # Configuración para WSL
+    if test -e /home/linuxbrew/.linuxbrew/bin/brew
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+    end
+end
 
 starship init fish | source
