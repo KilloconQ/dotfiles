@@ -35,7 +35,7 @@ set -gx PROJECT_PATHS \
 
 set -gx PATH /usr/local/bin /home/linuxbrew/.linuxbrew/bin $PATH
 # Agregar las rutas de Nix manualmente.
-set -gx PATH /home/killoconq/.nix-profile/bin /nix/var/nix/profiles/default/bin $PATH
+set -Ux PATH /nix/var/nix/profiles/default/bin $PATH
 
 if test (uname) = Darwin
     # Configuración para macOS
