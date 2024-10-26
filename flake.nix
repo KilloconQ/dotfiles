@@ -9,7 +9,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, ... }:
   let
     user = builtins.getEnv "USER";  # Detecta el usuario en la máquina actual.
   in {
