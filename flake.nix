@@ -6,10 +6,13 @@
 
   outputs = { self, nixpkgs, home-manager }: {
     homeConfigurations.fernando = home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs { };
+      # Detecta automáticamente el sistema (macOS con Intel o Linux).
+      pkgs = import nixpkgs {
+        system = builtins.currentSystem or (if builtins.isDarwin then "x86_64-darwin" else "x86_64-linux");
+      };
 
       modules = [
-        ./nix/home.nix  # Ajustamos la ruta para apuntar a home.nix
+        ./nix/home.nix
       ];
     };
   };
