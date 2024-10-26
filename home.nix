@@ -1,16 +1,27 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
+  # Definir el nombre de usuario para Home Manager.
+  home.username = "killoconq";  # Asegúrate de usar el nombre correcto de tu usuario.
+
+  # Definir la versión del estado de Home Manager.
+  home.stateVersion = "23.05";  # Ajusta según la versión de Nixpkgs o Home Manager que uses.
+
   # Habilitar Fish como shell por defecto.
-  programs.fish = {
-    enable = true;
-    loginShell = true;
-  };
+  programs.fish.enable = true;
+
+  # Configuración para cambiar el shell predeterminado a Fish.
+  home.activation.setFishShell = lib.mkAfter ''
+    if ! grep -q "$(which fish)" /etc/shells; then
+      which fish | sudo tee -a /etc/shells
+    fi
+    chsh -s "$(which fish)"
+  '';
 
   # Instalar los paquetes necesarios.
-  environment.systemPackages = with pkgs; [
+  home.packages = with pkgs; [
     git
-    gh            # CLI de GitHub.
+    gh
     wget
     fish
     neovim
@@ -18,15 +29,15 @@
     zellij
     bat
     lsd
-    bun           # Administrador de paquetes.
-    starship      # Prompt personalizado.
-    nodejs        # Node.js y npm.
+    bun
+    starship
+    nodejs
     yarn
     typescript
   ];
 
   # Establecer variables de entorno.
-  environment.variables = {
+  home.sessionVariables = {
     EDITOR = "nvim";
     SHELL = pkgs.fish;
   };
@@ -44,13 +55,5 @@
   home.activation.installOmfPlugins = lib.mkAfter ''
     curl -L https://get.oh-my.fish | fish
     omf install pj
-  '';
-
-  # Cambiar el shell predeterminado a Fish (WSL necesita ajuste manual).
-  home.activation.setFishShell = lib.mkAfter ''
-    if ! grep -q "$(which fish)" /etc/shells; then
-      which fish | sudo tee -a /etc/shells
-    fi
-    chsh -s "$(which fish)"
   '';
 }

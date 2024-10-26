@@ -10,8 +10,12 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... }: {
-    homeConfigurations.user = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations.killoconq = home-manager.lib.homeManagerConfiguration {
       pkgs = import nixpkgs { system = "x86_64-linux"; };
+
+      # Definimos explícitamente las opciones necesarias para evitar errores.
+      home.username = "killoconq";
+      home.stateVersion = "23.05";
 
       modules = [
         ./home.nix
