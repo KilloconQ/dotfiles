@@ -10,20 +10,18 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... }:
-  let 
-    user = builtins.getEnv "USER";  # Detectar el usuario dinámicamente.
+  let
+    user = builtins.getEnv "USER";  # Detecta el usuario en la máquina actual.
   in {
     homeConfigurations = {
       "${user}" = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs { system = "x86_64-linux"; };
 
-        # Configuración del usuario.
+        # Configuración específica del usuario.
         home.username = user;
         home.stateVersion = "23.05";
 
-        modules = [
-          ./home.nix
-        ];
+        modules = [ ./home.nix ];
       };
     };
   };
