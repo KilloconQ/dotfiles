@@ -48,13 +48,13 @@ fi
 chsh -s "$(which fish)"
 
 echo "Creando enlaces simbólicos..."
-ln -sfn ~/.dotfiles/nvim ~/.config/nvim
-ln -sfn ~/.dotfiles/zellij ~/.config/zellij
-ln -sfn ~/.dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
-ln -sfn ~/.dotfiles/fish ~/.config/fish
-ln -sfn ~/.dotfiles/omf ~/.config/omf
-ln -sfn ~/.dotfiles/config ~/.config/config
-ln -sfn ~/.dotfiles/starship/starship.toml ~/.config/starship.toml
+ln -sfn ~/dotfiles/nvim ~/.config/nvim
+ln -sfn ~/dotfiles/zellij ~/.config/zellij
+ln -sfn ~/dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
+ln -sfn ~/dotfiles/fish ~/.config/fish
+ln -sfn ~/dotfiles/omf ~/.config/omf
+ln -sfn ~/dotfiles/config ~/.config/config
+ln -sfn ~/dotfiles/starship/starship.toml ~/.config/starship.toml
 
 echo "Instalando Oh My Fish..."
 curl -L https://get.oh-my.fish | fish

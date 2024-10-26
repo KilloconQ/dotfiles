@@ -1,0 +1,1 @@
+source "/home/killoconq/.deno/env.fish"
