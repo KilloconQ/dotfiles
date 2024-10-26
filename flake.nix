@@ -7,8 +7,10 @@
   outputs = { self, nixpkgs, home-manager }: {
     homeConfigurations.fernando = home-manager.lib.homeManagerConfiguration {
       inherit nixpkgs;
+
+      pkgs = nixpkgs.pkgs;  # Pasamos 'pkgs' explícitamente aquí
       modules = [
-        ./nix/home.nix
+        ./nix/home.nix  # Apuntamos al archivo home.nix
       ];
     };
   };
