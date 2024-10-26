@@ -13,13 +13,7 @@
     homeConfigurations = {
       killoconq = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs { system = "x86_64-linux"; };
-
-        home.username = "killoconq";
-        home.stateVersion = "23.05";
-
-        modules = [
-          ./home.nix
-        ];
+        modules = [ ./home.nix ];  # Aquí se define tu configuración.
       };
     };
   };
