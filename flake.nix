@@ -9,17 +9,23 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }: {
-    homeConfigurations.killoconq = home-manager.lib.homeManagerConfiguration {
-      pkgs = import nixpkgs { system = "x86_64-linux"; };
+  outputs = { self, nixpkgs, home-manager, ... }: 
+  let 
+    # Detectar el nombre del usuario actual dinámicamente.
+    user = builtins.getEnv "USER"; 
+  in {
+    homeConfigurations = {
+      ${user} = home-manager.lib.homeManagerConfiguration {
+        pkgs = import nixpkgs { system = "x86_64-linux"; };
 
-      # Definimos explícitamente las opciones necesarias para evitar errores.
-      home.username = "killoconq";
-      home.stateVersion = "23.05";
+        # Establecer dinámicamente el nombre del usuario.
+        home.username = user;
+        home.stateVersion = "23.05";  # Asegúrate de usar la versión correcta.
 
-      modules = [
-        ./home.nix
-      ];
+        modules = [
+          ./home.nix
+        ];
+      };
     };
   };
 }
