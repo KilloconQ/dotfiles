@@ -49,4 +49,11 @@ else if test (uname -r | grep -qi "microsoft")
     end
 end
 
+# Configurar las rutas de Nix manualmente en Fish
+if test -d /nix/var/nix/profiles/default
+    set -x PATH /nix/var/nix/profiles/default/bin $PATH
+    set -x NIX_PROFILES /nix/var/nix/profiles/default /home/$USER/.nix-profile
+    set -x MANPATH /nix/var/nix/profiles/default/share/man $MANPATH
+end
+
 starship init fish | source
