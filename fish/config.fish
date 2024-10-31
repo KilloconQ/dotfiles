@@ -34,8 +34,6 @@ set -gx PROJECT_PATHS \
     ~/dev/projects/mobile/financeTracker/
 
 set -gx PATH /usr/local/bin /home/linuxbrew/.linuxbrew/bin $PATH
-# Agregar las rutas de Nix manualmente.
-set -Ux PATH /nix/var/nix/profiles/default/bin $PATH
 
 if test (uname) = Darwin
     # Configuración para macOS
@@ -50,3 +48,10 @@ else if test (uname -r | grep -qi "microsoft")
 end
 
 starship init fish | source
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
+
+# Configuración de fnm
+eval (fnm env)
