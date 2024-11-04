@@ -1,7 +1,4 @@
-if status is-interactive
-    # Commandalias cl clear
-end
-
+# Aliases
 alias ga 'git add .'
 alias gwa 'git worktree add'
 alias gwl 'git worktree list'
@@ -24,6 +21,7 @@ alias cat bat
 alias zwork 'zellij a work'
 alias zlearn 'zellij a learn'
 
+# Project paths
 set -gx PROJECT_PATHS \
     ~/dev/Projects.db/ \
     ~/dev/work \
@@ -33,25 +31,36 @@ set -gx PROJECT_PATHS \
     ~/dev/projects/web/ecommerce-project/ \
     ~/dev/projects/mobile/financeTracker/
 
+# General PATH
 set -gx PATH /usr/local/bin /home/linuxbrew/.linuxbrew/bin $PATH
 
+# Configuración específica de sistema
 if test (uname) = Darwin
     # Configuración para macOS
     if test -e /usr/local/bin/brew
         eval "$(/usr/local/bin/brew shellenv)"
+    end
+    if test -e $HOME/.cargo/env.fish
+        source $HOME/.cargo/env.fish
     end
 else if test (uname -r | grep -qi "microsoft")
     # Configuración para WSL
     if test -e /home/linuxbrew/.linuxbrew/bin/brew
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     end
+else
+    # Configuración para otros sistemas Unix/Linux
+    if test -e $HOME/.deno/env.fish
+        source $HOME/.deno/env.fish
+    end
 end
 
+# Starship prompt
 starship init fish | source
 
-# bun
+# bun configuration
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 
-# Configuración de fnm
+# fnm configuration
 eval (fnm env)
