@@ -293,36 +293,6 @@ load_plugins {
 // Default: default
 // 
 
-themes {
-    kanagawa_dragon {
-        fg "#dcdccc"
-        bg "#282828"
-        red "#C34043"
-        green "#728F66"
-        yellow "#9D8F6F"
-        blue "#8BA4B0"
-        magenta "#8BA4B0"
-        cyan "#8be9fd"
-        orange "#ffb86c"
-        black "#1a1a1a"
-        white "#8D909D"
-    } 
-
-    everforest {
-        fg "#d3c6aa"
-        bg "#282828"
-        red "#e67e80"
-        green "#a7c080"
-        yellow "#dbbc7f"
-        blue "#7fbbb3"
-        magenta "#d699b6"
-        cyan "#83c092"
-        orange "#e69875"
-        black "#1a1a1a"
-        white "#8D908D"
-    }
-}
-
 theme "catppuccin-mocha"
  
 // Choose the base input mode of zellij.
@@ -342,7 +312,7 @@ default_mode "locked"
 // The name of the default layout to load on startup
 // Default: "work"
 // 
-//default_layout "work"
+default_layout "work"
  
 // The folder in which Zellij will look for layouts
 // (Requires restart)
@@ -488,4 +458,4 @@ default_mode "locked"
 // (Requires restart)
 // Default: true (if the host terminal supports it)
 // 
-// support_kitty_keyboard_protocol false
+support_kitty_keyboard_protocol false
