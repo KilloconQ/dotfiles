@@ -21,16 +21,6 @@ alias cat bat
 alias zwork 'zellij a work'
 alias zlearn 'zellij a learn'
 
-# Project paths
-set -gx PROJECT_PATHS \
-    ~/dev/Projects.db/ \
-    ~/dev/work \
-    ~/dev/projects/web/bingo \
-    ~/dev/projects/web/svelte-todo-app/ \
-    ~/dev/projects/web/software-almacen/ \
-    ~/dev/projects/web/ecommerce-project/ \
-    ~/dev/projects/mobile/financeTracker/
-
 # General PATH
 set -gx PATH /usr/local/bin /home/linuxbrew/.linuxbrew/bin $PATH
 
