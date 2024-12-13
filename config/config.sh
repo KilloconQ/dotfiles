@@ -17,7 +17,7 @@ elif [ "$OS" == "Linux" ]; then
     sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>~/.config/fish/config.fish
+  echo "eval '$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)'" >>~/.config/fish/config.fish
 fi
 
 echo "Actualizando Homebrew..."
@@ -46,14 +46,6 @@ chsh -s "$(which fish)"
 echo "Cargando configuración de fish..."
 fish -c 'source ~/dotfiles/fish/config.fish'
 
-echo "Verificando instalación de Oh My Fish..."
-if fish -c 'type omf' &>/dev/null; then
-  echo "Oh My Fish ya está instalado. Omitiendo instalación."
-else
-  echo "Instalando Oh My Fish..."
-  echo | curl -L https://get.oh-my.fish | fish
-fi
-
 echo "Configurando fnm en fish..."
 fish -c 'set -U fish_user_paths /usr/local/opt/fnm/bin $fish_user_paths'
 fish -c 'fnm env | source'
@@ -72,9 +64,9 @@ fi
 fish -c 'node -v'
 npm install -g yarn typescript
 
-echo "Instalando Deno versión 2..."
-brew install deno
-fish -c 'deno upgrade --version 2.0.0'
+# echo "Instalando Deno versión 2..."
+# brew install deno
+# fish -c 'deno upgrade --version 2.0.0'
 
 echo "Creando enlaces simbólicos..."
 
@@ -102,8 +94,5 @@ curl -fsSL https://bun.sh/install | bash
 
 echo "Instalando Starship..."
 brew install starship
-
-echo "Instalando temas y plugins de Oh My Fish..."
-fish -c 'omf install pj'
 
 echo "Instalación completada."
