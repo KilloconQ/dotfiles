@@ -1,3 +1,6 @@
+set OS_TYPE (uname)
+set IS_WSL (uname -r | grep -qi "microsoft"; and echo "true" or echo "false")
+
 # Aliases
 alias ga 'git add .'
 alias gwa 'git worktree add'
@@ -25,7 +28,7 @@ alias zlearn 'zellij a learn'
 set -gx PATH /usr/local/bin /home/linuxbrew/.linuxbrew/bin $PATH
 
 # Configuración específica de sistema
-if test (uname) = Darwin
+if test $OS_TYPE = Darwin
     # Configuración para macOS
     if test -e /usr/local/bin/brew
         eval "$(/usr/local/bin/brew shellenv)"
@@ -33,7 +36,7 @@ if test (uname) = Darwin
     if test -e $HOME/.cargo/env.fish
         source $HOME/.cargo/env.fish
     end
-else if test (uname -r | grep -qi "microsoft")
+else if test $IS_WSL = true
     # Configuración para WSL
     if test -e /home/linuxbrew/.linuxbrew/bin/brew
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
@@ -60,4 +63,3 @@ fzf --fish | source
 
 # Zoxide prompt
 zoxide init fish | source
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
