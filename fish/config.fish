@@ -55,6 +55,9 @@ set --export PATH $BUN_INSTALL/bin $PATH
 set -gx VOLTA_HOME "$HOME/.volta"
 set -gx PATH "$VOLTA_HOME/bin" $PATH
 
+# Set up fzf key bindings
+fzf --fish | source
+
 # Zoxide prompt
 zoxide init fish | source
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
