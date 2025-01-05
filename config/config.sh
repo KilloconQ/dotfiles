@@ -1,30 +1,38 @@
 #!/bin/bash
 
+set -e          # Detener el script si hay errores
+set -o pipefail # Detectar errores en pipes
+
+echo "Iniciando configuración del sistema..."
+
 # Detectar sistema operativo
 OS=$(uname -s)
 
 if [ "$OS" == "Darwin" ]; then
-  echo "Sistema operativo: macOS"
+  echo "Detectado sistema operativo: macOS"
   if ! command -v brew &>/dev/null; then
     echo "Instalando Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
   eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [ "$OS" == "Linux" ]; then
-  echo "Sistema operativo: Linux (WSL)"
+  echo "Detectado sistema operativo: Linux"
   if ! command -v brew &>/dev/null; then
     echo "Instalando Homebrew..."
-    sudo bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
   echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>~/.config/fish/config.fish
+else
+  echo "Sistema operativo no soportado: $OS"
+  exit 1
 fi
 
-echo "Actualizando Homebrew..."
+echo "Actualizando e instalando Homebrew..."
 brew update && brew upgrade
 
 echo "Instalando herramientas de línea de comandos..."
-brew install git gh wget fish neovim fzf zellij bat lsd fnm deno
+brew install git gh wget fish neovim fzf zellij bat lsd deno
 
 echo "Configurando fish..."
 
@@ -33,6 +41,10 @@ if [ -d ~/.config/fish ]; then
   echo "Eliminando configuración existente de fish..."
   rm -rf ~/.config/fish
 fi
+
+#Instalar volta
+echo "Instalando Volta..."
+curl https://get.volta.sh | bash
 
 # Crear el enlace simbólico hacia tu configuración de fish
 ln -sfn ~/dotfiles/fish ~/.config/fish
@@ -46,31 +58,11 @@ chsh -s "$(which fish)"
 echo "Cargando configuración de fish..."
 fish -c 'source ~/dotfiles/fish/config.fish'
 
-echo "Verificando instalación de Oh My Fish..."
-if fish -c 'type omf' &>/dev/null; then
-  echo "Oh My Fish ya está instalado. Omitiendo instalación."
-else
-  echo "Instalando Oh My Fish..."
-  echo | curl -L https://get.oh-my.fish | fish
-fi
-
-echo "Configurando fnm en fish..."
-fish -c 'set -U fish_user_paths /usr/local/opt/fnm/bin $fish_user_paths'
-fish -c 'fnm env | source'
-
 echo "Gestionando instalación de Node.js LTS..."
-LTS_VERSION=$(fnm ls-remote | grep -E 'v[0-9]+\.[0-9]+\.[0-9]+.*LTS' | tail -n1 | awk '{print $1}')
-CURRENT_VERSION=$(fish -c 'node -v' 2>/dev/null || echo "")
-
-if [ "$CURRENT_VERSION" != "$LTS_VERSION" ]; then
-  echo "Instalando o actualizando Node.js a la versión LTS $LTS_VERSION..."
-  fish -c "fnm install $LTS_VERSION && fnm use $LTS_VERSION && fnm alias default $LTS_VERSION"
-else
-  echo "Node.js ya está actualizado a la versión LTS $LTS_VERSION."
-fi
+volta install node@lts
 
 fish -c 'node -v'
-npm install -g yarn typescript
+npm install -g pnpmtypescript
 
 echo "Instalando Deno versión 2..."
 brew install deno
@@ -102,8 +94,5 @@ curl -fsSL https://bun.sh/install | bash
 
 echo "Instalando Starship..."
 brew install starship
-
-echo "Instalando temas y plugins de Oh My Fish..."
-fish -c 'omf install pj'
 
 echo "Instalación completada."
