@@ -17,12 +17,20 @@ if [ "$OS" == "Darwin" ]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [ "$OS" == "Linux" ]; then
   echo "Detectado sistema operativo: Linux"
+  read -rp "¿Estás en un entorno WSL? (s/n): " IS_WSL
+  if [[ "$IS_WSL" =~ ^[Ss]$ ]]; then
+    WSL_PATH="/mnt/c/Users/ferna/.wezterm.lua"
+    echo "Configuración de WezTerm será en: $WSL_PATH"
+  else
+    LINUX_PATH="$HOME/.wezterm.lua"
+    echo "Configuración de WezTerm será en: $LINUX_PATH"
+  fi
+
   if ! command -v brew &>/dev/null; then
     echo "Instalando Homebrew..."
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >>~/.config/fish/config.fish
 else
   echo "Sistema operativo no soportado: $OS"
   exit 1
@@ -68,6 +76,12 @@ echo "Instalando Deno versión 2..."
 brew install deno
 fish -c 'deno upgrade --version 2.0.0'
 
+echo "Instalando bun..."
+curl -fsSL https://bun.sh/install | bash
+
+echo "Instalando Starship..."
+brew install starship
+
 echo "Creando enlaces simbólicos..."
 
 create_symlink() {
@@ -84,15 +98,18 @@ create_symlink() {
 
 create_symlink ~/dotfiles/nvim ~/.config/nvim
 create_symlink ~/dotfiles/zellij ~/.config/zellij
-create_symlink ~/dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
 create_symlink ~/dotfiles/omf ~/.config/omf
 create_symlink ~/dotfiles/config ~/.config/config
 create_symlink ~/dotfiles/starship/starship.toml ~/.config/starship.toml
 
-echo "Instalando bun..."
-curl -fsSL https://bun.sh/install | bash
-
-echo "Instalando Starship..."
-brew install starship
+if [ "$OS" == "Linux" ]; then
+  if [[ "$IS_WSL" =~ ^[Yy]$ ]]; then
+    create_symlink ~/dotfiles/wezterm/.wezterm.lua "$WSL_PATH"
+  else
+    create_symlink ~/dotfiles/wezterm/.wezterm.lua "$LINUX_PATH"
+  fi
+else
+  create_symlink ~/dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
+fi
 
 echo "Instalación completada."
