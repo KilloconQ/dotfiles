@@ -13,6 +13,12 @@ if [ "$OS" == "Darwin" ]; then
   if ! command -v brew &>/dev/null; then
     echo "Instalando Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    read -rp "¿Quieres instalar Zen Browser? (s/n): " IS_BROWSER
+
+    if [[ "$IS_BROWSER" =~ ^[Ss]$ ]]; then
+      brew install --cask zen-browser
+    fi
   fi
   eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [ "$OS" == "Linux" ]; then
@@ -31,6 +37,7 @@ elif [ "$OS" == "Linux" ]; then
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
 else
   echo "Sistema operativo no soportado: $OS"
   exit 1
