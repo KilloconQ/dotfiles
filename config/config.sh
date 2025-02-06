@@ -27,10 +27,21 @@ set -o pipefail
 # -------------------------------
 
 # -------------------------------
+# Mantener activo sudo durante la ejecución
+# -------------------------------
+sudo -v
+while true; do
+  sudo -n true
+  sleep 60
+  kill -0 "$$" || exit
+done 2>/dev/null &
+
+# -------------------------------
 # Variables Globales
 # -------------------------------
 DOTFILES_DIR="$HOME/dotfiles"
 # Configura aquí la URL de tu repositorio de dotfiles si deseas clonarlo automáticamente.
+WINDOWS_USER=$(cmd.exe /c echo %USERNAME)
 DOTFILES_REPO="https://github.com/tu_usuario/tus_dotfiles.git"
 FISH_CONFIG_DIR="$HOME/.config/fish"
 
@@ -151,7 +162,7 @@ setup_linux() {
 
   if is_wsl; then
     log_info "Entorno WSL detectado."
-    WSL_PATH="$DOTFILES_DIR/wezterm/.wezterm.lua"
+    WSL_PATH="/mnt/c/Users/$WINDOWS_USER/.wezterm.lua"
   else
     log_info "Entorno Linux nativo detectado."
     LINUX_PATH="$HOME/.wezterm.lua"
@@ -240,7 +251,7 @@ fish -c 'source ~/dotfiles/fish/config.fish'
 # -------------------------------
 # Instalación de herramientas adicionales
 # -------------------------------
-PACKAGES=(git gh wget neovim fzf zellij bat lsd deno zoxide lazygit lazydocker go zig starship)
+PACKAGES=(git gh wget neovim fzf ripgrep fd zellij bat lsd deno zoxide lazygit lazydocker go zig starship)
 log_info "Instalando herramientas de línea de comandos..."
 for pkg in "${PACKAGES[@]}"; do
   install_brew_package "$pkg"
@@ -279,20 +290,23 @@ create_symlink "$DOTFILES_DIR/omf" "$HOME/.config/omf"
 create_symlink "$DOTFILES_DIR/config" "$HOME/.config/config"
 create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml"
 
+log_info "Configurar rust..."
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
 # -------------------------------
 # Configuración de WezTerm
 # -------------------------------
 if [ "$OS" == "Linux" ]; then
   if is_wsl; then
     log_info "Creando enlace para la configuración de WezTerm en WSL..."
-    create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$WSL_PATH"
+    cp "$DOTFILES_DIR/wezterm/.wezterm.lua" "$WSL_PATH"
   else
     install_brew_package wezterm
     create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$LINUX_PATH"
   fi
 else
   install_brew_package wezterm
-  create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$HOME/.wezterm.lua"
+  create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$LINUX_PATH"
 fi
 
 log_success "Instalación completada."
