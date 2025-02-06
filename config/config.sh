@@ -162,7 +162,7 @@ if ! command -v fish &>/dev/null; then
 fi
 
 log_info "Instalando herramientas de línea de comandos..."
-packages=(git gh wget neovim fzf zellij bat lsd deno zoxide lazygit zig starship)
+packages=(git gh wget neovim fzf zellij bat lsd deno zoxide lazygit lazydocker go zig starship)
 for pkg in "${packages[@]}"; do
   install_brew_package "$pkg"
 done
@@ -228,9 +228,11 @@ if [ "$OS" == "Linux" ]; then
     log_info "Creando enlace para la configuración de WezTerm en WSL..."
     create_symlink "$HOME/dotfiles/wezterm/.wezterm.lua" "$WSL_PATH"
   else
+    install_brew_package wezterm
     create_symlink "$HOME/dotfiles/wezterm/.wezterm.lua" "$LINUX_PATH"
   fi
 else
+  install_brew_package wezterm
   create_symlink "$HOME/dotfiles/wezterm/.wezterm.lua" "$HOME/.wezterm.lua"
 fi
 
