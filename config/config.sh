@@ -1,6 +1,38 @@
 #!/bin/bash
+# Opcional: activa el modo debug si se pasa -d como parámetro
+DEBUG_MODE=false
+while getopts ":d" opt; do
+  case ${opt} in
+  d)
+    DEBUG_MODE=true
+    ;;
+  \?)
+    echo "Uso: $0 [-d] (d: modo debug)"
+    exit 1
+    ;;
+  esac
+done
+
+if [ "$DEBUG_MODE" = true ]; then
+  set -x
+fi
+
 set -e
 set -o pipefail
+
+# -------------------------------
+# Descripción: Automatización de la configuración del entorno de desarrollo.
+# Antes de ejecutar, asegúrate de tener configurada la URL de tu repositorio de dotfiles
+# si es que no lo tienes clonado en $HOME/dotfiles.
+# -------------------------------
+
+# -------------------------------
+# Variables Globales
+# -------------------------------
+DOTFILES_DIR="$HOME/dotfiles"
+# Configura aquí la URL de tu repositorio de dotfiles si deseas clonarlo automáticamente.
+DOTFILES_REPO="https://github.com/tu_usuario/tus_dotfiles.git"
+FISH_CONFIG_DIR="$HOME/.config/fish"
 
 # -------------------------------
 # Colores y funciones de logging
@@ -41,6 +73,25 @@ is_wsl() {
 }
 
 # -------------------------------
+# Clonar dotfiles (si es necesario)
+# -------------------------------
+ensure_dotfiles() {
+  if [ ! -d "$DOTFILES_DIR" ]; then
+    log_warn "No se encontró el directorio de dotfiles en $DOTFILES_DIR."
+    read -rp "¿Deseas clonar el repositorio de dotfiles desde $DOTFILES_REPO? (s/n): " CLONE_ANSWER
+    if [[ "$CLONE_ANSWER" =~ ^[Ss]$ ]]; then
+      git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
+      log_success "Repositorio clonado en $DOTFILES_DIR."
+    else
+      log_error "No se encontraron dotfiles y no se clonó el repositorio. Abortando."
+      exit 1
+    fi
+  else
+    log_info "Directorio de dotfiles encontrado en $DOTFILES_DIR."
+  fi
+}
+
+# -------------------------------
 # Instalación y actualización de Homebrew
 # -------------------------------
 install_homebrew() {
@@ -59,7 +110,7 @@ update_homebrew() {
 }
 
 # -------------------------------
-# Funciones para crear enlaces simbólicos
+# Función para crear enlaces simbólicos
 # -------------------------------
 create_symlink() {
   local target="$1"
@@ -75,8 +126,7 @@ create_symlink() {
     rm -rf "$link"
   fi
 
-  ln -sfn "$target" "$link"
-  log_success "Enlace creado: $link -> $target"
+  ln -sfn "$target" "$link" && log_success "Enlace creado: $link -> $target" || log_error "No se pudo crear el enlace: $link -> $target"
 }
 
 # -------------------------------
@@ -87,7 +137,7 @@ setup_macos() {
   install_homebrew
   eval "$(/opt/homebrew/bin/brew shellenv)"
 
-  # Ejemplo: instalar Zen Browser
+  # Ejemplo: instalar Zen Browser (opcional)
   read -rp "¿Quieres instalar Zen Browser? (s/n): " IS_BROWSER
   if [[ "$IS_BROWSER" =~ ^[Ss]$ ]]; then
     install_brew_cask zen-browser
@@ -101,7 +151,7 @@ setup_linux() {
 
   if is_wsl; then
     log_info "Entorno WSL detectado."
-    WSL_PATH="$HOME/dotfiles/wezterm/.wezterm.lua"
+    WSL_PATH="$DOTFILES_DIR/wezterm/.wezterm.lua"
   else
     log_info "Entorno Linux nativo detectado."
     LINUX_PATH="$HOME/.wezterm.lua"
@@ -109,7 +159,7 @@ setup_linux() {
 }
 
 # -------------------------------
-# Instalación de paquetes con brew
+# Instalación de paquetes con brew y cask
 # -------------------------------
 install_brew_package() {
   local package="$1"
@@ -132,10 +182,11 @@ install_brew_cask() {
 }
 
 # -------------------------------
-# Cambiar shell por defecto
+# Cambiar shell por defecto a fish
 # -------------------------------
 set_default_shell() {
-  local new_shell="$1"
+  local new_shell
+  new_shell=$(which fish)
   if ! grep -q "$new_shell" /etc/shells; then
     log_info "Agregando $new_shell a /etc/shells..."
     echo "$new_shell" | sudo tee -a /etc/shells
@@ -155,6 +206,10 @@ fi
 # -------------------------------
 # Inicio del script
 # -------------------------------
+
+# Verifica que exista el directorio de dotfiles; de lo contrario, pregunta si se clona.
+ensure_dotfiles
+
 OS=$(uname -s)
 if [ "$OS" == "Darwin" ]; then
   setup_macos
@@ -167,18 +222,77 @@ fi
 
 update_homebrew
 
-# Ejemplo: instalar fish y configurarlo
+# -------------------------------
+# Instalación y configuración de fish
+# -------------------------------
 if ! command -v fish &>/dev/null; then
   log_info "Instalando fish..."
   install_brew_package fish
 fi
 
 log_info "Configurando fish..."
-[ -d "$HOME/.config/fish" ] && rm -rf "$HOME/.config/fish"
-create_symlink "$HOME/dotfiles/fish" "$HOME/.config/fish"
-set_default_shell "$(which fish)"
+[ -d "$FISH_CONFIG_DIR" ] && rm -rf "$FISH_CONFIG_DIR"
+create_symlink "$DOTFILES_DIR/fish" "$FISH_CONFIG_DIR"
+set_default_shell
+# Carga la configuración de fish desde el repositorio de dotfiles
 fish -c 'source ~/dotfiles/fish/config.fish'
 
-# (Continuar con la instalación de otras herramientas y dotfiles...)
+# -------------------------------
+# Instalación de herramientas adicionales
+# -------------------------------
+PACKAGES=(git gh wget neovim fzf zellij bat lsd deno zoxide lazygit lazydocker go zig starship)
+log_info "Instalando herramientas de línea de comandos..."
+for pkg in "${PACKAGES[@]}"; do
+  install_brew_package "$pkg"
+done
+
+# -------------------------------
+# Instalación de Volta y Node.js
+# -------------------------------
+log_info "Instalando Volta..."
+curl -fsSL https://get.volta.sh | bash
+
+if ! command -v node &>/dev/null; then
+  log_info "Instalando Node.js LTS con Volta..."
+  volta install node@lts
+fi
+
+# Verifica la versión de Node
+fish -c 'node -v'
+
+log_info "Instalando pnpm y typescript globalmente..."
+npm install -g pnpm typescript
+
+# -------------------------------
+# Instalación de bun
+# -------------------------------
+log_info "Instalando bun..."
+curl -fsSL https://bun.sh/install | bash
+
+# -------------------------------
+# Creación de enlaces simbólicos para otros dotfiles
+# -------------------------------
+log_info "Creando enlaces simbólicos para dotfiles..."
+create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
+create_symlink "$DOTFILES_DIR/zellij" "$HOME/.config/zellij"
+create_symlink "$DOTFILES_DIR/omf" "$HOME/.config/omf"
+create_symlink "$DOTFILES_DIR/config" "$HOME/.config/config"
+create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml"
+
+# -------------------------------
+# Configuración de WezTerm
+# -------------------------------
+if [ "$OS" == "Linux" ]; then
+  if is_wsl; then
+    log_info "Creando enlace para la configuración de WezTerm en WSL..."
+    create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$WSL_PATH"
+  else
+    install_brew_package wezterm
+    create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$LINUX_PATH"
+  fi
+else
+  install_brew_package wezterm
+  create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$HOME/.wezterm.lua"
+fi
 
 log_success "Instalación completada."
