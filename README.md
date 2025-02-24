@@ -65,3 +65,5 @@ Choose and install your favorite terminal emulator. I recommend:
 1. [WezTerm](https://wezfurlong.org/wezterm/)
 2. [Windows Terminal](https://aka.ms/terminal)
 3. [Alacritty](https://alacritty.org/).
+
+Luega sigo escribiendo en ingles
