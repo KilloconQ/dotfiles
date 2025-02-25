@@ -264,7 +264,10 @@ log_info "Instalando Volta..."
 curl -fsSL https://get.volta.sh | bash
 
 if ! command -v node &>/dev/null; then
-  log_info "Instalando Node.js LTS con Volta..."
+  log_info "Instalando Volta..."
+  curl -fsSL https://get.volta.sh | bash
+  export VOLTA_HOME="$HOME/.volta"
+  export PATH="$VOLTA_HOME/bin:$PATH"
   volta install node@lts
 fi
 
@@ -286,7 +289,6 @@ curl -fsSL https://bun.sh/install | bash
 log_info "Creando enlaces simbólicos para dotfiles..."
 create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 create_symlink "$DOTFILES_DIR/zellij" "$HOME/.config/zellij"
-create_symlink "$DOTFILES_DIR/omf" "$HOME/.config/omf"
 create_symlink "$DOTFILES_DIR/config" "$HOME/.config/config"
 create_symlink "$DOTFILES_DIR/starship/starship.toml" "$HOME/.config/starship.toml"
 
