@@ -5,7 +5,7 @@ local target = wezterm.target_triple
 -- Esquema de colores y apariencia
 config.color_scheme = "Catppuccin Mocha"
 config.enable_tab_bar = false
-config.font_size = 12.0
+config.font_size = 14.0
 config.font = wezterm.font("JetBrainsMono Nerd Font")
 config.macos_window_background_blur = 20
 
@@ -19,7 +19,7 @@ config.window_background_opacity = 0.92
 config.window_decorations = "RESIZE"
 config.max_fps = 240
 
--- Definición de teclas
+-- Definición de teclas/
 config.keys = {
 	{
 		key = "f",
@@ -39,7 +39,8 @@ config.mouse_bindings = {
 }
 
 -- Configuraciones adicionales
-if target == "x86_64-pc-windows-msvc" then
+if target == "x86_64-pc-windows-msvc" or target:find("wsl") then
+	config.font_size = 12.0
 	config.default_domain = "WSL:Ubuntu"
 	config.front_end = "OpenGL"
 	config.win32_system_backdrop = "Acrylic"
