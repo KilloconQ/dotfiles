@@ -66,3 +66,5 @@ Choose and install your favorite terminal emulator. I recommend:
 2. [Windows Terminal](https://aka.ms/terminal) (Windows)
 3. [Alacritty](https://alacritty.org/). (Windows, macOS, Linux)
 4. [Ghostty](https://ghostty.org/). (Windows, macOS, Linux)
+
+a lot of terminal emulators are available, choose the one that fits your needs.
