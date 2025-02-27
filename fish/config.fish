@@ -31,6 +31,10 @@ set -gx PATH /usr/local/bin /home/linuxbrew/.linuxbrew/bin $PATH
 # Configuración específica de sistema
 if test $OS_TYPE = Darwin
     # Configuración para macOS
+    function fish_clipbaord_paste
+        set text (pbpaste)
+        commandline -i $text
+    end
     if test -e /usr/local/bin/brew
         eval "$(/usr/local/bin/brew shellenv)"
     end
@@ -39,6 +43,10 @@ if test $OS_TYPE = Darwin
     end
 else if test $IS_WSL = true
     # Configuración para WSL
+    function fish_clipboard_paste
+        set text (xclip -o -selection clipboard)
+        commandline -i $text
+    end
     if test -e /home/linuxbrew/.linuxbrew/bin/brew
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
     end
