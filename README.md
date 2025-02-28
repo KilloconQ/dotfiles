@@ -361,9 +361,9 @@ You can fork this repository and customize it to your needs.
 There is a lot of people that use Neovim as first editor,
 and I recommend you to follow some of them:
 
-- [ThePrimeagen](https://www.youtube.com/c/ThePrimeagen)(English)
-- [TJDevries](https://www.youtube.com/c/tjdevries)(English)
-- [Gentleman Programming](https://www.youtube.com/@gentlemanprogramming)(Spanish)
+- [ThePrimeagen](https://www.youtube.com/c/ThePrimeagen) (English)
+- [TJDevries](https://www.youtube.com/c/tjdevries) (English)
+- [Gentleman Programming](https://www.youtube.com/@gentlemanprogramming) (Spanish)
 
 I have learned a lot from these channels—the first two are English-speaking,
 while the third offers content in Spanish.
