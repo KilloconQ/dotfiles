@@ -107,6 +107,9 @@ If you'd like a little help while using your terminal, you can install [Warp](ht
 If you choose WezTerm,
 (great choice) you can use the following configuration => [.wezterm.lua](./wezterm/.wezterm.lua)
 
+From this point you can follow the Linux or MacOS
+instructions in the [Neovim section](#3-install-neovim)
+
 ### For Linux or Mac (or WSL2)
 
 #### 1. Install a Terminal Emulator
@@ -122,6 +125,15 @@ If you'd like a little help while using your terminal, you can install [Warp](ht
 
 If you choose WezTerm,
 (great choice) you can use the following configuration => [.wezterm.lua](./wezterm/.wezterm.lua)
+
+##### 1.1 Optional: Install Brew (required an MacOS)
+
+I prefer to use Brew on my Linux distributions.
+To install it, run the following command:
+
+```sh
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 
 #### 2. Install a Nerd font
 
@@ -145,15 +157,52 @@ Mac:
  brew install --cask font-jetbrains-mono-nerd-font
 ```
 
+If it doesn't work, you can try update your package manager and try again:
+
+MacOS
+
+```sh
+brew update
+brew upgrade
+```
+
+Ubuntu or debian based distribution
+
+```sh
+sudo apt update
+sudo apt upgrade
+```
+
+Fedora or red hat based distribution
+
+```sh
+sudo dnf update
+sudo dnf upgrade
+```
+
+Arch or arch based distribution
+
+```sh
+sudo pacman -Syu
+sudo pacman -Syyu
+```
+
+or
+
+```sh
+sudo yay -Syu
+sudo yay -Syyu
+```
+
 #### 3. Install Neovim
 
-If you followed the optional step 4.1, you can install Neovim with Brew:
+Now you can install Neovim.
+
+MacOS (or Linux if you followed the [optional section](#11-optional-install-brew-required-an-macos))
 
 ```sh
   brew install neovim
 ```
-
-in other case, you can install it with the following command:
 
 Ubuntu or debian based distribution:
 
@@ -276,7 +325,7 @@ If you'd like to use NuShell, God bless your soul.
 #### 5. Multiplexer
 
 How many times have you opened a terminal
-and then opened another one because you needed to run another command?
+and then opened another one or one tab because you needed to run another command?
 
 Never? Oh, well, I have.
 
@@ -295,3 +344,28 @@ Then you can copy [this file](./zellij/.config/zellij) to `~/.config/zellij`
 I have one plugins that make this multiplexer looks nicer but you can remove it
 
 If you prefer tmux, you'll find more info [here](https://github.com/tmux/tmux/wiki)
+
+#### 6. Restart your terminal or computer
+
+- Close and reopen your terminal emulator,
+  or restart your computer or WSL2 instance for the changes to take effect.
+
+---
+
+You're done! Enjoy your new development experience.
+
+You can fork this repository and customize it to your needs.
+
+## Recommended people
+
+There is a lot of people that use Neovim as first editor,
+and I recommend you to follow some of them:
+
+- [ThePrimeagen](https://www.youtube.com/c/ThePrimeagen)(English)
+- [TJDevries](https://www.youtube.com/c/tjdevries)(English)
+- [Gentleman Programming](https://www.youtube.com/@gentlemanprogramming)(Spanish)
+
+I have learned a lot from these channels—the first two are English-speaking,
+while the third offers content in Spanish.
+
+_!Note: If you encounter any issue, please open an issue on this repository._
