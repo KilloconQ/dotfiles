@@ -12,7 +12,7 @@ ls.add_snippets("typescript", {
     i(2, "NombreComponente"),
     t({ ";", "  let fixture: ComponentFixture<" }),
     i(3, "NombreComponente"),
-    t({ ">;", "", "  beforeEach(async () => {", "    await TestBed.configureTestingModule({", "      declarations: [" }),
+    t({ ">;", "", "  beforeEach(async () => {", "    await TestBed.configureTestingModule({", "      imports: [" }),
     i(4, "NombreComponente"),
     t({ "]", "    }).compileComponents();", "", "    fixture = TestBed.createComponent(" }),
     i(5, "NombreComponente"),
