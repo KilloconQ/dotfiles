@@ -153,6 +153,10 @@ setup_macos() {
   if [[ "$IS_BROWSER" =~ ^[Ss]$ ]]; then
     install_brew_cask zen-browser
   fi
+  read -rp "¿Quieres instalar Aerospace? (s/n): " IS_WM
+  if [[ "$IS_WM" =~ ^[Ss]$ ]]; then
+    install_brew_cask aerospace
+  fi
 }
 
 setup_linux() {
