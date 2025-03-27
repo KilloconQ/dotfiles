@@ -339,7 +339,7 @@ Or because is the only one I know how to use. (hehe)
 brew install zellij
 ```
 
-Then you can copy [this file](./zellij/.config/zellij) to `~/.config/zellij`
+Then you can copy [this file](./zellij/) to `~/.config/zellij`
 
 I have one plugins that make this multiplexer looks nicer but you can remove it
 
@@ -350,11 +350,19 @@ If you prefer tmux, you'll find more info [here](https://github.com/tmux/tmux/wi
 - Close and reopen your terminal emulator,
   or restart your computer or WSL2 instance for the changes to take effect.
 
----
-
 You're done! Enjoy your new development experience.
 
 You can fork this repository and customize it to your needs.
+
+---
+
+#### 7. Bonus: WM for Mac Users
+
+If you are a real geek and (Neo)Vim user i supposed you don't use the mouse.
+Here you can install a great window manager [Aerospace](https://github.com/nikitabobko/AeroSpace)
+
+It's a great tool to manage your windows with your keyboard.
+You can use [my file](./aerospace/aerospace.toml)
 
 ## Recommended people
 
