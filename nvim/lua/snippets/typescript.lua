@@ -31,7 +31,7 @@ ls.add_snippets("typescript", {
   }),
 })
 
-ls.add_snippets("typescript", {
+ls.add_snippets({ "typescript", "javascript", "astro", "tsx" }, {
   s("clg", {
     t({ "console.log('" }),
     i(1),
@@ -39,7 +39,7 @@ ls.add_snippets("typescript", {
   }),
 })
 
-ls.add_snippets("typescript", {
+ls.add_snippets({ "typescript", "javascript", "astro", "tsx" }, {
   s("clo", {
     t({ "console.log(`" }),
     i(1),
