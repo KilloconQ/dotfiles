@@ -48,3 +48,6 @@ ls.add_snippets("typescript", {
     t({ "}`);" }),
   }),
 })
+
+ls.filetype_extend("astro", { "typescript" })
+ls.filetype_extend("typescriptreact", { "typescript" })
