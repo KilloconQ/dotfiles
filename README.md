@@ -364,6 +364,17 @@ Here you can install a great window manager [Aerospace](https://github.com/nikit
 It's a great tool to manage your windows with your keyboard.
 You can use [my file](./aerospace/aerospace.toml)
 
+#### 8. Bonus: WM or Windows Users
+
+Finally, if you really want to be a keyboard warrior, but you are on Windows,
+you can install [GlazeWM](https://github.com/glzr-io/glazewm)
+and you can say goodbye (finally) to your mouse.
+Also it includes Zebar, so you can have a great status bar.
+
+There is some configurations that it doesn't support yet,
+but you can use it and adapt it to your needs.
+[Glaze WM config](./glazewm/.glzr/glazewm/config.yaml)
+
 ## Recommended people
 
 There is a lot of people that use Neovim as first editor,
