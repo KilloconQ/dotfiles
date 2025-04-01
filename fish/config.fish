@@ -24,6 +24,7 @@ alias cat bat
 alias zwork 'zellij a work'
 alias zlearn 'zellij a learn'
 alias air '~/go/bin/air'
+alias lg lazygit
 
 # General PATH
 set -gx PATH /usr/local/bin /home/linuxbrew/.linuxbrew/bin $PATH
