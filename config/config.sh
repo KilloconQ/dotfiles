@@ -156,6 +156,7 @@ setup_macos() {
   read -rp "¿Quieres instalar Aerospace? (s/n): " IS_WM
   if [[ "$IS_WM" =~ ^[Ss]$ ]]; then
     install_brew_cask aerospace
+    create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/aerospace/"
   fi
 }
 
