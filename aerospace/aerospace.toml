@@ -116,11 +116,11 @@ alt-minus = 'resize smart -50'
 alt-equal = 'resize smart +50'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
-alt-1 = 'workspace social'
-alt-2 = 'workspace work'
-alt-3 = 'workspace development'
+alt-1 = 'workspace development'
+alt-2 = 'workspace browser'
+alt-3 = 'workspace teams'
 alt-4 = 'workspace others'
-alt-5 = 'workspace stream'
+# alt-5 = 'workspace stream'
 # alt-6 = 'workspace 6'
 # alt-7 = 'workspace 7'
 # alt-8 = 'workspace 8'
@@ -216,11 +216,10 @@ up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
 
 [workspace-to-monitor-force-assignment]
-social = "main"
-work = "main"
+teams = "main"
+browser = "main"
 development = "main"
 others = "main"
-stream = "main"
 
 [[on-window-detected]]
 if.app-id = "wezterm"
