@@ -1,0 +1,523 @@
+general:
+  # Commands to run when the WM has started. This is useful for running a
+  # script or launching another application.
+  # Example: The below command launches Zebar.
+  startup_commands: ["shell-exec zebar"]
+
+  # Commands to run just before the WM is shutdown.
+  # Example: The below command kills Zebar.
+  shutdown_commands: ["shell-exec taskkill /IM zebar.exe /F"]
+
+  # Commands to run after the WM config is reloaded.
+  config_reload_commands: []
+
+  # Whether to automatically focus windows underneath the cursor.
+  focus_follows_cursor: false
+
+  # Whether to switch back and forth between the previously focused
+  # workspace when focusing the current workspace.
+  toggle_workspace_on_refocus: false
+
+  cursor_jump:
+    # Whether to automatically move the cursor on the specified trigger.
+    enabled: true
+
+    # Trigger for cursor jump:
+    # - 'monitor_focus': Jump when focus changes between monitors.
+    # - 'window_focus': Jump when focus changes between windows.
+    trigger: "monitor_focus"
+
+  # How windows should be hidden when switching workspaces.
+  # - 'cloak': Recommended. Hides windows with no animation.
+  # - 'hide': Legacy method (v3.5 and earlier) that has a brief animation,
+  # but has stability issues with some apps.
+  hide_method: "cloak"
+
+  # Affects which windows get shown in the native Windows taskbar. Has no
+  # effect if `hide_method: 'hide'`.
+  # - 'true': Show all windows (regardless of workspace).
+  # - 'false': Only show windows from the currently shown workspaces.
+  show_all_in_taskbar: false
+
+gaps:
+  # Gap between adjacent windows.
+  inner_gap: "10px"
+  # Gap between windows and the screen edge.
+
+  outer_gap:
+    top: "50px"
+    right: "10px"
+    bottom: "10px"
+    left: "10px"
+# Yaml is white-space sensitive (use 2 spaces to indent).
+
+###
+# Define a new window with an id of 'bar'. This window can then be opened
+# via the Zebar cli by running 'zebar open bar --args <ARGS...>'.
+#
+# Docs regarding window: https://some-future-docs-link.com
+window/bar:
+  providers: ["self"]
+  # Width of the window in physical pixels.
+  width: "{{ self.args.MONITOR_WIDTH }}"
+  # Height of the window in physical pixels.
+  height: "40"
+  # X-position of the window in physical pixels.
+  position_x: "{{ self.args.MONITOR_X }}"
+  # Y-position of the window in physical pixels.
+  position_y: "{{ self.args.MONITOR_Y }}"
+  # Whether to show the window above/below all others.
+  # Allowed values: 'always_on_top', 'always_on_bottom', 'normal'.
+  z_order: "normal"
+  # Whether the window should be shown in the taskbar.
+  shown_in_taskbar: false
+  # Whether the window should have resize handles.
+  resizable: false
+  # Styles to apply globally within the window. For example, we can use
+  # this to import the Nerdfonts icon font. Ref https://www.nerdfonts.com/cheat-sheet
+  # for a cheatsheet of available Nerdfonts icons.
+  global_styles: |
+    @import "https://www.nerdfonts.com/assets/css/webfont.css";
+  # CSS styles to apply to the root element within the window. Using CSS
+  # nesting, we can also target nested elements (e.g. below we set the
+  # color and margin-right of icons).
+  styles: |
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    height: 100%;
+    color: rgb(255 255 255 / 90%);
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    padding: 4px 24px;
+    # border-bottom: 1px solid rgb(255 255 255 / 5%);;
+    # background: linear-gradient(rgb(0 0 0 / 90%), rgb(5 2 20 / 85%));
+    background: rgba(0, 0, 0, 15%);
+
+    i {
+      # color: rgb(115 130 175 / 95%);
+      color: rgb(255 255 255 / 90%);
+      margin-right: 7px;
+    }
+  group/left:
+    styles: |
+      display: flex;
+      align-items: center;
+    template/logo:
+      styles: |
+        margin-right: 20px;
+      template: |
+        <i class="nf nf-fa-windows"></i>
+    template/glazewm_workspaces:
+      styles: |
+        display: flex;
+        align-items: center;
+
+        .workspace {
+          background: rgb(255 255 255 / 5%);
+          margin-right: 4px;
+          padding: 4px 8px;
+          color: rgb(255 255 255 / 90%);
+          border: none;
+          border-radius: 2px;
+          cursor: pointer;
+
+          &.displayed {
+            background: rgb(255 255 255 / 15%);
+          }
+
+          &.focused,
+          &:hover {
+            # background: rgb(75 115 255 / 50%);
+            background: rgb(255 255 255 / 50%);
+          }
+        }
+      providers: ["glazewm"]
+      events:
+        - type: "click"
+          fn_path: "script.js#focusWorkspace"
+          selector: ".workspace"
+      template: |
+        @for (workspace of glazewm.currentWorkspaces) {
+          <button
+            class="workspace {{ workspace.hasFocus ? 'focused' : '' }} {{ workspace.isDisplayed ? 'displayed' : '' }}"
+            id="{{ workspace.name }}"
+          >
+            {{ workspace.displayName ?? workspace.name }}
+          </button>
+        }
+  group/center:
+    styles: |
+      justify-self: center;
+    template/clock:
+      providers: ["date"]
+      # Available date tokens: https://moment.github.io/luxon/#/formatting?id=table-of-tokens
+      template: |
+        {{ date.toFormat(date.now, 'EEE	d MMM t') }}
+  group/right:
+    styles: |
+      justify-self: end;
+      display: flex;
+
+      .template {
+        margin-left: 20px;
+      }
+    template/glazewm_other:
+      providers: ["glazewm"]
+      styles: |
+        .binding-mode,
+        .tiling-direction {
+          background: rgb(255 255 255 / 15%);
+          color: rgb(255 255 255 / 90%);
+          border-radius: 2px;
+          padding: 4px 6px;
+          margin: 0;
+        }
+      template: |
+        @for (bindingMode of glazewm.bindingModes) {
+          <span class="binding-mode">
+            {{ bindingMode.displayName ?? bindingMode.name }}
+          </span>
+        }
+
+        @if (glazewm.tilingDirection === 'horizontal') {
+          <i class="tiling-direction nf nf-md-swap_horizontal"></i>
+        } @else {
+          <i class="tiling-direction nf nf-md-swap_vertical"></i>
+        }
+    template/network:
+      providers: ["network"]
+      template: |
+        <!-- Show icon based on signal strength. -->
+        @if (network.defaultInterface?.type === 'ethernet') {
+          <i class="nf nf-md-ethernet_cable"></i>
+        } @else if (network.defaultInterface?.type === 'wifi') {
+          @if (network.defaultGateway?.signalStrength >= 80) {<i class="nf nf-md-wifi_strength_4"></i>}
+          @else if (network.defaultGateway?.signalStrength >= 65) {<i class="nf nf-md-wifi_strength_3"></i>}
+          @else if (network.defaultGateway?.signalStrength >= 40) {<i class="nf nf-md-wifi_strength_2"></i>}
+          @else if (network.defaultGateway?.signalStrength >= 25) {<i class="nf nf-md-wifi_strength_1"></i>}
+          @else {<i class="nf nf-md-wifi_strength_outline"></i>}
+          {{ network.defaultGateway?.ssid }}
+        } @else {
+          <i class="nf nf-md-wifi_strength_off_outline"></i>
+        }
+    template/memory:
+      providers: ["memory"]
+      template: |
+        <i class="nf nf-fae-chip"></i>
+        {{ Math.round(memory.usage) }}%
+    template/cpu:
+      providers: ["cpu"]
+      styles: |
+        .high-usage {
+          color: #900029;
+        }
+      template: |
+        <i class="nf nf-oct-cpu"></i>
+
+        <!-- Change the text color if the CPU usage is high. -->
+        @if (cpu.usage > 85) {
+          <span class="high-usage">{{ Math.round(cpu.usage) }}%</span>
+        } @else {
+          <span>{{ Math.round(cpu.usage) }}%</span>
+        }
+    template/battery:
+      providers: ["battery"]
+      styles: |
+        position: relative;
+
+        .charging-icon {
+          position: absolute;
+          font-size: 11px;
+          left: 7px;
+          top: 2px;
+        }
+      template: |
+        <!-- Show icon for whether battery is charging. -->
+        @if (battery.isCharging) {<i class="nf nf-md-power_plug charging-icon"></i>}
+
+        <!-- Show icon for how much of the battery is charged. -->
+        @if (battery.chargePercent > 90) {<i class="nf nf-fa-battery_4"></i>}
+        @else if (battery.chargePercent > 70) {<i class="nf nf-fa-battery_3"></i>}
+        @else if (battery.chargePercent > 40) {<i class="nf nf-fa-battery_2"></i>}
+        @else if (battery.chargePercent > 20) {<i class="nf nf-fa-battery_1"></i>}
+        @else {<i class="nf nf-fa-battery_0"></i>}
+
+        {{ Math.round(battery.chargePercent) }}%
+    template/weather:
+      providers: ["weather"]
+      template: |
+        @switch (weather.status) {
+          @case ('clear_day') {<i class="nf nf-weather-day_sunny"></i>}
+          @case ('clear_night') {<i class="nf nf-weather-night_clear"></i>}
+          @case ('cloudy_day') {<i class="nf nf-weather-day_cloudy"></i>}
+          @case ('cloudy_night') {<i class="nf nf-weather-night_alt_cloudy"></i>}
+          @case ('light_rain_day') {<i class="nf nf-weather-day_sprinkle"></i>}
+          @case ('light_rain_night') {<i class="nf nf-weather-night_alt_sprinkle"></i>}
+          @case ('heavy_rain_day') {<i class="nf nf-weather-day_rain"></i>}
+          @case ('heavy_rain_night') {<i class="nf nf-weather-night_alt_rain"></i>}
+          @case ('snow_day') {<i class="nf nf-weather-day_snow"></i>}
+          @case ('snow_night') {<i class="nf nf-weather-night_alt_snow"></i>}
+          @case ('thunder_day') {<i class="nf nf-weather-day_lightning"></i>}
+          @case ('thunder_night') {<i class="nf nf-weather-night_alt_lightning"></i>}
+        }
+        {{ weather.celsiusTemp }}°
+window_effects:
+  # Visual effects to apply to the focused window.
+  focused_window:
+    # Highlight the window with a colored border.
+    # ** Exclusive to Windows 11 due to API limitations.
+    border:
+      enabled: true
+      color: "#8dbcff"
+
+    # Remove the title bar from the window's frame. Note that this can
+    # cause rendering issues for some applications.
+    hide_title_bar:
+      enabled: false
+
+    # Change the corner style of the window's frame.
+    # ** Exclusive to Windows 11 due to API limitations.
+    corner_style:
+      enabled: false
+      # Allowed values: 'square', 'rounded', 'small_rounded'.
+      style: "square"
+
+    # Change the transparency of the window.
+    transparency:
+      enabled: false
+      # Can be something like '95%' or '0.95' for slightly transparent windows.
+      # '0' or '0%' is fully transparent (and, by consequence, unfocusable).
+      opacity: "95%"
+
+  # Visual effects to apply to non-focused windows.
+  other_windows:
+    border:
+      enabled: true
+      color: "#a1a1a1"
+    hide_title_bar:
+      enabled: false
+    corner_style:
+      enabled: false
+      style: "square"
+    transparency:
+      enabled: false
+      opacity: "0%"
+
+window_behavior:
+  # New windows are created in this state whenever possible.
+  # Allowed values: 'tiling', 'floating'.
+  initial_state: "tiling"
+
+  # Sets the default options for when a new window is created. This also
+  # changes the defaults for when the state change commands, like
+  # `set-floating`, are used without any flags.
+  state_defaults:
+    floating:
+      # Whether to center floating windows by default.
+      centered: true
+
+      # Whether to show floating windows as always on top.
+      shown_on_top: false
+
+    fullscreen:
+      # Maximize the window if possible. If the window doesn't have a
+      # maximize button, then it'll be fullscreen'ed normally instead.
+      maximized: false
+
+      # Whether to show fullscreen windows as always on top.
+      shown_on_top: false
+
+workspaces:
+  - name: "1"
+  - name: "2"
+  - name: "3"
+  - name: "4"
+  - name: "5"
+  - name: "6"
+  - name: "7"
+  - name: "8"
+  - name: "9"
+
+window_rules:
+  - commands: ["ignore"]
+    match:
+      # Ignores any Zebar windows.
+      - window_process: { equals: "zebar" }
+
+      # Ignores picture-in-picture windows for browsers.
+      - window_title: { regex: "[Pp]icture.in.[Pp]icture" }
+        window_class: { regex: "Chrome_WidgetWin_1|MozillaDialogClass" }
+
+      # Ignore rules for various 3rd-party apps.
+      - window_process: { equals: "PowerToys" }
+        window_class: { regex: 'HwndWrapper\[PowerToys\.PowerAccent.*?\]' }
+      - window_process: { equals: "PowerToys" }
+        window_title: { regex: ".*? - Peek" }
+      - window_process: { equals: "Lively" }
+        window_class: { regex: "HwndWrapper" }
+
+binding_modes:
+  # When enabled, the focused window can be resized via arrow keys or HJKL.
+  - name: "resize"
+    keybindings:
+      - commands: ["resize --width -2%"]
+        bindings: ["h", "left"]
+      - commands: ["resize --width +2%"]
+        bindings: ["l", "right"]
+      - commands: ["resize --height +2%"]
+        bindings: ["k", "up"]
+      - commands: ["resize --height -2%"]
+        bindings: ["j", "down"]
+      # Press enter/escape to return to default keybindings.
+      - commands: ["wm-disable-binding-mode --name resize"]
+        bindings: ["escape", "enter"]
+
+keybindings:
+  # Foco de ventana como en Aerospace
+  - commands: ["focus --direction left"]
+    bindings: ["alt+ctrl+h"]
+  - commands: ["focus --direction down"]
+    bindings: ["alt+ctrl+j"]
+  - commands: ["focus --direction up"]
+    bindings: ["alt+ctrl+k"]
+  - commands: ["focus --direction right"]
+    bindings: ["alt+ctrl+l"]
+
+  # Mover ventana como en Aerospace
+  - commands: ["move --direction left"]
+    bindings: ["alt+shift+h"]
+  - commands: ["move --direction down"]
+    bindings: ["alt+shift+j"]
+  - commands: ["move --direction up"]
+    bindings: ["alt+shift+k"]
+  - commands: ["move --direction right"]
+    bindings: ["alt+shift+l"]
+
+  # Resize como alt+- / alt+= en Aerospace
+  - commands: ["resize --width -4%", "resize --height -4%"]
+    bindings: ["alt+-"]
+  - commands: ["resize --width +4%", "resize --height +4%"]
+    bindings: ["alt+="]
+
+  # As an alternative to the resize keybindings above, resize mode enables
+  # resizing via arrow keys or HJKL. The binding mode is defined above with
+  # the name 'resize'.
+  - commands: ["wm-enable-binding-mode --name resize"]
+    bindings: ["alt+r"]
+
+  # Disables window management and all other keybindings until alt+shift+p
+  # is pressed again.
+  - commands: ["wm-toggle-pause"]
+    bindings: ["alt+shift+p"]
+
+  # Change tiling direction. This determines where new tiling windows will
+  # be inserted.
+  - commands: ["toggle-tiling-direction"]
+    bindings: ["alt+v"]
+
+  # Change focus from tiling windows -> floating -> fullscreen.
+  # - commands: ["wm-cycle-focus"]
+  #   bindings: ["alt+space"]
+
+  # Change the focused window to be floating.
+  - commands: ["toggle-floating --centered"]
+    bindings: ["alt+shift+semicolon"]
+
+  # Change the focused window to be tiling.
+  - commands: ["toggle-tiling"]
+    bindings: ["alt+t"]
+
+  # Change the focused window to be fullscreen.
+  - commands: ["toggle-fullscreen"]
+    bindings: ["alt+ctrl+shift+f"]
+
+  # Minimize focused window.
+  - commands: ["toggle-minimized"]
+    bindings: ["alt+m"]
+
+  # Close focused window.
+  - commands: ["close"]
+    bindings: ["alt+shift+w"]
+
+  # Kill GlazeWM process safely.
+  - commands: ["wm-exit"]
+    bindings: ["alt+shift+e"]
+
+  # Re-evaluate configuration file.
+  - commands: ["wm-reload-config"]
+    bindings: ["alt+shift+r"]
+
+  # Redraw all windows.
+  - commands: ["wm-redraw"]
+    bindings: ["alt+r"]
+
+  # Launch CMD terminal. Alternatively, use `shell-exec wt` or
+  # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
+  # Terminal and Git Bash respectively.
+  - commands: ["shell-exec wezterm-gui"]
+    bindings: ["alt+enter"]
+
+  - commands: ["shell-exec zen"]
+    bindings: ["alt+z"]
+
+  # Focus the next/previous active workspace defined in `workspaces` config.
+  - commands: ["focus --next-active-workspace"]
+    bindings: ["alt+s"]
+  - commands: ["focus --prev-active-workspace"]
+    bindings: ["alt+a"]
+
+  # Focus the workspace that last had focus.
+  - commands: ["focus --recent-workspace"]
+    bindings: ["alt+d"]
+
+  # Change focus to a workspace defined in `workspaces` config.
+  - commands: ["focus --workspace 1"]
+    bindings: ["alt+1"]
+  - commands: ["focus --workspace 2"]
+    bindings: ["alt+2"]
+  - commands: ["focus --workspace 3"]
+    bindings: ["alt+3"]
+  - commands: ["focus --workspace 4"]
+    bindings: ["alt+4"]
+  - commands: ["focus --workspace 5"]
+    bindings: ["alt+5"]
+  - commands: ["focus --workspace 6"]
+    bindings: ["alt+6"]
+  - commands: ["focus --workspace 7"]
+    bindings: ["alt+7"]
+  - commands: ["focus --workspace 8"]
+    bindings: ["alt+8"]
+  - commands: ["focus --workspace 9"]
+    bindings: ["alt+9"]
+
+  # Move the focused window's parent workspace to a monitor in a given
+  # direction.
+  - commands: ["move-workspace --direction left"]
+    bindings: ["alt+shift+a"]
+  - commands: ["move-workspace --direction right"]
+    bindings: ["alt+shift+f"]
+  - commands: ["move-workspace --direction up"]
+    bindings: ["alt+shift+d"]
+  - commands: ["move-workspace --direction down"]
+    bindings: ["alt+shift+s"]
+
+  # Move focused window to a workspace defined in `workspaces` config.
+  - commands: ["move --workspace 1", "focus --workspace 1"]
+    bindings: ["alt+shift+1"]
+  - commands: ["move --workspace 2", "focus --workspace 2"]
+    bindings: ["alt+shift+2"]
+  - commands: ["move --workspace 3", "focus --workspace 3"]
+    bindings: ["alt+shift+3"]
+  - commands: ["move --workspace 4", "focus --workspace 4"]
+    bindings: ["alt+shift+4"]
+  - commands: ["move --workspace 5", "focus --workspace 5"]
+    bindings: ["alt+shift+5"]
+  - commands: ["move --workspace 6", "focus --workspace 6"]
+    bindings: ["alt+shift+6"]
+  - commands: ["move --workspace 7", "focus --workspace 7"]
+    bindings: ["alt+shift+7"]
+  - commands: ["move --workspace 8", "focus --workspace 8"]
+    bindings: ["alt+shift+8"]
+  - commands: ["move --workspace 9", "focus --workspace 9"]
+    bindings: ["alt+shift+9"]

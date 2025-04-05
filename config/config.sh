@@ -168,6 +168,8 @@ setup_linux() {
   if is_wsl; then
     log_info "Entorno WSL detectado."
     WSL_PATH="/mnt/c/Users/$WINDOWS_USER/.wezterm.lua"
+    WM_PATH="/mnt/c/Users/$WINDOWS_USER/.glzr/"
+
   else
     log_info "Entorno Linux nativo detectado."
     LINUX_PATH="$HOME/.wezterm.lua"
@@ -307,6 +309,11 @@ if [ "$OS" == "Linux" ]; then
   if is_wsl; then
     log_info "Creando enlace para la configuración de WezTerm en WSL..."
     cp "$DOTFILES_DIR/wezterm/.wezterm.lua" "$WSL_PATH"
+
+    read -rp "¿Quieres usar GlazeWM? (s/n): " IS_WM
+    if [[ "$IS_WM" =~ ^[Ss]$ ]]; then
+      rsync -rv --delete "$DOTFILES_DIR/glazewm/.glzr/" "$WM_PATH"
+    fi
   else
     install_brew_package wezterm
     create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$LINUX_PATH"

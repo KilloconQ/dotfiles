@@ -1,0 +1,12 @@
+[2m2025-03-31T00:02:56.298350Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m Workspace with name '3' doesn't exist or is already active.
+[2m2025-03-31T00:02:59.372306Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m Workspace with name '1' doesn't exist or is already active.
+[2m2025-03-31T00:03:16.744432Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m binding_modes: invalid type: map, expected a sequence at line 150 column 3
+[2m2025-03-31T00:03:19.202495Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m binding_modes: invalid type: map, expected a sequence at line 150 column 3
+[2m2025-03-31T00:07:19.965389Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m Failed to execute 'zen-browser'.
+
+Error: El usuario ha cancelado la operación. (0x800704C7)
+[2m2025-03-31T02:10:55.118574Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m Failed to execute 'zen-browser'.
+
+Error: El usuario ha cancelado la operación. (0x800704C7)
+[2m2025-04-01T02:17:46.505913Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m El identificador de la ventana no es válido. (0x80070578)
+[2m2025-04-01T02:17:49.126545Z[0m [31mERROR[0m [2mglazewm[0m[2m:[0m El identificador de la ventana no es válido. (0x80070578)
