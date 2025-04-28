@@ -2,6 +2,9 @@ local ls = require("luasnip") -- Carga LuaSnip
 local s = ls.snippet -- Crea un snippet
 local i = ls.insert_node -- Nodo de inserción
 local t = ls.text_node -- Nodo de texto estático
+local sn = ls.snippet_node
+local f = ls.function_node
+local rep = require("luasnip.extras").rep -- Repetición de nodos
 
 -- Define el snippet para un test unitario en Angular
 ls.add_snippets("typescript", {
@@ -9,13 +12,13 @@ ls.add_snippets("typescript", {
     t({ "describe('" }),
     i(1, "NombreComponente"),
     t({ "', () => {", "  let component: " }),
-    i(2, "NombreComponente"),
+    rep(1),
     t({ ";", "  let fixture: ComponentFixture<" }),
-    i(3, "NombreComponente"),
+    rep(1),
     t({ ">;", "", "  beforeEach(async () => {", "    await TestBed.configureTestingModule({", "      imports: [" }),
-    i(4, "NombreComponente"),
+    rep(1),
     t({ "]", "    }).compileComponents();", "", "    fixture = TestBed.createComponent(" }),
-    i(5, "NombreComponente"),
+    rep(1),
     t({
       ");",
       "    component = fixture.componentInstance;",
@@ -43,11 +46,12 @@ ls.add_snippets("typescript", {
   s("clo", {
     t({ "console.log(`" }),
     i(1),
-    t({ ">> ${" }),
-    i(2),
+    t({ " >> ${" }),
+    rep(1),
     t({ "}`);" }),
   }),
 })
 
 ls.filetype_extend("astro", { "typescript" })
 ls.filetype_extend("typescriptreact", { "typescript" })
+ls.filetype_extend("javascript", { "typescript" })
