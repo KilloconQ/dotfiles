@@ -2,8 +2,6 @@ local ls = require("luasnip") -- Carga LuaSnip
 local s = ls.snippet -- Crea un snippet
 local i = ls.insert_node -- Nodo de inserción
 local t = ls.text_node -- Nodo de texto estático
-local sn = ls.snippet_node
-local f = ls.function_node
 local rep = require("luasnip.extras").rep -- Repetición de nodos
 
 -- Define el snippet para un test unitario en Angular
@@ -46,12 +44,14 @@ ls.add_snippets("typescript", {
   s("clo", {
     t({ "console.log(`" }),
     i(1),
-    t({ " >> ${" }),
+    t({ ">> ${" }),
     rep(1),
     t({ "}`);" }),
+    i(0),
   }),
 })
 
+ls.filetype_extend("javascript", { "typescript" })
 ls.filetype_extend("astro", { "typescript" })
 ls.filetype_extend("typescriptreact", { "typescript" })
 ls.filetype_extend("javascript", { "typescript" })
