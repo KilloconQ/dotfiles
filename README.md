@@ -387,4 +387,4 @@ and I recommend you to follow some of them:
 I have learned a lot from these channels—the first two are English-speaking,
 while the third offers content in Spanish.
 
-_!Note: If you encounter any issue, please open an issue on this repository._
+_**Note:** If you encounter any bug, please report it in the issues section._
