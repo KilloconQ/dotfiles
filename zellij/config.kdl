@@ -222,6 +222,9 @@ keybinds clear-defaults=true {
     shared_among "normal" "resize" "tab" "scroll" "prompt" "tmux" {
         bind "p" { SwitchToMode "pane"; }
     }
+    shared_among "normal" "resize" "tab" "scroll" "prompt" "tmux" {
+        bind "o" { SwitchToMode "session"; }
+    }
     shared_except "locked" "resize" "pane" "tab" "entersearch" "renametab" "renamepane" {
         bind "r" { SwitchToMode "resize"; }
     }
@@ -261,19 +264,19 @@ keybinds clear-defaults=true {
 // Plugin aliases - can be used to change the implementation of Zellij
 // changing these requires a restart to take effect
 plugins {
-    tab-bar location="zellij:tab-bar"
-    status-bar location="zellij:status-bar"
-    strider location="zellij:strider"
     compact-bar location="zellij:compact-bar"
-    session-manager location="zellij:session-manager"
-    welcome-screen location="zellij:session-manager" {
-        welcome_screen true
-    }
+    configuration location="zellij:configuration"
     filepicker location="zellij:strider" {
         cwd "/"
     }
-    configuration location="zellij:configuration"
     plugin-manager location="zellij:plugin-manager"
+    session-manager location="zellij:session-manager"
+    status-bar location="zellij:status-bar"
+    strider location="zellij:strider"
+    tab-bar location="zellij:tab-bar"
+    welcome-screen location="zellij:session-manager" {
+        welcome_screen true
+    }
 }
 
 // Plugins to load in the background when a new session starts
@@ -293,8 +296,80 @@ load_plugins {
 // Default: default
 // 
 
-theme "catppuccin-mocha"
- 
+themes {
+    kanagawa_dragon {
+        fg "#dcdccc"
+        bg "#282828"
+        red "#C34043"
+        green "#728F66"
+        yellow "#9D8F6F"
+        blue "#8BA4B0"
+        magenta "#8BA4B0"
+        cyan "#8be9fd"
+        orange "#ffb86c"
+        black "#1a1a1a"
+        white "#8D909D"
+    } 
+
+    everforest {
+        fg "#d3c6aa"
+        bg "#282828"
+        red "#e67e80"
+        green "#a7c080"
+        yellow "#dbbc7f"
+        blue "#7fbbb3"
+        magenta "#d699b6"
+        cyan "#83c092"
+        orange "#e69875"
+        black "#1a1a1a"
+        white "#8D908D"
+    }
+
+    rose_pine_moon {
+        fg "#e0def4"        // light text
+        bg "#191724"        // dark background
+        red "#eb6f92"       // refined pink
+        green "#31748f"     // soft teal
+        yellow "#f6c177"    // soft yellow
+        blue "#9ccfd8"      // sky blue
+        magenta "#c4a7e7"   // soft purple
+        cyan "#9ccfd8"      // same as sky blue for consistency
+        orange "#f6c177"    // same as soft yellow
+        black "#191724"     // darker background (almost black)
+        white "#e0def4"     // same as light text
+    }
+
+    sakura {
+      fg "#c5a3a9"        // na: main text
+      bg "#1c1a1c"        // bl: dark background
+      red "#2B1720"       // ia: pink
+      green "#878fb9"     // va: blue
+      yellow "#9e97d0"    // ca: purple (replaces yellow)
+      blue "#878fb9"      // va: blue
+      magenta "#9e97d0"   // ca: purple
+      cyan "#878fb9"      // va: blue
+      orange "#9e97d0"    // ca: purple
+      black "#1c1a1c"     // bl: background
+      white "#c5a3a9"     // na: light text
+    }
+
+    oldWorld {
+      fg "#C9C7CD"        // na: main text (light gray)
+      bg "#000000"        // bl: dark background (almost black)
+      red "#EA83A5"       // ia: intense pink
+      green "#90B99F"     // va: soft green
+      yellow "#E6B99D"    // ca: beige (replaces yellow)
+      blue "#85B5BA"      // va: blue-green
+      magenta "#92A2D5"   // ca: lavender blue
+      cyan "#85B5BA"      // va: blue-green
+      orange "#F5A191"    // ca: light peach
+      black "#000000"     // bl: dark background (almost black)
+      white "#C9C7CD"     // na: light text (light gray)
+    }
+}
+
+theme "oldWorld"
+
 // Choose the base input mode of zellij.
 // Default: normal
 // 
@@ -310,7 +385,7 @@ default_mode "locked"
 // default_cwd "/tmp"
  
 // The name of the default layout to load on startup
-// Default: "work"
+// Default: "work_oldWorld"
 // 
 default_layout "work"
  
@@ -338,7 +413,7 @@ default_layout "work"
 //   - true (default, enabled)
 //   - false
 // 
-pane_frames false
+// pane_frames false
  
 // When attaching to an existing session with other users,
 // should the session be mirrored (true)
@@ -394,7 +469,7 @@ pane_frames false
  
 // Path to the default editor to use to edit pane scrollbuffer
 // Default: $EDITOR or $VISUAL
-// scrollback_editor "/usr/bin/vim"
+scrollback_editor "nvim"
  
 // A fixed name to always give the Zellij session.
 // Consider also setting `attach_to_session true,`
@@ -458,4 +533,4 @@ pane_frames false
 // (Requires restart)
 // Default: true (if the host terminal supports it)
 // 
-support_kitty_keyboard_protocol false
+// support_kitty_keyboard_protocol false
