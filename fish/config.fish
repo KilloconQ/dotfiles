@@ -19,7 +19,8 @@ alias gswc 'git switch -c'
 alias v nvim
 alias cl clear
 alias so source
-alias ll 'lsd -l'
+alias ll='eza -al --icons --group-directories-first'
+alias lt='eza -T --icons --git-ignore'
 alias cat bat
 alias zwork 'zellij a work'
 alias zlearn 'zellij a learn'
@@ -77,6 +78,6 @@ zoxide init fish | source
 # pnpm
 set -gx PNPM_HOME "/home/killoconq/.local/share/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
-  set -gx PATH "$PNPM_HOME" $PATH
+    set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
