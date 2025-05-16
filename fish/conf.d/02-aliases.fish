@@ -16,6 +16,7 @@ alias gswc 'git switch -c'
 alias gr 'git remote'
 alias gl 'git log --all --graph --oneline --decorate'
 alias gcl 'git clone'
+alias gf 'git fetch'
 
 # Comodines
 alias v nvim
