@@ -69,7 +69,7 @@ return {
       },
       chat = {
         window = {
-          position = "left",
+          position = "right",
         },
       },
     },
