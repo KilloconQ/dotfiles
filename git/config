@@ -1,0 +1,29 @@
+[user]
+	email = fcorrales@carfaxmx.com.mx
+	name = fcorralescarfaxmx
+[credential]
+	helper = store
+[init]
+	defaultBranch = main
+[core]
+	editor = nvim
+  compression = 9
+  whitespace = error
+  preloadindex = true
+
+[url "git@github.com:"]
+  insteadOf = "gh:"
+
+[push]
+  autoSetupRemote = true
+  default = current
+
+[pull]
+  default = current
+  rebase = false
+
+[rebase]
+  autoStash = true
+  autosquash = true
+  preserveMerges = true
+  missingCommitsCheck = warn
