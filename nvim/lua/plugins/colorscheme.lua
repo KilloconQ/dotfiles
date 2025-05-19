@@ -1,4 +1,3 @@
--- Instalar el esquema de color tokyonight
 return {
   {
     "catppuccin/nvim",

@@ -10,36 +10,36 @@ layout {
     default_tab_template {
         pane size=1 borderless=true {
             plugin location="file:~/.config/zellij/plugins/zjstatus.wasm" {
-              format_left   "{mode} #[fg=#8BA4B0,bold]{session}{tabs}"
-              format_right  "{command_git_branch} {datetime}"
-              format_space  ""
+                format_left   "{mode} #[fg=#7E9CD8,bold]{session}{tabs}"
+                format_right  "{command_git_branch} {datetime}"
+                format_space  ""
 
-              border_enabled  "false"
-              border_char     "─"
-              border_format   "#[fg=#938AA9]{char}"
-              border_position "top"
+                border_enabled  "false"
+                border_char     "─"
+                border_format   "#[fg=#54546D]{char}"
+                border_position "top"
 
-              hide_frame_for_single_pane "true"
+                hide_frame_for_single_pane "true"
 
-              mode_normal  "#[bg=#C34043] "
-              mode_tmux    "#[bg=#E6C384] "
+                mode_normal  "#[bg=#C34043] "
+                mode_tmux    "#[bg=#E6C384] "
 
-              tab_normal   "#[fg=#C8C093] {name} "
-              tab_active   "#[fg=#7E9CD8,bold,italic] {name} "
+                tab_normal   "#[fg=#C8C093] {name} "
+                tab_active   "#[fg=#7E9CD8,bold,italic] {name} "
 
-              command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
-              command_git_branch_format      "#[fg=#98BB6C] {stdout} "
-              command_git_branch_interval    "10"
-              command_git_branch_rendermode  "static"
+                command_git_branch_command     "git rev-parse --abbrev-ref HEAD"
+                command_git_branch_format      "#[fg=#98BB6C] {stdout} "
+                command_git_branch_interval    "10"
+                command_git_branch_rendermode  "static"
 
-              datetime        "#[fg=#7FB4CA,bold] {format} "
-              datetime_format "%A, %d %b %Y %H:%M"
-              datetime_timezone "America/Mexico_City"
+                datetime        "#[fg=#7FB4CA,bold] {format} "
+                datetime_format "%A, %d %b %Y %H:%M"
+                datetime_timezone "America/Mexico_City"
             }
         }
         children
         pane size=1 borderless=true  {
-          plugin location="zellij:status-bar"
+            plugin location="zellij:status-bar"
         }
     }
 }
