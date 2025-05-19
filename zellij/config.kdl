@@ -368,7 +368,7 @@ themes {
     }
 }
 
-theme "catppuccin-mocha"
+theme "kanagawa"
 
 // Choose the base input mode of zellij.
 // Default: normal
