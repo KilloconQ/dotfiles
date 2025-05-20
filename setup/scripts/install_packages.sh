@@ -1,4 +1,5 @@
-### scripts/install_packages.sh
+#!/bin/bash
+
 PACKAGES=(git gh wget neovim fzf ripgrep fd zellij bat eza deno zoxide lazygit lazydocker go zig starship)
 
 for pkg in "${PACKAGES[@]}"; do
@@ -10,5 +11,4 @@ for pkg in "${PACKAGES[@]}"; do
   brew) brew install "$pkg" ;;
   *) log_warn "Gestor de paquetes no soportado para $pkg" ;;
   esac
-
 done
