@@ -23,4 +23,9 @@ return {
     "CopilotC-Nvim/CopilotChat.nvim",
     enabled = false,
   },
+  {
+    "olimorris/codecompanion.nvim",
+    enabled = false,
+  },
+  { "azorgng/goose.nvim", enabled = true },
 }
