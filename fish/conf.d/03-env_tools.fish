@@ -25,3 +25,6 @@ if test "$OS_TYPE" = Darwin
         source $HOME/.cargo/env.fish
     end
 end
+
+set -gx PATH $HOME/.local/bin $PATH
+set -Ux GOOSE_DISABLE_KEYRING true
