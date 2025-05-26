@@ -28,3 +28,4 @@ end
 
 set -gx PATH $HOME/.local/bin $PATH
 set -Ux GOOSE_DISABLE_KEYRING true
+set -gx PATH $PATH /mnt/c/Users/fernando/AppData/Local/Programs/Microsoft\ VS\ Code/bin
