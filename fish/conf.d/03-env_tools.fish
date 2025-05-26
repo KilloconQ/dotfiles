@@ -1,3 +1,10 @@
+# Detectar WSL
+if set -q WSL_DISTRO_NAME
+    set -gx IS_WSL true
+else
+    set -gx IS_WSL false
+end
+
 # Bun
 set -gx BUN_INSTALL "$HOME/.bun"
 set -gx PATH $BUN_INSTALL/bin $PATH
@@ -26,6 +33,10 @@ if test "$OS_TYPE" = Darwin
     end
 end
 
+# Goose
 set -gx PATH $HOME/.local/bin $PATH
 set -Ux GOOSE_DISABLE_KEYRING true
-set -gx PATH $PATH /mnt/c/Users/fernando/AppData/Local/Programs/Microsoft\ VS\ Code/bin
+
+if test "$IS_WSL" = true
+    set -gx PATH $PATH /mnt/c/Users/fernando/AppData/Local/Programs/Microsoft\ VS\ Code/bin
+end
