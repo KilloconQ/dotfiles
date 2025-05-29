@@ -1,6 +1,6 @@
 [user]
-	email = fcorrales@carfaxmx.com.mx
-	name = fcorralescarfaxmx
+	email = fjc1997v@gmail.com
+	name = KilloconQ
 [credential]
 	helper = store
 [init]
@@ -13,6 +13,9 @@
 
 [url "git@github.com:"]
   insteadOf = "gh:"
+
+[url "git@github.com:KilloconQ/"]
+  insteadOf = "kq:"
 
 [push]
   autoSetupRemote = true
