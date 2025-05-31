@@ -47,6 +47,7 @@ return {
         github_copilot = {
           "gpt-4o",
           "gemini-2.5-pro",
+          "claude-3-5-sonnet",
         },
       },
     })
