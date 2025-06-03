@@ -29,6 +29,7 @@ alias zwork 'zellij a work'
 alias zlearn 'zellij a learn'
 alias air '~/go/bin/air'
 alias lg lazygit
+alias gen kqgen
 
 if not type -q bat
     if type -q batcat
