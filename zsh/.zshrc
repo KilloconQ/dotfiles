@@ -8,16 +8,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME=""
-
-# Start ssh-agnt and add keys
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-  eval "$(ssh-agent -s)"
-fi
-
-# Add keys silently if not already added
-ssh-add -l | grep -q "id_ed25519" || ssh-add ~/.ssh/id_ed25519 2>/dev/null
-ssh-add -l | grep -q "id_ed25519-personal" || ssh-add ~/.ssh/id_ed25519-personal 2>/dev/null
+# ZSH_THEME="robbyrussell"
 
 # Historial de comandos al estilo Fish
 HISTFILE=~/.zsh_history
@@ -140,7 +131,6 @@ alias gr='git remote'
 alias gl='git log --all --graph --oneline --decorate'
 alias gcl='git clone'
 alias gf='git fetch'
-alias kq:='git@personal:KilloconQ/'
 
 # Comodines
 alias cl='clear'
@@ -161,6 +151,12 @@ alias lt='eza --tree --level=2 --group-directories-first --icons'
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
-
 # Load Angular CLI autocompletion.
-source <(ng completion script)
+eval "$(ng completion script)"
+
+# bun completions
+[ -s "/home/killoconq/.bun/_bun" ] && source "/home/killoconq/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
