@@ -1,8 +1,6 @@
 function code
     bash -c "code $argv"
 end
-#
-##  yazi
 
 function ya_zed
     set tmp (mktemp -t "yazi-chooser.XXXXXXXXXX")

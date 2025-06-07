@@ -24,3 +24,17 @@ else
         commandline -i $text
     end
 end
+
+##  yazi
+
+function ya_zed
+    set tmp (mktemp -t "yazi-chooser.XXXXXXXXXX")
+    yazi --chooser-file $tmp $argv
+    if test -s $tmp
+        set opened_file (head -n 1 -- $tmp)
+        if test -n "$opened_file"
+            zed -- "$opened_file"
+        end
+    end
+    rm -f -- $tmp
+end
