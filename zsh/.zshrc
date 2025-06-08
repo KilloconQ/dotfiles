@@ -1,5 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export EDITOR="nvim"
+export VISUAL="nvim"
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -112,17 +114,21 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git/*" --glob "!.zsh/*"'
+alias f='fzf'
+
 # Git
 alias ga='git add .'
-alias gwa='git worktree add'
-alias gwl='git worktree list'
-alias gwr='git worktree remove'
 alias gb='git branch'
 alias gbd='git branch -D'
 alias gc='git commit -m'
+alias gco='git checkout'
+alias gcm='git checkout main'
 alias gp='git pull origin'
 alias gu='git push origin'
 alias gs='git status -sb'
+alias gd='git diff'
 alias gst='git stash'
 alias gstp='git stash pop'
 alias gsw='git switch'
@@ -134,11 +140,12 @@ alias gf='git fetch'
 
 # Comodines
 alias cl='clear'
-alias so='source'
+alias so='source ~/.zshrc'
 alias lg='lazygit'
 alias gen='kqgen'
 alias lg='lazygit'
 alias v='nvim'
+alias dot='z dotfiles; nvim ~/dotfiles'
 alias cat='bat'
 alias zwork='zellij a work'
 
@@ -147,6 +154,16 @@ alias ls='eza --group-directories-first --icons'
 alias ll='eza -lah --group-directories-first --icons'
 alias la='eza -a --group-directories-first --icons'
 alias lt='eza --tree --level=2 --group-directories-first --icons'
+
+# Npm
+alias nr="npm run"
+alias ni="npm install"
+alias nrd="npm run dev"
+
+#bun
+alias br="bun run"
+alias bi="bun add"
+alias brd="bun run dev"
 
 #functions
 
@@ -168,6 +185,8 @@ ya_zed() {
 }
 
 eval "$(zoxide init zsh)"
+alias cd='z'
+
 eval "$(starship init zsh)"
 
 # Load Angular CLI autocompletion.
@@ -179,3 +198,5 @@ eval "$(ng completion script)"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
