@@ -148,6 +148,25 @@ alias ll='eza -lah --group-directories-first --icons'
 alias la='eza -a --group-directories-first --icons'
 alias lt='eza --tree --level=2 --group-directories-first --icons'
 
+#functions
+
+ya_zed() {
+  tmp=$(mktemp -t "yazi-chooser.XXXXXXXXXX")
+  yazi --chooser-file "$tmp" "$@"
+
+  if [ -s "$tmp" ]; then
+    opened_file=$(head -n 1 -- "$tmp")
+    if [ -n "$opened_file" ]; then
+      if [ -d "$opened_file" ]; then
+        zed --add "$opened_file"
+      else
+        zed --add "$opened_file"
+      fi
+    fi
+  fi
+  rm -f -- "$tmp"
+}
+
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 
