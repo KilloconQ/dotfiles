@@ -150,10 +150,10 @@ alias cat='bat'
 alias zwork='zellij a work'
 
 # Reemplazos de ls con eza
-alias ls='eza --group-directories-first --icons'
-alias ll='eza -lah --group-directories-first --icons'
-alias la='eza -a --group-directories-first --icons'
-alias lt='eza --tree --level=2 --group-directories-first --icons'
+alias ls='lsd --group-dirs=first'
+alias ll='lsd -lah --group-dirs=first'
+alias la='lsd -a --group-dirs=first'
+alias lt='lsd --tree --depth=2 --group-dirs=first'
 
 # Npm
 alias nr="npm run"
