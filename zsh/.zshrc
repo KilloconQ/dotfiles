@@ -161,7 +161,7 @@ alias nrd="npm run dev"
 
 #bun
 alias br="bun run"
-alias bi="bun add"
+alias bi="bun install"
 alias brd="bun run dev"
 
 #functions
