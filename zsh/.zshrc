@@ -141,11 +141,10 @@ alias gf='git fetch'
 # Comodines
 alias cl='clear'
 alias so='source ~/.zshrc'
-alias lg='lazygit'
 alias gen='kqgen'
 alias lg='lazygit'
 alias v='nvim'
-alias dot='z dotfiles; nvim ~/dotfiles'
+alias dot='z dotfiles; nvim .'
 alias cat='bat'
 alias zwork='zellij a work'
 
