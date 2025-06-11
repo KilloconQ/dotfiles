@@ -7,6 +7,14 @@ return {
   },
   {
     "olimorris/codecompanion.nvim",
+    enabled = false,
+  },
+  {
+    "yetone/avante.nvim",
     enabled = true,
+  },
+  {
+    "azorng/goose.nvim",
+    enabled = false,
   },
 }

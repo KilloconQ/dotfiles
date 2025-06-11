@@ -9,4 +9,6 @@ vim.keymap.set("n", "<C-b>", "<C-b>zz")
 
 vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
+vim.keymap.set("v", "<leader>ae", "<cmd>AvanteEdit<CR>", { desc = "Avante Edit" })
+
 vim.keymap.set({ "i", "n", "v" }, "<C-c>", [[<C-\><C-n>]])
