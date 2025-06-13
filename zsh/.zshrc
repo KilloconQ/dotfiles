@@ -6,6 +6,11 @@ export VISUAL="nvim"
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# volta
+export VOLTA_HOME="$HOME/.volta"
+export BUN_INSTALL="$HOME/.bun"
+
+export PATH="$VOLTA_HOME/bin:$BUN_INSTALL/bin:$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH"
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
