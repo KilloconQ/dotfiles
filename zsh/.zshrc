@@ -201,7 +201,7 @@ eval "$(ng completion script)"
 [ -s "/home/killoconq/.bun/_bun" ] && source "/home/killoconq/.bun/_bun"
 
 # bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+# export BUN_INSTALL="$HOME/.bun"
+# export PATH="$BUN_INSTALL/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
