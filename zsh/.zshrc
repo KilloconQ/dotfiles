@@ -205,3 +205,4 @@ eval "$(ng completion script)"
 # export PATH="$BUN_INSTALL/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export PATH=$(go env GOPATH)/bin:$PATH
