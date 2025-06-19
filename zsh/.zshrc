@@ -206,3 +206,5 @@ eval "$(ng completion script)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH=$(go env GOPATH)/bin:$PATH
+
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
