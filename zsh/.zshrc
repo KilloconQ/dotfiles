@@ -207,4 +207,7 @@ eval "$(ng completion script)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export PATH=$(go env GOPATH)/bin:$PATH
 
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+# Solo cargar brew si el comando existe en el sistema
+if command -v brew >/dev/null 2>&1; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+fi
