@@ -205,6 +205,7 @@ eval "$(ng completion script)"
 # export PATH="$BUN_INSTALL/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export PATH=$PATH:/usr/local/go/bin
 export PATH=$(go env GOPATH)/bin:$PATH
 
 # Solo cargar brew si el comando existe en el sistema
