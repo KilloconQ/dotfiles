@@ -69,6 +69,12 @@ SAVEHIST=10000
 setopt INC_APPEND_HISTORY SHARE_HISTORY
 
 # ——————————————————————————————————————————————
+# 6.1 Atuin: reemplazo de historial
+# ——————————————————————————————————————————————
+. "$HOME/.atuin/bin/env"
+eval "$(atuin init zsh)"
+
+# ——————————————————————————————————————————————
 # 7. Búsqueda en historial con flechas
 # ——————————————————————————————————————————————
 bindkey '^[[A' up-line-or-search
