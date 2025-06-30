@@ -115,6 +115,7 @@ alias lg='lazygit'
 alias v='nvim'
 alias cat='bat'
 alias zwork='zellij a work'
+alias cd='z'
 
 # Npm / Bun
 alias nr="npm run"
