@@ -20,10 +20,7 @@ export VISUAL="nvim"
 # ——————————————————————————————————————————————
 # 2. Homebrew (Linuxbrew o macOS)
 # ——————————————————————————————————————————————
-if command -v brew >/dev/null 2>&1; then
-  # brew shellenv detecta su ubicación y exporta variables
-  eval "$(brew shellenv)"
-fi
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # ——————————————————————————————————————————————
 # 3. PATH: Volta primero, luego Bun, luego Go, luego resto
