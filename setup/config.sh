@@ -53,37 +53,48 @@ safe_source() {
   fi
 }
 
-# Detección de sistema y package manager
-OS=$(uname -s)/
+# Detección de sistema operativo
+OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 is_wsl() { grep -qi 'microsoft' /proc/version 2>/dev/null; }
 
 detect_package_manager() {
-  if command -v apt &>/dev/null; then
-    echo "apt"
-  elif command -v pacman &>/dev/null; then
-    echo "pacman"
-  elif command -v yay &>/dev/null; then
-    echo "yay"
-  elif command -v brew &>/dev/null; then
+  if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "brew"
-  else echo "none"; fi
+  elif grep -qi 'arch\|manjaro' /etc/os-release 2>/dev/null; then
+    if command -v yay &>/dev/null; then
+      echo "yay"
+    else
+      echo "pacman"
+    fi
+  elif grep -qi 'ubuntu\|pop' /etc/os-release 2>/dev/null; then
+    if command -v brew &>/dev/null; then
+      echo "brew"
+    else
+      echo "install_brew"
+    fi
+  else
+    echo "none"
+  fi
 }
 
 PACKAGE_MANAGER=$(detect_package_manager)
 
 # Instalar yay si estás en Arch y no está
-if [ "$PACKAGE_MANAGER" == "pacman" ] && ! command -v yay &>/dev/null; then
+if [[ "$PACKAGE_MANAGER" == "pacman" ]] && ! command -v yay &>/dev/null; then
   log_info "Instalando yay..."
   git clone https://aur.archlinux.org/yay.git /tmp/yay
   (cd /tmp/yay && makepkg -si --noconfirm)
   PACKAGE_MANAGER="yay"
 fi
 
-# Instalar Homebrew en macOS si no está
-if [[ "$OSTYPE" == "darwin"* ]] && ! command -v brew &>/dev/null; then
-  log_info "Instalando Homebrew..."
+# Instalar Homebrew si corresponde
+if [[ "$PACKAGE_MANAGER" == "install_brew" ]]; then
+  log_info "Instalando Homebrew en distro no-rolling (Ubuntu, Pop...)"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  eval "$($(brew --prefix)/bin/brew shellenv)"
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  PACKAGE_MANAGER="brew"
+elif [[ "$PACKAGE_MANAGER" == "brew" ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null || $(brew --prefix)/bin/brew shellenv)"
 fi
 
 # Correr scripts principales
@@ -93,6 +104,7 @@ safe_source ./scripts/setup_fish.sh       # incluye validaciones, instalación, 
 safe_source ./scripts/setup_volta.sh
 safe_source ./scripts/setup_bun.sh
 safe_source ./scripts/setup_rust.sh
+safe_source ./scripts/setup_go.sh
 safe_source ./scripts/setup_starship.sh
 safe_source ./scripts/setup_symlinks.sh
 

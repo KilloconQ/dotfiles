@@ -1,64 +1,65 @@
-# ~/.zshrc
+# ——————————————————————————————————————————————
+# 1. Sistema operativo
+# ——————————————————————————————————————————————
+OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
 # ——————————————————————————————————————————————
-# 1. Entorno principal
+# 2. Entorno principal
 # ——————————————————————————————————————————————
-
-# Oh My Zsh
 export ZSH="$HOME/.oh-my-zsh"
-
-# Volta (Node, npm, yarn)
 export VOLTA_HOME="$HOME/.volta"
-
-# Bun (si lo usas)
 export BUN_INSTALL="$HOME/.bun"
-
-# Editor por defecto
 export EDITOR="nvim"
 export VISUAL="nvim"
 
 # ——————————————————————————————————————————————
-# 2. Homebrew (Linuxbrew o macOS)
+# 3. Homebrew
 # ——————————————————————————————————————————————
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+if [[ "$OS" == "darwin" ]]; then
+  # macOS
+  if command -v brew >/dev/null; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  fi
+elif [[ "$OS" == "linux" ]]; then
+  # Linux (Pop!_OS)
+  if [[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  fi
+fi
 
 # ——————————————————————————————————————————————
-# 3. PATH: Volta primero, luego Bun, luego Go, luego resto
-# ——————————————————————————————————————————————
-export PATH="$VOLTA_HOME/bin:$BUN_INSTALL/bin:$(go env GOPATH)/bin:$HOME/bin:$HOME/.local/bin:$PATH"
-
-
-# ——————————————————————————————————————————————
-# 4. Plugins de Oh My Zsh
-# ——————————————————————————————————————————————
-plugins=(
-  git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
-source $ZSH/oh-my-zsh.sh
-
-# ——————————————————————————————————————————————
-# 5. Completions y herramientas
+# 4. PATH: ordenado
 # ——————————————————————————————————————————————
 
-# fzf (si lo tienes)
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Rutas base primero
+export PATH="$VOLTA_HOME/bin:$BUN_INSTALL/bin:$HOME/bin:$HOME/.local/bin:$PATH"
 
-# Bun completions
-[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+# Añadir GOPATH/bin solo si Go está instalado
+if command -v go >/dev/null 2>&1; then
+  export PATH="$(go env GOPATH)/bin:$PATH"
+fi
 
-# Zoxide (cd inteligente)
+# Añadir Go manual si estás en Linux (Pop!_OS, WSL, Arch)
+if [[ "$OS" == "linux" ]]; then
+  export PATH="/usr/local/go/bin:$PATH"
+fi
+
+# ——————————————————————————————————————————————
+# 5. Plugins y herramientas
+# ——————————————————————————————————————————————
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+source "$ZSH/oh-my-zsh.sh"
+
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+[[ -s "$BUN_INSTALL/_bun" ]] && source "$BUN_INSTALL/_bun"
+
 eval "$(zoxide init zsh)"
-
-# Starship prompt
 eval "$(starship init zsh)"
-
-# Angular CLI autocompletion
-eval "$(ng completion script)"
+command -v ng &>/dev/null && eval "$(ng completion script)"
+[[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env" && eval "$(atuin init zsh)"
 
 # ——————————————————————————————————————————————
-# 6. Historial de comandos al estilo Fish
+# 6. Historial tipo Fish
 # ——————————————————————————————————————————————
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -66,23 +67,23 @@ SAVEHIST=10000
 setopt INC_APPEND_HISTORY SHARE_HISTORY
 
 # ——————————————————————————————————————————————
-# 6.1 Atuin: reemplazo de historial
-# ——————————————————————————————————————————————
-. "$HOME/.atuin/bin/env"
-eval "$(atuin init zsh)"
-
-# ——————————————————————————————————————————————
-# 7. Búsqueda en historial con flechas
+# 7. Navegación en historial con flechas
 # ——————————————————————————————————————————————
 bindkey '^[[A' up-line-or-search
 bindkey '^[[B' down-line-or-search
 
 # ——————————————————————————————————————————————
-# 8. Aliases y funciones personalizadas
+# 8. Aliases
 # ——————————————————————————————————————————————
-
-# Recarga config
 alias so='source ~/.zshrc'
+alias cl='clear'
+alias f='fzf'
+alias dot='z dotfiles; nvim .'
+alias lg='lazygit'
+alias v='nvim'
+alias cat='bat'
+alias zwork='zellij a work'
+alias cd='z'
 
 # Git
 alias ga='git add .'
@@ -104,26 +105,24 @@ alias gl='git log --all --graph --oneline --decorate'
 alias gcl='git clone'
 alias gf='git fetch'
 
-# Navegación y utilidades
-alias cl='clear'
-alias f='fzf'
-alias dot='z dotfiles; nvim .'
-alias lg='lazygit'
-alias v='nvim'
-alias cat='bat'
-alias zwork='zellij a work'
-alias cd='z'
+# NPM / Bun
+alias nr='npm run'
+alias ni='npm install'
+alias nrd='npm run dev'
+alias br='bun run'
+alias ba='bun add'
+alias bi='bun install'
+alias brd='bun run dev'
 
-# Npm / Bun
-alias nr="npm run"
-alias ni="npm install"
-alias nrd="npm run dev"
-alias br="bun run"
-alias ba="bun add"
-alias bi="bun install"
-alias brd="bun run dev"
+# Reemplazo de ls por lsd (si existe)
+if command -v lsd >/dev/null; then
+  alias ls='lsd --group-dirs=first'
+  alias ll='lsd -lah --group-dirs=first'
+  alias la='lsd -a --group-dirs=first'
+  alias lt='lsd --tree --depth=2 --group-dirs=first'
+fi
 
-# Función de ejemplo: ya_zed
+# ya_zed
 ya_zed() {
   local tmp
   tmp=$(mktemp -t "yazi-chooser.XXXXXXXXXX")
@@ -136,12 +135,6 @@ ya_zed() {
   rm -f -- "$tmp"
 }
 
-# Reemplazo de ls por lsd
-alias ls='lsd --group-dirs=first'
-alias ll='lsd -lah --group-dirs=first'
-alias la='lsd -a --group-dirs=first'
-alias lt='lsd --tree --depth=2 --group-dirs=first'
-
 # ——————————————————————————————————————————————
-# ¡Listo! Fin de ~/.zshrc
+# Fin
 # ——————————————————————————————————————————————
