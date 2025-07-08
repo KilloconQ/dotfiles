@@ -83,6 +83,7 @@ alias lg='lazygit'
 alias v='nvim'
 alias cat='bat'
 alias zwork='zellij a work'
+alias zlearn='zellij a learn'
 alias cd='z'
 
 # Git
