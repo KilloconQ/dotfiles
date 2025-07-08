@@ -85,6 +85,7 @@ alias cat='bat'
 alias zwork='zellij a work'
 alias zlearn='zellij a learn'
 alias cd='z'
+alias gen='kqgen'
 
 # Git
 alias ga='git add .'
