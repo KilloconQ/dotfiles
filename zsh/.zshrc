@@ -115,6 +115,7 @@ alias br='bun run'
 alias ba='bun add'
 alias bi='bun install'
 alias brd='bun run dev'
+alias bx='bunx'
 
 # Reemplazo de ls por lsd (si existe)
 if command -v lsd >/dev/null; then
