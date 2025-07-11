@@ -16,12 +16,12 @@ export VISUAL="nvim"
 # 3. Homebrew
 # ——————————————————————————————————————————————
 if [[ "$OS" == "darwin" ]]; then
-  # macOS
+  # macOS (ambos chips)
   if command -v brew >/dev/null; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    eval "$(/usr/local/bin/brew shellenv 2>/dev/null || /opt/homebrew/bin/brew shellenv 2>/dev/null)"
   fi
 elif [[ "$OS" == "linux" ]]; then
-  # Linux (Pop!_OS)
+  # Linux (Pop!_OS, Arch, etc.)
   if [[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
   fi
