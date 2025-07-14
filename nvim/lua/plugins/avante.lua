@@ -8,7 +8,7 @@ return {
     provider = "copilot",
     providers = {
       copilot = {
-        model = "gemini-2.5-pro",
+        model = "claude-sonnet-4", -- claude-sonnet-4, gemini-2.5-pro
       },
     },
   },
