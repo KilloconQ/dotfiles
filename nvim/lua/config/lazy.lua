@@ -2,7 +2,7 @@ local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if vim.fn.has("wsl") == 1 then
   vim.g.clipboard = {
-    name = "win32yank",                  -- Use win32yank for clipboard operations
+    name = "win32yank", -- Use win32yank for clipboard operations
     copy = {
       ["+"] = "win32yank.exe -i --crlf", -- Command to copy to the system clipboard
       ["*"] = "win32yank.exe -i --crlf", -- Command to copy to the primary clipboard
@@ -11,7 +11,7 @@ if vim.fn.has("wsl") == 1 then
       ["+"] = "win32yank.exe -o --lf", -- Command to paste from the system clipboard
       ["*"] = "win32yank.exe -o --lf", -- Command to paste from the primary clipboard
     },
-    cache_enabled = false,             -- Disable clipboard caching
+    cache_enabled = false, -- Disable clipboard caching
   }
 end
 
@@ -29,6 +29,7 @@ require("lazy").setup({
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- import/override with your plugins
     { import = "plugins" },
+    { import = "lazyvim.plugins.extras.coding.blink" },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
