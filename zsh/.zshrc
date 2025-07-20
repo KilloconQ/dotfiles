@@ -144,3 +144,4 @@ ya_zed() {
 
 # opencode
 export PATH=/home/killoconq/.opencode/bin:$PATH
+export PATH=/Users/fernandocorrales/.opencode/bin:$PATH
