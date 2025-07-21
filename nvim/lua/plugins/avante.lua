@@ -1,27 +1,30 @@
 return {
   {
     "yetone/avante.nvim",
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    -- ⚠️ must add this setting! ! !
+    -- Avante main plugin configuration for Neovim
+    -- If you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    -- ⚠️ Must add this setting for proper functionality!
     build = function()
-      -- conditionally use the correct build system for the current OS
+      -- Conditionally use the correct build system for the current OS
       if vim.fn.has("win32") == 1 then
+        -- Use PowerShell build for Windows
         return "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false"
       else
+        -- Use make for Unix-based systems
         return "make"
       end
     end,
-    event = "VeryLazy",
-    version = false, -- Never set this value to "*"! Never!
+    event = "VeryLazy", -- Load plugin lazily for performance
+    version = false, -- Never set this value to "*"! This prevents unwanted upgrades.
     ---@module 'avante'
-    ---@type avante.Config
-    opts = function(_, opts)
-      -- Track avante's internal state during resize
+    opts = function(_)
+      -- Track Avante's internal state during window resizing operations
       local in_resize = false
       local original_cursor_win = nil
+      -- List of filetypes used by Avante plugin windows
       local avante_filetypes = { "Avante", "AvanteInput", "AvanteAsk", "AvanteSelectedFiles" }
 
-      -- Check if current window is avante
+      -- Checks if the current window is an Avante window
       local function is_in_avante_window()
         local win = vim.api.nvim_get_current_win()
         local buf = vim.api.nvim_win_get_buf(win)
@@ -35,14 +38,14 @@ return {
         return false
       end
 
-      -- Temporarily move cursor away from avante during resize
+      -- Temporarily move cursor away from Avante window during resize to avoid redraw issues
       local function temporarily_leave_avante()
         local is_avante, avante_win, avante_ft = is_in_avante_window()
         if is_avante and not in_resize then
           in_resize = true
           original_cursor_win = avante_win
 
-          -- Find a non-avante window to switch to
+          -- Find a non-Avante window to switch to so resizing does not affect Avante UI
           local target_win = nil
           for _, win in ipairs(vim.api.nvim_list_wins()) do
             local buf = vim.api.nvim_win_get_buf(win)
@@ -62,7 +65,7 @@ return {
             end
           end
 
-          -- Switch to non-avante window if found
+          -- Switch to non-Avante window if found
           if target_win then
             vim.api.nvim_set_current_win(target_win)
             return true
@@ -71,10 +74,10 @@ return {
         return false
       end
 
-      -- Restore cursor to original avante window
+      -- Restore cursor to the original Avante window after resize is complete
       local function restore_cursor_to_avante()
         if in_resize and original_cursor_win and vim.api.nvim_win_is_valid(original_cursor_win) then
-          -- Small delay to ensure resize is complete
+          -- Small delay to ensure resize is complete before switching back
           vim.defer_fn(function()
             pcall(vim.api.nvim_set_current_win, original_cursor_win)
             in_resize = false
@@ -83,11 +86,11 @@ return {
         end
       end
 
-      -- Prevent duplicate windows cleanup
+      -- Cleanup duplicate Avante windows after resize
       local function cleanup_duplicate_avante_windows()
         local seen_filetypes = {}
         local windows_to_close = {}
-
+        -- Iterate all windows and mark duplicates for closing
         for _, win in ipairs(vim.api.nvim_list_wins()) do
           local buf = vim.api.nvim_win_get_buf(win)
           local ft = vim.api.nvim_buf_get_option(buf, "filetype")
@@ -111,21 +114,20 @@ return {
         end
       end
 
-      -- Create autocmd group for resize fix
+      -- Create autocmd group for resize fix to avoid conflicts between autocmds
       vim.api.nvim_create_augroup("AvanteResizeFix", { clear = true })
 
-      -- Main resize handler for Resize
+      -- Main handler for VimResized event
       vim.api.nvim_create_autocmd({ "VimResized" }, {
         group = "AvanteResizeFix",
         callback = function()
-          -- Move cursor away from avante before resize processing
+          -- Move cursor away from Avante before resize
           local moved = temporarily_leave_avante()
 
           if moved then
-            -- Let resize happen, then restore cursor
+            -- Let resize happen, then restore cursor and force redraw
             vim.defer_fn(function()
               restore_cursor_to_avante()
-              -- Force a clean redraw
               vim.cmd("redraw!")
             end, 100)
           end
@@ -135,7 +137,7 @@ return {
         end,
       })
 
-      -- Prevent avante from responding to scroll/resize events during resize
+      -- Prevent Avante from responding to scroll/resize events during resize
       vim.api.nvim_create_autocmd({ "WinScrolled", "WinResized" }, {
         group = "AvanteResizeFix",
         pattern = "*",
@@ -146,9 +148,9 @@ return {
 
             for _, avante_ft in ipairs(avante_filetypes) do
               if ft == avante_ft then
-                -- Prevent event propagation for avante buffers during resize
+                -- Prevent event propagation for Avante buffers during resize
                 if in_resize then
-                  return true -- This should stop the event
+                  return true -- This should stop the event for Avante buffers
                 end
                 break
               end
@@ -157,79 +159,81 @@ return {
         end,
       })
 
-      -- Additional cleanup on focus events
+      -- Additional cleanup on focus events to ensure state is reset
       vim.api.nvim_create_autocmd("FocusGained", {
         group = "AvanteResizeFix",
         callback = function()
           -- Reset resize state on focus gain
           in_resize = false
           original_cursor_win = nil
-          -- Clean up any duplicate windows
+          -- Clean up any duplicate Avante windows
           vim.defer_fn(cleanup_duplicate_avante_windows, 100)
         end,
       })
 
+      -- Return Avante plugin options
       return {
-        -- add any opts here
-        -- for example
+        -- Provider for suggestions and completions
         provider = "copilot",
         providers = {
           copilot = {
-            model = "claude-sonnet-4",
+            -- Model for Copilot provider
+            -- model = "claude-sonnet-4",
+            model = "gpt-4.1",
           },
         },
-        cursor_applying_provider = "copilot",
-        auto_suggestions_provider = "copilot",
+        cursor_applying_provider = "copilot", -- Provider for cursor actions
+        auto_suggestions_provider = "copilot", -- Provider for auto suggestions
         behaviour = {
-          enable_cursor_planning_mode = true,
+          enable_cursor_planning_mode = true, -- Enable advanced cursor planning
         },
         -- File selector configuration
         --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string
         file_selector = {
-          provider = "snacks", -- Avoid native provider issues
+          provider = "snacks", -- Use snacks provider to avoid native provider issues
           provider_opts = {},
         },
         windows = {
           ---@type "right" | "left" | "top" | "bottom" | "smart"
-          position = "right", -- the position of the sidebar
-          wrap = true, -- similar to vim.o.wrap
-          width = 30, -- default % based on available width
+          position = "right", -- Sidebar position
+          wrap = true, -- Enable line wrapping similar to vim.o.wrap
+          width = 30, -- Default width (percentage of available width)
           sidebar_header = {
-            enabled = true, -- true, false to enable/disable the header
-            align = "center", -- left, center, right for title
-            rounded = false,
+            enabled = true, -- Enable/disable sidebar header
+            align = "center", -- Title alignment (left, center, right)
+            rounded = false, -- Disable rounded corners
           },
           input = {
-            prefix = "> ",
+            prefix = "> ", -- Input prompt prefix
             height = 8, -- Height of the input window in vertical layout
           },
           edit = {
-            start_insert = true, -- Start insert mode when opening the edit window
+            start_insert = true, -- Start in insert mode when opening the edit window
           },
           ask = {
-            floating = false, -- Open the 'AvanteAsk' prompt in a floating window
+            floating = false, -- Do not open 'AvanteAsk' prompt in floating window
             start_insert = true, -- Start insert mode when opening the ask window
             ---@type "ours" | "theirs"
-            focus_on_apply = "ours", -- which diff to focus after applying
+            focus_on_apply = "ours", -- Which diff to focus after applying (ours/theirs)
           },
         },
       }
     end,
     dependencies = {
-      "MunifTanjim/nui.nvim",
+      "MunifTanjim/nui.nvim", -- Required for UI components
       {
-        -- support for image pasting
+        -- Support for image pasting in Avante
         "HakonHarnes/img-clip.nvim",
         event = "VeryLazy",
         opts = {
-          -- recommended settings
+          -- Recommended settings for image handling
           default = {
-            embed_image_as_base64 = false,
-            prompt_for_file_name = false,
+            embed_image_as_base64 = false, -- Do not embed images as base64 by default
+            prompt_for_file_name = false, -- Do not prompt for file name on paste
             drag_and_drop = {
-              insert_mode = true,
+              insert_mode = true, -- Enable insert mode for drag and drop
             },
-            -- required for Windows users
+            -- Required for Windows users to handle paths
             use_absolute_path = true,
           },
         },
