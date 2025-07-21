@@ -143,5 +143,8 @@ ya_zed() {
 # ——————————————————————————————————————————————
 
 # opencode
-export PATH=/home/killoconq/.opencode/bin:$PATH
-export PATH=/Users/fernandocorrales/.opencode/bin:$PATH
+if [[ "$OS" == "darwin" ]]; then
+  export PATH="/Users/fernandocorrales/.opencode/bin:$PATH"
+elif [[ "$OS" == "linux" ]]; then
+  export PATH="/home/killoconq/.opencode/bin:$PATH"
+fi
