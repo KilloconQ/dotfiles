@@ -11,10 +11,14 @@ return {
   },
   {
     "yetone/avante.nvim",
-    enabled = false,
+    enabled = true,
   },
   {
     "azorng/goose.nvim",
+    enabled = false,
+  },
+  {
+    "NickvanDyke/opencode.nvim",
     enabled = false,
   },
 }
