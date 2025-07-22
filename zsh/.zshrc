@@ -148,3 +148,6 @@ if [[ "$OS" == "darwin" ]]; then
 elif [[ "$OS" == "linux" ]]; then
   export PATH="/home/killoconq/.opencode/bin:$PATH"
 fi
+
+# opencode
+export PATH=/home/killoconq/.opencode/bin:$PATH
