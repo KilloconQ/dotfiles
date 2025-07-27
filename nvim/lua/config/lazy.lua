@@ -1,5 +1,7 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
+vim.opt.swapfile = false -- Disable swap files
+
 if vim.fn.has("wsl") == 1 then
   vim.g.clipboard = {
     name = "win32yank", -- Use win32yank for clipboard operations
