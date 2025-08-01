@@ -19,6 +19,6 @@ return {
   },
   {
     "NickvanDyke/opencode.nvim",
-    enabled = false,
+    enabled = true,
   },
 }
