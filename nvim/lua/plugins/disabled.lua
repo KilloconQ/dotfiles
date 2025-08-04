@@ -11,7 +11,7 @@ return {
   },
   {
     "yetone/avante.nvim",
-    enabled = false,
+    enabled = true,
   },
   {
     "azorng/goose.nvim",
