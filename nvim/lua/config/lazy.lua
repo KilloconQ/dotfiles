@@ -1,6 +1,6 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-vim.opt.swapfile = false -- Disable swap files
+vim.opt.swapfile = false
 
 if vim.fn.has("wsl") == 1 then
   vim.g.clipboard = {
