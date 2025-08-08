@@ -42,11 +42,11 @@ ls.add_snippets("typescript", {
 
 ls.add_snippets("typescript", {
   s("clo", {
-    t({ "console.log(`" }),
+    t({ "console.log('" }),
     i(1),
-    t({ ">> ${" }),
+    t({ "', " }),
     rep(1),
-    t({ "}`);" }),
+    t({ ");" }),
     i(0),
   }),
 })
