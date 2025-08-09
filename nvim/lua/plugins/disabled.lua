@@ -17,8 +17,8 @@ return {
     "azorng/goose.nvim",
     enabled = false,
   },
-  -- {
-  --   "NickvanDyke/opencode.nvim",
-  --   enabled = true,
-  -- },
+  {
+    "NickvanDyke/opencode.nvim",
+    enabled = true,
+  },
 }
