@@ -111,11 +111,20 @@ alias gf='git fetch'
 alias nr='npm run'
 alias ni='npm install'
 alias nrd='npm run dev'
+
 alias br='bun run'
 alias ba='bun add'
 alias bi='bun install'
 alias brd='bun run dev'
+alias brt='bun run test'
 alias bx='bunx'
+
+alias pr='pnpm run'
+alias pa='pnpm add'
+alias pi='pnpm install'
+alias prd='pnpm run dev'
+alias prt='pnpm run test'
+alias px='pnpm dlx'
 
 # Reemplazo de ls por lsd (si existe)
 if command -v lsd >/dev/null; then
