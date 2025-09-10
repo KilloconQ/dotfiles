@@ -51,6 +51,60 @@ ls.add_snippets("typescript", {
   }),
 })
 
+-- Vitest + React Testing Library (TSX)
+ls.add_snippets("typescript", {
+  s("vtcomp", {
+    t({
+      "import { describe, expect, test } from 'vitest';",
+      "import { render } from '@testing-library/react';",
+      "",
+      "import { ",
+    }),
+    i(1, "GifsApp"),
+    t({ " } from './" }),
+    rep(1),
+    t({ "';", "", "describe('" }),
+    rep(1),
+    t({ "', () => {", "  test('should create', () => {", "    const { container } = render(<" }),
+    rep(1),
+    t({
+      " />);",
+      "    expect(container).toBeTruthy();",
+      "    expect(container).toMatchSnapshot();",
+      "  });",
+      "});",
+      "",
+    }),
+    i(0),
+  }),
+})
+
+ls.add_snippets("typescript", {
+  s("vthook", {
+    t({
+      "import { describe, expect, test } from 'vitest';",
+      "import { renderHook } from '@testing-library/react';",
+      "",
+      "import { ",
+    }),
+    i(1, "GifsApp"),
+    t({ " } from './" }),
+    rep(1),
+    t({ "';", "", "describe('" }),
+    rep(1),
+    t({ "', () => {", "  test('should create', () => {", "    const { result } = renderHook(() =>" }),
+    rep(1),
+    t({
+      "() );",
+      " expect(result.current.counter).toBe(10);",
+      "  });",
+      "});",
+      "",
+    }),
+    i(0),
+  }),
+})
+
 ls.filetype_extend("javascript", { "typescript" })
 ls.filetype_extend("astro", { "typescript" })
 ls.filetype_extend("typescriptreact", { "typescript" })

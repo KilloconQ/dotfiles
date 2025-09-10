@@ -2,6 +2,13 @@
 
 return {
   {
+    -- Plugin: bufferline.nvim
+    -- URL: https://github.com/akinsho/bufferline.nvim
+    -- Description: A snazzy buffer line (with tabpage integration) for Neovim.
+    "akinsho/bufferline.nvim",
+    enabled = true, -- Disable this plugin
+  },
+  {
     "CopilotC-Nvim/CopilotChat.nvim",
     enabled = false,
   },
