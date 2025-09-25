@@ -127,11 +127,19 @@ alias prt='pnpm run test'
 alias px='pnpm dlx'
 
 # Reemplazo de ls por lsd (si existe)
-if command -v lsd >/dev/null; then
-  alias ls='lsd --group-dirs=first'
-  alias ll='lsd -lah --group-dirs=first'
-  alias la='lsd -a --group-dirs=first'
-  alias lt='lsd --tree --depth=2 --group-dirs=first'
+# if command -v lsd >/dev/null; then
+#   alias ls='lsd --group-dirs=first'
+#   alias ll='lsd -lah --group-dirs=first'
+#   alias la='lsd -a --group-dirs=first'
+#   alias lt='lsd --tree --depth=2 --group-dirs=first'
+# fi
+
+# Reemplazo de ls por eza (si existe)
+if command -v eza >/dev/null; then
+  alias ls='eza --icons --group-directories-first'
+  alias ll='eza -l --icons --group-directories-first --no-time '
+  alias la='eza -a --icons --group-directories-first'
+  alias lt='eza --tree --icons --level=2 --group-directories-first'
 fi
 
 # ya_zed
