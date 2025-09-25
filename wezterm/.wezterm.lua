@@ -40,8 +40,8 @@ config.mouse_bindings = {
 
 -- Configuraciones adicionales
 if target == "x86_64-pc-windows-msvc" or target:find("wsl") then
-	config.font_size = 12.0
-	config.default_domain = "WSL:Ubuntu"
+	config.font_size = 14.0
+	config.default_domain = "WSL:Arch"
 	config.front_end = "OpenGL"
 	config.win32_system_backdrop = "Acrylic"
 	local gpus = wezterm.gui.enumerate_gpus()
