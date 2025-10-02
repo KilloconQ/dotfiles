@@ -1,0 +1,246 @@
+l
+ls
+cd dotfiles
+ll
+l
+v .
+nvim. 
+nvim .
+alias v = nvim
+v
+alias l = ls
+alias l = ls --all
+l
+c
+alias c = clear
+c
+l
+v .
+cp ./wezterm/.wezterm.lua /mnt/c/Users/FJCV_CARFAX/.wezterm.lua
+$env.TERM
+l
+ls
+l
+ls
+alias l = ls --all
+l
+yay -Syu nushell
+l
+exit
+nu
+exit
+l
+source $nu.config-path
+wezterm --version
+$env.config.shell_intergration
+$env.config.shell_integration
+$env.config.shell_integration.osc133 = false
+l
+ls
+$env.config.shell_integration.osc133 = true
+$env.config.shell_integration.osc133 = false
+l
+ls
+config nu
+source $nu.config-path
+l
+ls
+l
+config nu
+source $nu.config-path
+lt
+ls
+l
+la
+ll
+ls -l
+ll
+ls -f
+find
+v
+config nu
+cd dotfiles
+l
+exit
+env nu
+ll
+l
+cd .config/nushell
+cd .config
+ll
+cd .config
+config nu
+source $nu.config-path
+cd .config
+source ~/.config/nushell/config.nu
+ll
+l
+cd .config
+config nu
+cd
+z
+cd 
+exit
+l
+$env.config.shell_integration.osc133 = false
+l
+cd .configg
+cd .config
+cd nushell
+l
+v config.nu
+source $nu.config-path
+$nu.config-path
+config nu
+source $nu.config-path
+cd
+config nu
+source config.nu
+cd
+config nu
+source config.nu
+ll
+l
+cd
+exit
+$env.config.shell_integration.osc133 = false
+config nu
+source config.nu
+source ~/.config/nushell/config.nu
+config nu
+source ~/.config/nushell/config.nu
+cd
+cd nushell
+cd .config
+ll
+l
+cd nushell/
+l
+v env.nu
+source ~/.config/nushell/env.nu
+z
+cd .config/nushell
+v config.nu
+source ~/.config/nushell/env.nu
+source ~/.config/nushell/config.nu
+ll
+l
+cd
+cd projects
+config nu
+source ~/.config/nushell/config.nu
+atuin update
+dot
+cd dotfiles
+ll
+l
+v zsh
+opencode
+$shell
+$SHELL
+$env.SHELL
+mkdir nushell
+ll
+l
+cp ~/.config/nushell/ ./nushell/
+cp -r ~/.config/nushell/ ./nushell/
+l nushell/
+ll
+rm -rf nushell/
+l
+$env.SHELL
+cd dotfiles
+source ~/.config/nushell/config.nu
+source ~/.config/nushell/env.nu
+c
+cd
+cd projects
+config nu
+source ~/.config/nushell/env.nu
+source ~/.config/nushell/config.nu
+ll
+cd
+z learn
+config nu
+which zoxide
+ll
+l
+cd
+which .zoxidenu
+which .zoxide.nu
+pwd
+v .zoxide.nu
+cd
+z
+z learn
+cd 
+cd .config
+config nu
+source ~/.config/nushell/config.nu
+cd
+ll
+l
+z
+source ~/.config/nushell/env.nu
+l
+cd
+ll
+l
+config nu
+exit
+env nu
+config nu
+source ~/.config/nushell/config.nu
+l
+cd
+z
+config nu
+source ~/.config/nushell/config.nu
+cd
+exit
+ll
+l
+cd
+z projects
+config nu
+source ~/.config/nushell/config.nu
+cd
+cd projects
+exit
+cd projects
+exit
+cd projects
+z projects
+source ~/.config/nushell/config.nu
+cd projects
+exit
+cd projects
+source ~/.zoxide.nu
+cd projects
+z projects
+config nu
+cd projects
+z projects
+source ~/.config/nushell/config.nu
+z projects
+cd projects
+config nu
+cd projects
+source ~/.config/nushell/config.nu
+z projects
+exit
+z projects
+cd
+z
+config nu
+source ~/.config/nushell/config.nu
+cd
+cd projects
+exit
+cd projects
+config nu
+source ~/.config/nushell/config.nu
+z
+z projects
+v .
+exit
