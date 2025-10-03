@@ -16,15 +16,40 @@
 # You can also pretty-print and page through the documentation for configuration
 # options using:
 #     config nu --doc | nu-highlight | less -R
+
+$env.ATUIN_LOG = "error"
+
+# Keybindings
+let config = {
+  keybindings: [
+    {
+      name: history-search
+      modifier: none
+      key: up
+      event: { send: executehostcommand, cmd: 'atuin search --shell-up-key-binding --interactive' }
+    }
+  ]
+}
+
 $env.config = {
+  show_banner: false
   shell_integration: {
     osc133: false
   }
+
+  cursor_shape: {
+    emacs: block # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (line is the default)
+    vi_insert: block # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (block is the default)
+    vi_normal: underscore # block, underscore, line, blink_block, blink_underscore, blink_line, inherit to skip setting cursor shape (underscore is the default)
+  }
+
+  edit_mode: vi
+  buffer_editor: nvim
 }
 
 alias l = ls
 alias la = ls -a
-alias ll = ls -lh
+alias ll = ls -l
 alias lt = ls -lt
 
 # Herramientas generales
@@ -35,7 +60,6 @@ alias zwork = zellij a work
 alias zlearn = zellij a learn
 alias c = clear
 alias gen = kqgen
-alias dot = z dotfiles
 
 # Git
 alias ga = git add .
@@ -75,6 +99,7 @@ alias pi = pnpm install
 alias prd = pnpm run dev
 alias prt = pnpm run test
 alias px = pnpm dlx
+
 
 source ~/.local/share/atuin/init.nu
 source ~/.zoxide.nu

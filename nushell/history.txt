@@ -262,3 +262,201 @@ dot
 v .
 source ~/.config/nushell/config.nu
 lg
+l
+cd
+l
+c
+l
+dot
+v .
+source ~/.config/nushell/config.nu
+dot
+z projects
+cx
+dot
+cd ..
+ll
+l
+ls --all
+l
+ls
+ls -l
+dot
+source ~/.config/nushell/config.nu
+ll
+l
+ls
+l
+z projects
+ll
+l
+cd
+aws huhuhu  hhuhhuhuh  huhu
+c
+ps
+l
+eza
+eza -l
+l
+ps | to json
+jq
+ps | to json
+ps | to json | jq
+ll
+# b473ffea-f21a-47c5-a38b-b360f97a8ba4<\n>with-env { ATUIN_LOG: error, ATUIN_QUERY: (commandline) } { commandline edit (run-external atuin search "--shell-up-key-binding" "--interactive"  e>| str trim) }
+dot
+source ~/.config/nushell/config.nu
+dot
+source ~/.config/nushell/config.nu
+exit
+ll
+dot
+ps
+ps | to json | jq
+c
+set -o vi
+vi
+set -o vi
+zsh
+config nu
+$env.config.edit_mode
+config nu
+source ~/.config/nushell/config.nu
+exit
+atuin
+config nu
+source ~/.config/nushell/config.nu
+exit
+nu
+exit
+config nu
+source ~/.config/nushell/config.nu
+exit
+which nu
+command -v nu | sudo tee -a /etc/shells
+exit
+sudo pacman -Syu; yay -Syu
+config nu
+sudo pacman -Syu atuin
+yay -Syu atuin
+atuin init nu
+source ~/.local/share/atuin/init.nu
+reset
+sudo pacman -Syu; yay -Syu
+l | sort-by modified
+ps
+echo "test" | describe
+v test
+opencode
+curl -fsSL https://opencode.ai/install | bash
+config nu
+$env.EDITOR
+$env.EDITOR = nvim
+$env.EDITOR=nvim
+dot
+cd nushell
+z nushell
+v .
+source env.nu
+which opencode
+opencode
+v .
+curl -fsSL https://opencode.ai/install | bash
+path add ~/.opencode/bin<\n>
+v .
+source env.nu
+which opencode
+v .
+source env.nu
+which node
+which npm
+bun
+cd
+z .local
+ll
+l
+z bin
+l
+cd ..
+bun
+curl -fsSL https://bun.sh/install | bash
+cd
+config nu
+$env.config.buffer_editor
+z nushell
+v .
+config nu
+v .
+source config.nu
+config nu
+which bun
+v .
+$env.DETOR
+$env.EDITOR
+v .
+source config.nu
+source env.nu
+config nu
+source env.nu
+source config.nu
+v .
+source config.nu
+reset
+atuin doctor
+atuin init nu | save ~/.local/share/atuin/init.nu --force
+exit
+z nushell
+v .
+which go
+v .
+source config.nu
+source env.nu
+which bun<\n>which node<\n>which go<\n>which opencode<\n>which pnpm<\n>
+v .
+source env.nu
+v .
+yay -Syu fzf
+fzf
+v .
+curl -fsSL https://bun.sh/install | bash
+bun
+source env.nu
+v .
+which go
+source env.nu
+v .
+source env.nu
+which go
+source config.nu
+source env.nu
+which go
+wget https://go.dev/dl/go1.25.1.linux-amd64.tar.gz
+sudo tar -xvf go1.25.1.linux-amd64.tar.gz
+sudo mv go /usr/local
+rm -rf /usr/local/go
+sudo rm -rf /usr/local/go
+sudo mv go /usr/local
+ll
+l
+rm -rf go1.25.1.linux-amd64.tar.gz
+ll
+l
+which go
+v .
+yay -Syu go
+which go
+go
+go fmt env.nu
+source ~/.config/nushell/env.nu<\n>
+v env.nu
+source ~/.config/nushell/env.nu<\n>
+v .
+source ~/.config/nushell/env.nu
+which go
+go fmt env.nu
+go fmt
+go
+go cache
+v
+dot
+z dot
