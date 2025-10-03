@@ -259,3 +259,6 @@ config nu
 dot
 source ~/.config/nushell/config.nu
 dot
+v .
+source ~/.config/nushell/config.nu
+lg
