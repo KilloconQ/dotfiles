@@ -244,3 +244,18 @@ z
 z projects
 v .
 exit
+$env.EDITOR
+$env.VISUAL
+$env.BUN_INSTALL
+$env.VOLTA_HOME
+which go
+go
+$env.PATH
+l
+exit
+l
+dot
+config nu
+dot
+source ~/.config/nushell/config.nu
+dot

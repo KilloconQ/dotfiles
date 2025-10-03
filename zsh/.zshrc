@@ -76,7 +76,7 @@ bindkey '^[[B' down-line-or-search
 # 8. Aliases
 # ——————————————————————————————————————————————
 alias so='source ~/.zshrc'
-alias cl='clear'
+alias c='clear'
 alias f='fzf'
 alias dot='z dotfiles; nvim .'
 alias lg='lazygit'

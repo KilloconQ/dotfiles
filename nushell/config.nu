@@ -30,11 +30,12 @@ alias lt = ls -lt
 # Herramientas generales
 alias lg = lazygit
 alias v = nvim
-# alias cd = z
 alias cat = bat
 alias zwork = zellij a work
 alias zlearn = zellij a learn
+alias c = clear
 alias gen = kqgen
+alias dot = z dotfiles
 
 # Git
 alias ga = git add .
