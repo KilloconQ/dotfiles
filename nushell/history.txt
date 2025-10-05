@@ -460,3 +460,37 @@ go cache
 v
 dot
 z dot
+rm .config/nushell
+source ~/dotfiles/nushell/
+atuin
+brew install atuin
+chsh -s (which zsh)
+config nu
+curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+atuin
+config nu
+which atuin
+fd atuin
+brew install atuin
+atuin --version
+which atuin
+atuin
+z dot
+cd dot
+cd ..
+cd
+z
+l
+ll
+ls
+lt
+z dotfiles/
+z ghostty/
+v .
+echo "test" | describe
+z ghostty/
+z dot
+z ghostty/; v .
+echo "test" | describe
+echo "hello world"
+cd ..
