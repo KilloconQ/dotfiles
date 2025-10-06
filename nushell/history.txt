@@ -460,3 +460,93 @@ go cache
 v
 dot
 z dot
+v .
+setup
+config
+ll
+l
+ls
+cd
+l
+z dot
+lg
+z dot
+z
+fzf
+zwork
+$env.SHELL
+cd
+z
+l
+v .
+z dot
+v .
+source ~/.config/nushell/config.nu
+l
+v .
+source ~/.config/nushell/config.nu
+l
+v .
+l
+source ~/.config/nushell/config.nu
+l
+v .
+source ~/.config/nushell/config.nu
+l
+atuin init nu | save ~/.local/share/atuin/init.nu --force
+z dot
+z projects
+l
+atuin init nu | save ~/.local/share/atuin/init.nu --force
+atuin init nu
+atuin doctor
+ll
+l
+v .
+l
+bun
+pnpm
+npm
+node
+l
+bun create vite@latest
+l
+cd vite-project/
+l
+ba tailwindcss @tailwindcss/vite
+v .
+ba -D -E @biomejs/biome
+bx biome init
+ba -D vitest
+bun add -D @types/node
+bunx --bun shadcn@latest init
+ba react-router
+l
+config nu
+source ~/.config/nushell/config.nu
+l
+$env.config.table.mode = 'rounded'
+l
+table --list | first 5
+v .
+dot
+z dot
+ll
+l
+v .
+source ~/.config/nushell/config.nu
+l
+config nu
+source ~/.config/nushell/config.nu
+atuin init nu | save ~/.local/share/atuin/init.nu --force
+source ~/.config/nushell/config.nu
+config reload
+exit
+l
+la
+cd learn
+z learn
+l
+cd vite-project/
+v .
+z dot

@@ -17,20 +17,6 @@
 # options using:
 #     config nu --doc | nu-highlight | less -R
 
-$env.ATUIN_LOG = "error"
-
-# Keybindings
-let config = {
-  keybindings: [
-    {
-      name: history-search
-      modifier: none
-      key: up
-      event: { send: executehostcommand, cmd: 'atuin search --shell-up-key-binding --interactive' }
-    }
-  ]
-}
-
 $env.config = {
   show_banner: false
   shell_integration: {
@@ -45,7 +31,50 @@ $env.config = {
 
   edit_mode: vi
   buffer_editor: nvim
+  table: {
+    mode: "rounded"
+  }
+
+  color_config: {
+    separator: "#727169"
+    leading_trailing_space_bg: { attr: "n" }
+    header: "#957FB8"
+    date: "#7E9CD8"
+    filesize: "#E6C384"
+    row_index: "#C34043"
+    bool: "#98BB6C"
+    int: "#DCA561"
+    duration: "#7FB4CA"
+    range: "#A3D4D5"
+    float: "#E6C384"
+    string: "#DCD7BA"
+    nothing: "#727169"
+    binary: "#7AA89F"
+    cellpath: "#FFA066"
+    record: "#FF9E3B"
+    list: "#7E9CD8"
+    block: "#98BB6C"
+    hints: "#54546D"
+
+    shape_garbage: { fg: "#C34043" attr: "b" }
+    shape_bool: { fg: "#98BB6C" attr: "b" }
+    shape_int: { fg: "#DCA561" attr: "b" }
+    shape_float: { fg: "#E6C384" attr: "b" }
+    shape_range: { fg: "#7FB4CA" attr: "b" }
+    shape_string: { fg: "#DCD7BA" attr: "b" }
+    shape_record: { fg: "#957FB8" attr: "b" }
+    shape_list: { fg: "#7E9CD8" attr: "b" }
+    shape_block: { fg: "#98BB6C" attr: "b" }
+    shape_path: { fg: "#FFA066" attr: "b" }
+    shape_glob: { fg: "#7AA89F" attr: "b" }
+    shape_variable: { fg: "#FF9E3B" attr: "b" }
+    shape_operator: { fg: "#FFA066" attr: "b" }
+    shape_external: { fg: "#7E9CD8" attr: "b" }
+    shape_externalarg: { fg: "#DCD7BA" attr: "b" }
+    shape_keyword: { fg: "#E6C384" attr: "b" }
+  }
 }
+
 
 alias l = ls
 alias la = ls -a
