@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 local config = {}
 local target = wezterm.target_triple
 
-config.color_scheme = "Kanagawa (Gogh)"
+config.color_scheme = "Catppuccin Mocha"
 
 config.enable_tab_bar = false
 config.font_size = 14.0
