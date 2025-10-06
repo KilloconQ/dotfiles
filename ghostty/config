@@ -1,7 +1,7 @@
 background-opacity = 0.95
 background-blur-radius = 20
 
-theme = Kanagawa Wave
+theme = Catppuccin Mocha
 
 background = 1f1f28
 foreground = dcd7ba
