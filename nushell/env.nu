@@ -30,7 +30,7 @@ path add $env.PNPM_HOME
 # Detecta si Go está instalado y configura GOPATH y PATH
 
 # Definir una variable temporal para el resultado de `which go`
-let which_go_result = (which go)
+let go_result = (which go)
 
 # Comprobar si `which_go_result` es null (si el comando no se encontró)
 if ($which_go_result | is-empty) {
@@ -67,9 +67,9 @@ if ($which_go_result | is-empty) {
 #         path add ($gopath | path join "bin")
 #     }
 # }
-# if ($nu.os-info.name == "linux") {
-#     path add "/usr/local/go/bin"
-# }
+if ($nu.os-info.name == "linux") {
+    path add "/usr/local/go/bin"
+}
 
 # --- Homebrew ---
 if ($nu.os-info.name == "linux") and ("/home/linuxbrew/.linuxbrew/bin/brew" | path exists) {
