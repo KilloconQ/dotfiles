@@ -30,34 +30,34 @@ path add $env.PNPM_HOME
 # Detecta si Go está instalado y configura GOPATH y PATH
 
 # Definir una variable temporal para el resultado de `which go`
-let which_go_result = (which go)
+let go_result = (which go)
 
 # Comprobar si `which_go_result` es null (si el comando no se encontró)
-if ($which_go_result | is-empty) {
+#if ($go_result | is-empty) {
     # Determinar GOPATH dinámicamente
-    let gopath_raw = (go env GOPATH)
-    let gopath = ($gopath_raw | str trim)
+ #   let gopath_raw = (go env GOPATH)
+  #  let gopath = ($gopath_raw | str trim)
 
     # Exportar variables de entorno de forma persistente
-    export-env {
-        $env.GOPATH = $gopath
-        $env.GOBIN  = ($gopath | path join "bin")
-    }
+   # export-env {
+    #    $env.GOPATH = $gopath
+     #   $env.GOBIN  = ($gopath | path join "bin")
+    #}
 
     # Agregar binarios de Go al PATH (solo si existe el directorio)
-    let go_bin_path = ($gopath | path join "bin")
-    if ($go_bin_path | path exists) {
+    #let go_bin_path = ($gopath | path join "bin")
+    #if ($go_bin_path | path exists) {
         # 'path add' es un comando estándar de NuShell
-        use std "path add"
-        path add $go_bin_path
-    }
+     #   use std "path add"
+     #   path add $go_bin_path
+    #}
 
     # Agregar /usr/local/go/bin si existe (instalación del sistema)
-    if ("/usr/local/go/bin" | path exists) {
-        use std "path add"
-        path add "/usr/local/go/bin"
-    }
-}
+    #if ("/usr/local/go/bin" | path exists) {
+    #    use std "path add"
+    #    path add "/usr/local/go/bin"
+    #}
+#}
 
 # # --- Go ---
 # if (which go | is-empty | not) {
@@ -67,9 +67,9 @@ if ($which_go_result | is-empty) {
 #         path add ($gopath | path join "bin")
 #     }
 # }
-# if ($nu.os-info.name == "linux") {
-#     path add "/usr/local/go/bin"
-# }
+if ($nu.os-info.name == "linux") {
+    path add "/usr/local/go/bin"
+}
 
 # --- Homebrew ---
 if ($nu.os-info.name == "linux") and ("/home/linuxbrew/.linuxbrew/bin/brew" | path exists) {
