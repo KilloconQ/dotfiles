@@ -152,7 +152,6 @@ return {
           open_output = "<leader>ao", -- Opens and focuses on output window
           toggle_focus = "<leader>at", -- Toggle focus between opencode and last window
           close = "<leader>aq", -- Close UI windows
-          toggle_fullscreen = "<leader>af", -- Toggle between normal and fullscreen mode
           select_session = "<leader>as", -- Select and load a opencode session
           configure_provider = "<leader>ap", -- Quick provider and model switch from predefined list
           diff_open = "<leader>ad", -- Opens a diff tab of a modified file since the last opencode prompt
@@ -163,7 +162,6 @@ return {
           diff_revert_this_last_prompt = "<leader>art", -- Revert current file changes since the last opencode prompt
           diff_revert_all = "<leader>arA", -- Revert all file changes since the last opencode session
           diff_revert_this = "<leader>arT", -- Revert current file changes since the last opencode session
-          switch_position = "<leader>ax", -- Switch between positions
         },
       },
       ui = {
