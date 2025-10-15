@@ -191,6 +191,7 @@ $env.config = {
   error_style: "fancy"
 }
 
+source ~/.zoxide.nu
 
 alias l = ls
 alias la = ls -a
@@ -244,6 +245,8 @@ alias pi = pnpm install
 alias prd = pnpm run dev
 alias prt = pnpm run test
 alias px = pnpm dlx
+
+alias dot = do {z dot; v .}
 
 mkdir ($nu.data-dir | path join "vendor/autoload")
 starship init nu | save -f ($nu.data-dir | path join "vendor/autoload/starship.nu")
