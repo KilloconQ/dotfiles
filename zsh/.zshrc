@@ -47,7 +47,7 @@ fi
 # ——————————————————————————————————————————————
 # 5. Plugins y herramientas
 # ——————————————————————————————————————————————
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting vi-mode)
 source "$ZSH/oh-my-zsh.sh"
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
@@ -111,6 +111,7 @@ alias gf='git fetch'
 alias nr='npm run'
 alias ni='npm install'
 alias nrd='npm run dev'
+alias nrdp='npm run deploy'
 
 alias br='bun run'
 alias ba='bun add'
