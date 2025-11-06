@@ -178,37 +178,6 @@ return {
         },
       },
     })
-
-    -- Register descripciones para which-key si está disponible
-    local ok_wk, wk = pcall(require, "which-key")
-    if ok_wk then
-      wk.register({
-        a = {
-          name = "Opencode",
-          a = "Alternar Opencode (abrir/cerrar)",
-          i = "Abrir entrada y enfocar (insert)",
-          I = "Abrir entrada en nueva sesión (insert)",
-          o = "Abrir salida y enfocar",
-          t = "Alternar foco entre opencode y ventana anterior",
-          q = "Cerrar la UI de opencode",
-          f = "Alternar pantalla completa",
-          s = "Seleccionar sesión",
-          p = "Configurar proveedor/modelo",
-          d = "Abrir diff de últimos cambios",
-          ["]"] = "Siguiente diff",
-          ["["] = "Anterior diff",
-          c = "Cerrar vista de diff",
-          r = {
-            name = "Revertir",
-            a = "Revertir todos desde último prompt",
-            t = "Revertir este archivo desde último prompt",
-            A = "Revertir todos desde sesión",
-            T = "Revertir este archivo desde sesión",
-          },
-          x = "Cambiar posición de panel",
-        },
-      }, { prefix = "<leader>" })
-    end
   end,
   dependencies = {
     "nvim-lua/plenary.nvim",
