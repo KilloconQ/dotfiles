@@ -32,14 +32,24 @@ fi
 # ——————————————————————————————————————————————
 
 # Rutas base primero
+# ——————————————————————————————————————————————
+# 4. PATH: ordenado
+# ——————————————————————————————————————————————
+
 export PATH="$VOLTA_HOME/bin:$BUN_INSTALL/bin:$HOME/bin:$HOME/.local/bin:$PATH"
+
+# Añadir PNPM_HOME correctamente antes de todo lo demás
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
 
 # Añadir GOPATH/bin solo si Go está instalado
 if command -v go >/dev/null 2>&1; then
   export PATH="$(go env GOPATH)/bin:$PATH"
 fi
 
-# Añadir Go manual si estás en Linux (Pop!_OS, WSL, Arch)
 if [[ "$OS" == "linux" ]]; then
   export PATH="/usr/local/go/bin:$PATH"
 fi
@@ -169,14 +179,6 @@ fi
 
 # opencode
 export PATH=/home/killoconq/.opencode/bin:$PATH
-
-# pnpm
-export PNPM_HOME="/home/killoconq/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/usr/local/share/google-cloud-sdk/path.zsh.inc' ]; then . '/usr/local/share/google-cloud-sdk/path.zsh.inc'; fi
