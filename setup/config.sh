@@ -4,92 +4,132 @@ set -euo pipefail
 exec > >(tee -i setup.log)
 exec 2>&1
 
-# Ruta a los dotfiles
-DOTFILES_DIR="$HOME/dotfiles"
-DOTFILES_REPO="https://github.com/killoconq/dotfiles"
-
-# Función de logging mínima
+# ---------------------------------------------------------
+# LOGGING
+# ---------------------------------------------------------
 log_info() { echo -e "\033[1;34m[INFO]\033[0m $1"; }
 log_warn() { echo -e "\033[1;33m[WARN]\033[0m $1"; }
 log_error() { echo -e "\033[1;31m[ERROR]\033[0m $1"; }
 log_success() { echo -e "\033[1;32m[SUCCESS]\033[0m $1"; }
 
-# Keep-alive para sudo
-sudo -v
-while true; do
-  sudo -n true
-  sleep 60
-  kill -0 "$$" || exit
-done 2>/dev/null &
+# ---------------------------------------------------------
+# DOTFILES CONFIG
+# ---------------------------------------------------------
+DOTFILES_REPO="https://github.com/killoconq/dotfiles"
+DOTFILES_DIR="$HOME/dotfiles"
 
-# Validar git
+# ---------------------------------------------------------
+# 🔍 DETECCIÓN DEL SISTEMA OPERATIVO
+# ---------------------------------------------------------
+if [[ -f /etc/os-release ]]; then
+  source /etc/os-release
+else
+  log_warn "/etc/os-release no encontrado, usando fallback."
+  ID="unknown"
+  ID_LIKE=""
+fi
+
+if [[ "$ID" == "arch" || "$ID_LIKE" =~ arch ]]; then
+  OS_TYPE="arch"
+elif [[ "$ID" == "ubuntu" || "$ID" == "pop" ]]; then
+  OS_TYPE="ubuntu"
+elif [[ "$ID" == "darwin" ]]; then
+  OS_TYPE="mac"
+else
+  OS_TYPE="other"
+fi
+
+log_info "Sistema detectado: $OS_TYPE"
+
+# ---------------------------------------------------------
+# SUDO
+# ---------------------------------------------------------
+sudo -v
+
+# ---------------------------------------------------------
+# VALIDAR GIT
+# ---------------------------------------------------------
 if ! command -v git &>/dev/null; then
   log_error "git no está instalado. Abortando."
   exit 1
 fi
 
-# Clonar dotfiles si no existen
-if [ ! -d "$DOTFILES_DIR" ]; then
-  log_warn "No se encontró $DOTFILES_DIR"
-  read -rp "¿Clonar dotfiles desde $DOTFILES_REPO? (s/n): " CLONE
-  if [[ "$CLONE" =~ ^[Ss]$ ]]; then
-    git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
-  else
-    log_error "Abortando. Necesito los dotfiles para continuar."
-    exit 1
-  fi
+# ---------------------------------------------------------
+# CLONAR DOTFILES
+# ---------------------------------------------------------
+if [[ ! -d "$DOTFILES_DIR" ]]; then
+  log_info "Clonando dotfiles..."
+  git clone "$DOTFILES_REPO" "$DOTFILES_DIR"
+else
+  log_info "Dotfiles ya existen, usando carpeta existente."
 fi
 
 cd "$DOTFILES_DIR"
 
-# Función para hacer source seguro
+# ---------------------------------------------------------
+# SAFE SOURCE
+# ---------------------------------------------------------
 safe_source() {
   local script="$1"
-  if [ -f "$script" ]; then
+  if [[ -f "$script" ]]; then
     log_info "Ejecutando $script"
+    # shellcheck disable=SC1090
     source "$script"
   else
     log_warn "Script $script no encontrado, salteando..."
   fi
 }
 
-# Detección de sistema operativo
-OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
+# ---------------------------------------------------------
+# DETECTAR WSL
+# ---------------------------------------------------------
 is_wsl() { grep -qi 'microsoft' /proc/version 2>/dev/null; }
 
+# ---------------------------------------------------------
+# DETECTAR PACKAGE MANAGER
+# ---------------------------------------------------------
 detect_package_manager() {
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    echo "brew"
-  elif grep -qi 'arch\|manjaro' /etc/os-release 2>/dev/null; then
+  case "$OS_TYPE" in
+  arch)
     if command -v yay &>/dev/null; then
       echo "yay"
     else
       echo "pacman"
     fi
-  elif grep -qi 'ubuntu\|pop' /etc/os-release 2>/dev/null; then
+    ;;
+  ubuntu)
     if command -v brew &>/dev/null; then
       echo "brew"
     else
       echo "install_brew"
     fi
-  else
+    ;;
+  mac)
+    echo "brew"
+    ;;
+  *)
     echo "none"
-  fi
+    ;;
+  esac
 }
 
 PACKAGE_MANAGER=$(detect_package_manager)
 
-# Instalar yay si estás en Arch y no está
+# ---------------------------------------------------------
+# INSTALAR YAY SI ES ARCH Y NO EXISTE
+# ---------------------------------------------------------
 if [[ "$PACKAGE_MANAGER" == "pacman" ]] && ! command -v yay &>/dev/null; then
   log_info "Instalando yay..."
   git clone https://aur.archlinux.org/yay.git /tmp/yay
-  (cd /tmp/yay && makepkg -si --noconfirm)
+  (cd /tmp/yay && makepkg -si --noconfirm --needed)
   PACKAGE_MANAGER="yay"
 fi
 
-# Instalar Homebrew si corresponde
+# ---------------------------------------------------------
+# INSTALAR HOMEBREW SI ES NECESARIO
+# ---------------------------------------------------------
 if [[ "$PACKAGE_MANAGER" == "install_brew" ]]; then
-  log_info "Instalando Homebrew en distro no-rolling (Ubuntu, Pop...)"
+  log_info "Instalando Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
   PACKAGE_MANAGER="brew"
@@ -97,10 +137,21 @@ elif [[ "$PACKAGE_MANAGER" == "brew" ]]; then
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv 2>/dev/null || $(brew --prefix)/bin/brew shellenv)"
 fi
 
-# Correr scripts principales
-safe_source ./scripts/setup_fonts.sh
-safe_source ./scripts/install_packages.sh # incluye definición de PACKAGES y su instalación
-safe_source ./scripts/setup_fish.sh       # incluye validaciones, instalación, configuración y enlaces
+# ---------------------------------------------------------
+# FUENTES (ARCO LÓGICO)
+# ---------------------------------------------------------
+if [[ "$OS_TYPE" == "arch" ]]; then
+  log_info "Instalando JetBrainsMono Nerd Font desde AUR..."
+  $PACKAGE_MANAGER -S --noconfirm nerd-fonts-jetbrains-mono
+else
+  safe_source ./scripts/setup_fonts.sh
+fi
+
+# ---------------------------------------------------------
+# INSTALAR PAQUETES Y ENTORNO
+# ---------------------------------------------------------
+safe_source ./scripts/install_packages.sh
+safe_source ./scripts/setup_fish.sh
 safe_source ./scripts/setup_volta.sh
 safe_source ./scripts/setup_bun.sh
 safe_source ./scripts/setup_rust.sh
@@ -109,7 +160,9 @@ safe_source ./scripts/setup_starship.sh
 safe_source ./scripts/setup_symlinks.sh
 safe_source ./scripts/setup_opencode.sh
 
-# Opción para terminal
+# ---------------------------------------------------------
+# SELECCIÓN DE TERMINAL
+# ---------------------------------------------------------
 echo "¿Qué terminal querés configurar?"
 select TERMINAL_CHOICE in "wezterm" "ghostty" "ninguno"; do
   case $TERMINAL_CHOICE in
@@ -125,13 +178,17 @@ select TERMINAL_CHOICE in "wezterm" "ghostty" "ninguno"; do
     log_info "Saltando configuración de terminal..."
     break
     ;;
-  *) log_warn "Opción inválida." ;;
+  *)
+    log_warn "Opción inválida."
+    ;;
   esac
 done
 
-# Configuración específica por sistema operativo
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  echo "¿Querés instalar y configurar Aerospace para macOS?"
+# ---------------------------------------------------------
+# CONFIG MACOS / WSL
+# ---------------------------------------------------------
+if [[ "$OS_TYPE" == "mac" ]]; then
+  echo "¿Querés instalar y configurar Aerospace?"
   select MAC_CHOICE in "sí" "no"; do
     case $MAC_CHOICE in
     sí)
@@ -142,11 +199,13 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
       log_info "Saltando Aerospace..."
       break
       ;;
-    *) log_warn "Opción inválida." ;;
+    *)
+      log_warn "Opción inválida."
+      ;;
     esac
   done
-elif is_wsl || [[ "$OS" == "Windows_NT" ]]; then
-  echo "¿Querés instalar y configurar GlazeWM para Windows?"
+elif is_wsl; then
+  echo "¿Querés instalar y configurar GlazeWM?"
   select WIN_CHOICE in "sí" "no"; do
     case $WIN_CHOICE in
     sí)
@@ -157,9 +216,16 @@ elif is_wsl || [[ "$OS" == "Windows_NT" ]]; then
       log_info "Saltando GlazeWM..."
       break
       ;;
-    *) log_warn "Opción inválida." ;;
+    *)
+      log_warn "Opción inválida."
+      ;;
     esac
   done
 fi
-# Mensaje final modularizado
+
+# ---------------------------------------------------------
+# FINAL
+# ---------------------------------------------------------
 safe_source ./scripts/final_message.sh
+
+log_success "Setup completado correctamente 🎉"

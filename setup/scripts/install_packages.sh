@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PACKAGES=(git gh wget neovim fzf ripgrep fd zellij bat eza deno zoxide lazygit lazydocker go zig starship)
+PACKAGES=(git gh wget neovim fzf ripgrep fd zellij bat eza deno zoxide lazygit lazydocker go zig starship zsh)
 
 for pkg in "${PACKAGES[@]}"; do
   log_info "Instalando $pkg..."
