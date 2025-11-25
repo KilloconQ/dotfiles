@@ -13,49 +13,37 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 
 # ——————————————————————————————————————————————
-# 3. Homebrew
+# 3. Homebrew (macOS y Linuxbrew)
 # ——————————————————————————————————————————————
 if [[ "$OS" == "darwin" ]]; then
-  # macOS (ambos chips)
+  # macOS (Intel / Apple Silicon)
   if command -v brew >/dev/null; then
     eval "$(/usr/local/bin/brew shellenv 2>/dev/null || /opt/homebrew/bin/brew shellenv 2>/dev/null)"
   fi
-elif [[ "$OS" == "linux" ]]; then
-  # Linux (Pop!_OS, Arch, etc.)
+else
+  # Linux Brew (opcional si lo tienes)
   if [[ -x "/home/linuxbrew/.linuxbrew/bin/brew" ]]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
   fi
 fi
 
 # ——————————————————————————————————————————————
-# 4. PATH: ordenado
+# 4. PATH limpio y ordenado
 # ——————————————————————————————————————————————
-
-# Rutas base primero
-# ——————————————————————————————————————————————
-# 4. PATH: ordenado
-# ——————————————————————————————————————————————
-
 export PATH="$VOLTA_HOME/bin:$BUN_INSTALL/bin:$HOME/bin:$HOME/.local/bin:$PATH"
 
-# Añadir PNPM_HOME correctamente antes de todo lo demás
+# PNPM
 export PNPM_HOME="$HOME/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
+[[ ":$PATH:" == *":$PNPM_HOME:"* ]] || export PATH="$PNPM_HOME:$PATH"
 
-# Añadir GOPATH/bin solo si Go está instalado
+# GOPATH solo si Go existe (mise lo crea)
 if command -v go >/dev/null 2>&1; then
-  export PATH="$(go env GOPATH)/bin:$PATH"
-fi
-
-if [[ "$OS" == "linux" ]]; then
-  export PATH="/usr/local/go/bin:$PATH"
+  export GOPATH="$(go env GOPATH)"
+  export PATH="$GOPATH/bin:$PATH"
 fi
 
 # ——————————————————————————————————————————————
-# 5. Plugins y herramientas
+# 5. Oh My Zsh + plugins
 # ——————————————————————————————————————————————
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting vi-mode)
 source "$ZSH/oh-my-zsh.sh"
@@ -63,22 +51,25 @@ source "$ZSH/oh-my-zsh.sh"
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -s "$BUN_INSTALL/_bun" ]] && source "$BUN_INSTALL/_bun"
 
+# ——————————————————————————————————————————————
+# 6. Herramientas
+# ——————————————————————————————————————————————
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+eval "$(atuin init zsh)"
+
+# ng completions
 command -v ng &>/dev/null && eval "$(ng completion script)"
-[[ -f "$HOME/.atuin/bin/env" ]] && . "$HOME/.atuin/bin/env" && eval "$(atuin init zsh)"
 
 # ——————————————————————————————————————————————
-# 6. Historial tipo Fish
+# 7. Historial
 # ——————————————————————————————————————————————
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt INC_APPEND_HISTORY SHARE_HISTORY
 
-# ——————————————————————————————————————————————
-# 7. Navegación en historial con flechas
-# ——————————————————————————————————————————————
+# Navegación con flechas estilo Fish
 bindkey '^[[A' up-line-or-search
 bindkey '^[[B' down-line-or-search
 
@@ -92,6 +83,7 @@ alias dot='z dotfiles; nvim .'
 alias lg='lazygit'
 alias v='nvim'
 alias cat='bat'
+
 alias zwork='zellij a work'
 alias zlearn='zellij a learn'
 alias cd='z'
@@ -117,7 +109,7 @@ alias gl='git log --all --graph --oneline --decorate'
 alias gcl='git clone'
 alias gf='git fetch'
 
-# NPM / Bun
+# NPM / Bun / pnpm
 alias nr='npm run'
 alias ni='npm install'
 alias nrd='npm run dev'
@@ -137,18 +129,10 @@ alias prd='pnpm run dev'
 alias prt='pnpm run test'
 alias px='pnpm dlx'
 
-# Reemplazo de ls por lsd (si existe)
-# if command -v lsd >/dev/null; then
-#   alias ls='lsd --group-dirs=first'
-#   alias ll='lsd -lah --group-dirs=first'
-#   alias la='lsd -a --group-dirs=first'
-#   alias lt='lsd --tree --depth=2 --group-dirs=first'
-# fi
-
-# Reemplazo de ls por eza (si existe)
+# eza
 if command -v eza >/dev/null; then
   alias ls='eza --icons --group-directories-first'
-  alias ll='eza -l --icons --group-directories-first --no-time '
+  alias ll='eza -l --icons --group-directories-first --no-time'
   alias la='eza -a --icons --group-directories-first'
   alias lt='eza --tree --icons --level=2 --group-directories-first'
 fi
@@ -160,31 +144,28 @@ ya_zed() {
   yazi --chooser-file "$tmp" "$@"
   if [ -s "$tmp" ]; then
     local opened_file
-    opened_file=$(head -n 1 -- "$tmp")
-    [ -n "$opened_file" ] && zed --add "$opened_file"
+    opened_file=$(head -n 1 "$tmp")
+    [[ -n "$opened_file" ]] && zed --add "$opened_file"
   fi
-  rm -f -- "$tmp"
+  rm -f "$tmp"
 }
 
 # ——————————————————————————————————————————————
-# Fin
+# 9. OpenCode
 # ——————————————————————————————————————————————
-
-# opencode
 if [[ "$OS" == "darwin" ]]; then
-  export PATH="/Users/fernandocorrales/.opencode/bin:$PATH"
-elif [[ "$OS" == "linux" ]]; then
-  export PATH="/home/killoconq/.opencode/bin:$PATH"
+  export PATH="$HOME/.opencode/bin:$PATH"
+else
+  export PATH="$HOME/.opencode/bin:$PATH"
 fi
 
-# opencode
-export PATH=/home/killoconq/.opencode/bin:$PATH
+# ——————————————————————————————————————————————
+# 10. Google Cloud SDK (opcional)
+# ——————————————————————————————————————————————
+[[ -f '/usr/local/share/google-cloud-sdk/path.zsh.inc' ]] && . '/usr/local/share/google-cloud-sdk/path.zsh.inc'
+[[ -f '/usr/local/share/google-cloud-sdk/completion.zsh.inc' ]] && . '/usr/local/share/google-cloud-sdk/completion.zsh.inc'
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/usr/local/share/google-cloud-sdk/path.zsh.inc' ]; then . '/usr/local/share/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/usr/local/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/usr/local/share/google-cloud-sdk/completion.zsh.inc'; fi
-
-# bun completions
-[ -s "/Users/fernandocorrales/.bun/_bun" ] && source "/Users/fernandocorrales/.bun/_bun"
+# ——————————————————————————————————————————————
+# 11. Mise (LO MÁS IMPORTANTE — ACTIVADOR)
+# ——————————————————————————————————————————————
+eval "$(mise activate zsh)"
