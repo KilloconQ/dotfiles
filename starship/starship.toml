@@ -1,9 +1,68 @@
-# Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
-# Inserts a blank line between shell prompts
+# —————————————————————
+#  GENERAL
+# —————————————————————
 add_newline = true
+command_timeout = 200
 
-# Replace the '❯' symbol in the prompt with '➜'
-[character] # The name of the module we are configuring is 'character'
-success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+# Prompt en 2 líneas:
+# Línea 1: directory + git
+# Línea 2: símbolo ❯
+format = """
+[$directory$git_branch$git_status]($style)
+$character
+"""
+
+# —————————————————————
+#  CHARACTER (segunda línea)
+# —————————————————————
+[character]
+success_symbol = "[❯](bold cyan) " # igual al estilo Omarchy
+error_symbol = "[✗](bold red) "
+vicmd_symbol = "[❮](bold yellow) "
+
+# —————————————————————
+#  DIRECTORY (primera línea)
+# —————————————————————
+[directory]
+style = "bold cyan"
+truncate_to_repo = true
+truncation_length = 2
+truncation_symbol = "…/"
+read_only = "🔒"
+
+# Si estás en raíz del repo, se ve más elegante
+repo_root_style = "bold cyan"
+repo_root_format = "[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) "
+
+# Normal
+format = "[$path]($style)[$read_only]($read_only_style) "
+
+# —————————————————————
+#  GIT BRANCH
+# —————————————————————
+[git_branch]
+style = "italic cyan"
+format = "[$branch]($style) "
+
+# —————————————————————
+#  GIT STATUS
+# —————————————————————
+[git_status]
+style = "cyan"
+format = '[$all_status]($style)'
+
+ahead = "⇡${count} "
+diverged = "⇕⇡${ahead_count}⇣${behind_count} "
+behind = "⇣${count} "
+
+# Icons estilo Omarchy
+conflicted = " "
+up_to_date = " "
+untracked = "? "
+modified = " "
+staged = " "
+deleted = " "
+renamed = " "
+stashed = " "

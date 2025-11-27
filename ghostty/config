@@ -16,7 +16,6 @@ window-step-resize = true
 window-padding-balance = true
 window-decoration = none
 
-
 ### Mac Alt Fix
 macos-option-as-alt = left
 
