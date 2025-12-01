@@ -13,23 +13,29 @@ return {
       ---------------------------------------------------------------------
       keymap = {
         editor = {
-          ["<leader>aa"] = { "toggle" }, -- Open/close
-          ["<leader>ai"] = { "open_input" },
-          ["<leader>aI"] = { "open_input_new_session" },
-          ["<leader>ao"] = { "open_output" },
-          ["<leader>at"] = { "toggle_focus" },
-          ["<leader>aq"] = { "close" },
-          ["<leader>as"] = { "select_session" },
-          ["<leader>ap"] = { "configure_provider" },
-          ["<leader>ad"] = { "diff_open" },
-          ["<leader>a]"] = { "diff_next" },
-          ["<leader>a["] = { "diff_prev" },
-          ["<leader>ac"] = { "diff_close" },
-          ["<leader>ara"] = { "diff_revert_all_last_prompt" },
-          ["<leader>art"] = { "diff_revert_this_last_prompt" },
-          ["<leader>arA"] = { "diff_revert_all" },
-          ["<leader>arT"] = { "diff_revert_this" },
-          ["<leader>ax"] = { "swap_position" },
+          ["<leader>aa"] = { "toggle", desc = "OpenCode: Toggle panel" },
+          ["<leader>ai"] = { "open_input", desc = "OpenCode: Open input" },
+          ["<leader>aI"] = { "open_input_new_session", desc = "OpenCode: New input session" },
+          ["<leader>ao"] = { "open_output", desc = "OpenCode: Show output" },
+          ["<leader>at"] = { "toggle_focus", desc = "OpenCode: Toggle focus" },
+          ["<leader>aq"] = { "close", desc = "OpenCode: Close panel" },
+          ["<leader>as"] = { "select_session", desc = "OpenCode: Select session" },
+          ["<leader>am"] = { "configure_provider", desc = "OpenCode: Configure provider" },
+
+          -- Diff navigation
+          ["<leader>ad"] = { "diff_open", desc = "OpenCode: Diff view" },
+          ["<leader>a]"] = { "diff_next", desc = "OpenCode: Diff next change" },
+          ["<leader>a["] = { "diff_prev", desc = "OpenCode: Diff previous change" },
+          ["<leader>ac"] = { "diff_close", desc = "OpenCode: Close diff" },
+
+          -- Diff revert actions
+          ["<leader>ara"] = { "diff_revert_all_last_prompt", desc = "OpenCode: Revert all (last prompt)" },
+          ["<leader>art"] = { "diff_revert_this_last_prompt", desc = "OpenCode: Revert this (last prompt)" },
+          ["<leader>arA"] = { "diff_revert_all", desc = "OpenCode: Revert all changes" },
+          ["<leader>arT"] = { "diff_revert_this", desc = "OpenCode: Revert this change" },
+
+          -- Layout
+          ["<leader>ax"] = { "swap_position", desc = "OpenCode: Swap panel position" },
         },
 
         input_window = {
