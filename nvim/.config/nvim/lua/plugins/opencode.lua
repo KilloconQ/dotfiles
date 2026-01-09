@@ -1,158 +1,117 @@
 return {
-  "sudo-tee/opencode.nvim",
-  config = function()
-    require("opencode").setup({
-      preferred_picker = nil,
-      preferred_completion = nil,
-      default_global_keymaps = false, -- 🔥 Desactivamos los defaults para usar los tuyos
-      default_mode = "build",
-      keymap_prefix = "<leader>a",
-
-      ---------------------------------------------------------------------
-      -- 🔥 TUS KEYMAPS PERSONALIZADOS (los que enviaste al inicio)
-      ---------------------------------------------------------------------
-      keymap = {
-        editor = {
-          ["<leader>aa"] = { "toggle", desc = "OpenCode: Toggle panel" },
-          ["<leader>ai"] = { "open_input", desc = "OpenCode: Open input" },
-          ["<leader>aI"] = { "open_input_new_session", desc = "OpenCode: New input session" },
-          ["<leader>ao"] = { "open_output", desc = "OpenCode: Show output" },
-          ["<leader>at"] = { "toggle_focus", desc = "OpenCode: Toggle focus" },
-          ["<leader>aq"] = { "close", desc = "OpenCode: Close panel" },
-          ["<leader>as"] = { "select_session", desc = "OpenCode: Select session" },
-          ["<leader>am"] = { "configure_provider", desc = "OpenCode: Configure provider" },
-
-          -- Diff navigation
-          ["<leader>ad"] = { "diff_open", desc = "OpenCode: Diff view" },
-          ["<leader>a]"] = { "diff_next", desc = "OpenCode: Diff next change" },
-          ["<leader>a["] = { "diff_prev", desc = "OpenCode: Diff previous change" },
-          ["<leader>ac"] = { "diff_close", desc = "OpenCode: Close diff" },
-
-          -- Diff revert actions
-          ["<leader>ara"] = { "diff_revert_all_last_prompt", desc = "OpenCode: Revert all (last prompt)" },
-          ["<leader>art"] = { "diff_revert_this_last_prompt", desc = "OpenCode: Revert this (last prompt)" },
-          ["<leader>arA"] = { "diff_revert_all", desc = "OpenCode: Revert all changes" },
-          ["<leader>arT"] = { "diff_revert_this", desc = "OpenCode: Revert this change" },
-
-          -- Layout
-          ["<leader>ax"] = { "swap_position", desc = "OpenCode: Swap panel position" },
-        },
-
-        input_window = {
-          ["<cr>"] = { "submit_input_prompt", mode = { "n", "i" } },
-          ["<esc>"] = { "close" },
-          ["<C-c>"] = { "cancel" },
-          ["~"] = { "mention_file", mode = "i" },
-          ["@"] = { "mention", mode = "i" },
-          ["/"] = { "slash_commands", mode = "i" },
-          ["#"] = { "context_items", mode = "i" },
-          ["<C-i>"] = { "focus_input", mode = { "n", "i" } },
-          ["<tab>"] = { "toggle_pane", mode = { "n", "i" } },
-          ["<up>"] = { "prev_prompt_history", mode = { "n", "i" } },
-          ["<down>"] = { "next_prompt_history", mode = { "n", "i" } },
-          ["<M-m>"] = { "switch_mode" },
-        },
-
-        output_window = {
-          ["<esc>"] = { "close" },
-          ["<C-c>"] = { "cancel" },
-          ["]]"] = { "next_message" },
-          ["[["] = { "prev_message" },
-          ["<tab>"] = { "toggle_pane", mode = { "n", "i" } },
-          ["i"] = { "focus_input", "n" },
-        },
-
-        permission = {
-          accept = "a",
-          accept_all = "A",
-          deny = "d",
-        },
-
-        session_picker = {
-          rename_session = { "<C-r>" },
-          delete_session = { "<C-d>" },
-          new_session = { "<C-n>" },
-        },
-
-        timeline_picker = {
-          undo = { "<C-u>", mode = { "i", "n" } },
-          fork = { "<C-f>", mode = { "i", "n" } },
-        },
-      },
-
-      ---------------------------------------------------------------------
-      -- 🔧 Resto de la configuración (UI, context, etc.)
-      ---------------------------------------------------------------------
-      ui = {
-        position = "right",
-        input_position = "bottom",
-        window_width = 0.40,
-        input_height = 0.15,
-        display_model = true,
-        display_context_size = true,
-        display_cost = true,
-        window_highlight = "Normal:OpencodeBackground,FloatBorder:OpencodeBorder",
-        icons = {
-          preset = "nerdfonts",
-          overrides = {},
-        },
-        output = {
-          tools = { show_output = true },
-          rendering = {
-            markdown_debounce_ms = 250,
-            on_data_rendered = nil,
-          },
-        },
-        input = {
-          text = { wrap = false },
-        },
-        completion = {
-          file_sources = {
-            enabled = true,
-            preferred_cli_tool = "server",
-            ignore_patterns = {
-              "^%.git/",
-              "node_modules/",
-              "%.pyc$",
-              "%.o$",
-              "%.dll$",
-              "%.so$",
-              "%.dylib$",
-              "dist/",
-              "build/",
-              "target/",
-              "%.log$",
-              "%.cache$",
-            },
-            max_files = 10,
-            max_display_length = 50,
-          },
-        },
-      },
-
-      context = {
-        enabled = true,
-        diagnostics = { warn = true, error = true },
-        current_file = { enabled = true },
-        selection = { enabled = true },
-      },
-
-      debug = { enabled = false },
-      prompt_guard = nil,
-    })
-  end,
-
+  "NickvanDyke/opencode.nvim",
   dependencies = {
-    "nvim-lua/plenary.nvim",
-    {
-      "MeanderingProgrammer/render-markdown.nvim",
-      opts = {
-        anti_conceal = { enabled = false },
-        file_types = { "markdown", "opencode_output" },
-      },
-      ft = { "markdown", "opencode_output" },
-    },
-    "saghen/blink.cmp",
-    "folke/snacks.nvim",
+    { "folke/snacks.nvim", opts = { input = {}, picker = {}, terminal = {} } },
   },
+  keys = {
+    {
+      "<leader>aa",
+      function()
+        require("opencode").toggle()
+      end,
+      mode = { "n" },
+      desc = "Toggle OpenCode",
+    },
+    {
+      "<leader>as",
+      function()
+        require("opencode").select({ submit = true })
+      end,
+      mode = { "n", "x" },
+      desc = "OpenCode select",
+    },
+    {
+      "<leader>ai",
+      function()
+        require("opencode").ask("", { submit = true })
+      end,
+      mode = { "n", "x" },
+      desc = "OpenCode ask",
+    },
+    {
+      "<leader>aI",
+      function()
+        require("opencode").ask("@this: ", { submit = true })
+      end,
+      mode = { "n", "x" },
+      desc = "OpenCode ask with context",
+    },
+    {
+      "<leader>ab",
+      function()
+        require("opencode").ask("@file ", { submit = true })
+      end,
+      mode = { "n", "x" },
+      desc = "OpenCode ask about buffer",
+    },
+    {
+      "<leader>ap",
+      function()
+        require("opencode").prompt("@this", { submit = true })
+      end,
+      mode = { "n", "x" },
+      desc = "OpenCode prompt",
+    },
+    -- Built-in prompts
+    {
+      "<leader>ape",
+      function()
+        require("opencode").prompt("explain", { submit = true })
+      end,
+      mode = { "n", "x" },
+      desc = "OpenCode explain",
+    },
+    {
+      "<leader>apf",
+      function()
+        require("opencode").prompt("fix", { submit = true })
+      end,
+      mode = { "n", "x" },
+      desc = "OpenCode fix",
+    },
+    {
+      "<leader>apd",
+      function()
+        require("opencode").prompt("diagnose", { submit = true })
+      end,
+      mode = { "n", "x" },
+      desc = "OpenCode diagnose",
+    },
+    {
+      "<leader>apr",
+      function()
+        require("opencode").prompt("review", { submit = true })
+      end,
+      mode = { "n", "x" },
+      desc = "OpenCode review",
+    },
+    {
+      "<leader>apt",
+      function()
+        require("opencode").prompt("test", { submit = true })
+      end,
+      mode = { "n", "x" },
+      desc = "OpenCode test",
+    },
+    {
+      "<leader>apo",
+      function()
+        require("opencode").prompt("optimize", { submit = true })
+      end,
+      mode = { "n", "x" },
+      desc = "OpenCode optimize",
+    },
+  },
+  config = function()
+    vim.g.opencode_opts = {
+      provider = {
+        snacks = {
+          win = {
+            position = "right",
+          },
+        },
+      },
+    }
+    vim.o.autoread = true
+  end,
 }
