@@ -104,7 +104,7 @@ return {
   },
   config = function()
     vim.g.opencode_opts = {
-      provider = {
+      server = {
         snacks = {
           win = {
             position = "right",
