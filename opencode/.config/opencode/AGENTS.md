@@ -49,6 +49,7 @@ IMPORTANT: When you detect any of these contexts, IMMEDIATELY load the correspon
 | ------------------------------- | ------------- |
 | Go tests, Bubbletea TUI testing | go-testing    |
 | Creating new AI skills          | skill-creator |
+| Designing UI, defining design system, choosing colors/typography, "diseñá la UI", "design system", "quiero una UI" | ux-ui-designer |
 
 ### How to use skills
 
