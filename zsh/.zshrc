@@ -109,6 +109,8 @@ alias gl='git log --all --graph --oneline --decorate'
 alias gcl='git clone'
 alias gf='git fetch'
 
+unalias gga
+
 # NPM / Bun / pnpm
 alias nr='npm run'
 alias ni='npm install'
