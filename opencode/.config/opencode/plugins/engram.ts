@@ -26,6 +26,9 @@ const ENGRAM_BIN = process.env.ENGRAM_BIN ?? "engram"
 const ENGRAM_TOOLS = new Set([
   "mem_search",
   "mem_save",
+  "mem_update",
+  "mem_delete",
+  "mem_suggest_topic_key",
   "mem_save_prompt",
   "mem_session_summary",
   "mem_context",
@@ -56,11 +59,19 @@ Call \`mem_save\` IMMEDIATELY after any of these:
 Format for \`mem_save\`:
 - **title**: Verb + what — short, searchable (e.g. "Fixed N+1 query in UserList", "Chose Zustand over Redux")
 - **type**: bugfix | decision | architecture | discovery | pattern | config | preference
+- **scope**: \`project\` (default) | \`personal\`
+- **topic_key** (optional, recommended for evolving decisions): stable key like \`architecture/auth-model\`
 - **content**:
   **What**: One sentence — what was done
   **Why**: What motivated it (user request, bug, performance, etc.)
   **Where**: Files or paths affected
   **Learned**: Gotchas, edge cases, things that surprised you (omit if none)
+
+Topic rules:
+- Different topics must not overwrite each other (e.g. architecture vs bugfix)
+- Reuse the same \`topic_key\` to update an evolving topic instead of creating new observations
+- If unsure about the key, call \`mem_suggest_topic_key\` first and then reuse it
+- Use \`mem_update\` when you have an exact observation ID to correct
 
 ### WHEN TO SEARCH MEMORY
 
@@ -73,6 +84,7 @@ When the user asks to recall something — any variation of "remember", "recall"
 Also search memory PROACTIVELY when:
 - Starting work on something that might have been done before
 - The user mentions a topic you have no context on — check if past sessions covered it
+- The user's FIRST message references the project, a feature, or a problem — call \`mem_search\` with keywords from their message to check for prior work before responding
 
 ### SESSION CLOSE PROTOCOL (mandatory)
 
@@ -142,6 +154,28 @@ async function isEngramRunning(): Promise<boolean> {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function extractProjectName(directory: string): string {
+  // Try git remote origin URL
+  try {
+    const result = Bun.spawnSync(["git", "-C", directory, "remote", "get-url", "origin"])
+    if (result.exitCode === 0) {
+      const url = result.stdout?.toString().trim()
+      if (url) {
+        const name = url.replace(/\.git$/, "").split(/[/:]/).pop()
+        if (name) return name
+      }
+    }
+  } catch {}
+
+  // Fallback: git root directory name (works in worktrees)
+  try {
+    const result = Bun.spawnSync(["git", "-C", directory, "rev-parse", "--show-toplevel"])
+    if (result.exitCode === 0) {
+      const root = result.stdout?.toString().trim()
+      if (root) return root.split("/").pop() ?? "unknown"
+    }
+  } catch {}
+
+  // Final fallback: cwd basename
   return directory.split("/").pop() ?? "unknown"
 }
 
@@ -163,6 +197,7 @@ function stripPrivateTags(str: string): string {
 // ─── Plugin Export ───────────────────────────────────────────────────────────
 
 export const Engram: Plugin = async (ctx) => {
+  const oldProject = ctx.directory.split("/").pop() ?? "unknown"
   const project = extractProjectName(ctx.directory)
 
   // Track tool counts per session (in-memory only, not critical)
@@ -201,6 +236,15 @@ export const Engram: Plugin = async (ctx) => {
     } catch {
       // Binary not found or can't start — plugin will silently no-op
     }
+  }
+
+  // Migrate project name if it changed (one-time, idempotent)
+  // Must run AFTER server startup to ensure the endpoint is available
+  if (oldProject !== project) {
+    await engramFetch("/projects/migrate", {
+      method: "POST",
+      body: { old_project: oldProject, new_project: project },
+    })
   }
 
   // Auto-import: if .engram/manifest.json exists in the project repo,
@@ -276,10 +320,10 @@ export const Engram: Plugin = async (ctx) => {
     // ─── Tool Execution Hook ─────────────────────────────────────
     // Count tool calls per session (for session end stats).
     // Also ensures the session exists — handles plugin reload / reconnect.
-    // No raw observation recording — the agent handles all memory via
-    // mem_save and mem_session_summary.
+    // Passive capture: when a Task tool completes, POST its output to
+    // the passive capture endpoint so the server extracts learnings.
 
-    "tool.execute.after": async (input, _output) => {
+    "tool.execute.after": async (input, output) => {
       if (ENGRAM_TOOLS.has(input.tool.toLowerCase())) return
 
       // input.sessionID comes from OpenCode — always available
@@ -288,14 +332,40 @@ export const Engram: Plugin = async (ctx) => {
         await ensureSession(sessionId)
         toolCounts.set(sessionId, (toolCounts.get(sessionId) ?? 0) + 1)
       }
+
+      // Passive capture: extract learnings from Task tool output
+      if (input.tool === "Task" && output && sessionId) {
+        const text = typeof output === "string" ? output : JSON.stringify(output)
+        if (text.length > 50) {
+          await engramFetch("/observations/passive", {
+            method: "POST",
+            body: {
+              session_id: sessionId,
+              content: stripPrivateTags(text),
+              project,
+              source: "task-complete",
+            },
+          })
+        }
+      }
     },
 
     // ─── System Prompt: Always-on memory instructions ──────────
     // Injects MEMORY_INSTRUCTIONS into the system prompt of every message.
     // This ensures the agent ALWAYS knows about Engram, even after compaction.
+    //
+    // We append to the last existing system entry instead of pushing a new one.
+    // Some models (Qwen3.5, Mistral/Ministral via llama.cpp) reject multiple
+    // system messages — their Jinja chat templates only allow a single system
+    // block at the beginning. By concatenating, we avoid adding extra system
+    // messages that would break these models. See: GitHub issue #23.
 
     "experimental.chat.system.transform": async (_input, output) => {
-      output.system.push(MEMORY_INSTRUCTIONS)
+      if (output.system.length > 0) {
+        output.system[output.system.length - 1] += "\n\n" + MEMORY_INSTRUCTIONS
+      } else {
+        output.system.push(MEMORY_INSTRUCTIONS)
+      }
     },
 
     // ─── Compaction Hook: Persist memory + inject context ──────────
