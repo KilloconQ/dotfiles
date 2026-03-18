@@ -30,3 +30,5 @@
   autosquash = true
   preserveMerges = true
   missingCommitsCheck = warn
+[pager]
+	diff = diffnav
