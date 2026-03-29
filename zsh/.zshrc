@@ -86,6 +86,7 @@ alias v='nvim'
 alias cat='bat'
 
 alias zwork='zellij a work'
+alias zdev='zellij a dev'
 alias zlearn='zellij a learn'
 alias cd='z'
 alias gen='kqgen'
