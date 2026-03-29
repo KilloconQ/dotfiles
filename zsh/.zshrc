@@ -30,7 +30,8 @@ fi
 # ——————————————————————————————————————————————
 # 4. PATH limpio y ordenado
 # ——————————————————————————————————————————————
-export PATH="$VOLTA_HOME/bin:$BUN_INSTALL/bin:$HOME/bin:$HOME/.local/bin:$PATH"
+export FLUTTER_HOME="$HOME/dev/flutter"
+export PATH="$FLUTTER_HOME/bin:$VOLTA_HOME/bin:$BUN_INSTALL/bin:$HOME/bin:$HOME/.local/bin:$PATH"
 
 # PNPM
 export PNPM_HOME="$HOME/.local/share/pnpm"
@@ -171,3 +172,12 @@ fi
 # 11. Mise (LO MÁS IMPORTANTE — ACTIVADOR)
 # ——————————————————————————————————————————————
 eval "$(mise activate zsh)"
+export PATH="/usr/local/opt/openjdk@21/bin:$PATH"
+
+# Resend CLI
+export PATH="$HOME/.resend/bin:$PATH"
+
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
+export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
