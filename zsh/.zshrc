@@ -30,7 +30,8 @@ fi
 # ——————————————————————————————————————————————
 # 4. PATH limpio y ordenado
 # ——————————————————————————————————————————————
-export PATH="$VOLTA_HOME/bin:$BUN_INSTALL/bin:$HOME/bin:$HOME/.local/bin:$PATH"
+export FLUTTER_HOME="$HOME/dev/flutter"
+export PATH="$FLUTTER_HOME/bin:$VOLTA_HOME/bin:$BUN_INSTALL/bin:$HOME/bin:$HOME/.local/bin:$PATH"
 
 # PNPM
 export PNPM_HOME="$HOME/.local/share/pnpm"
@@ -178,3 +179,12 @@ if [ -f '/home/killoconq/Descargas/google-cloud-sdk/path.zsh.inc' ]; then . '/ho
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/killoconq/Descargas/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/killoconq/Descargas/google-cloud-sdk/completion.zsh.inc'; fi
+export PATH="/usr/local/opt/openjdk@21/bin:$PATH"
+
+# Resend CLI
+export PATH="$HOME/.resend/bin:$PATH"
+
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
+export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
