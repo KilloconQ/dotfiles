@@ -1,6 +1,4 @@
-# Engram Artifact Convention (reference documentation)
-
-> **NOTE**: Critical engram calls (`mem_search`, `mem_save`, `mem_get_observation`) are now inlined directly in each skill's SKILL.md file. This document is supplementary reference — sub-agents do NOT need to read it to function correctly.
+# Engram Artifact Convention (shared across all SDD skills)
 
 ## Naming Rules
 
@@ -26,25 +24,8 @@ scope:     project
 | `apply-progress` | sdd-apply | Implementation progress (one per batch) |
 | `verify-report` | sdd-verify | Verification report |
 | `archive-report` | sdd-archive | Archive closure with lineage |
-| `state` | orchestrator | DAG state for recovery after compaction |
 
 **Exception**: `sdd-init` uses `sdd-init/{project-name}` as both title and topic_key (it's project-scoped, not change-scoped).
-
-### State Artifact
-
-The orchestrator persists DAG state after each phase transition to enable recovery after context compaction:
-
-```
-mem_save(
-  title: "sdd/{change-name}/state",
-  topic_key: "sdd/{change-name}/state",
-  type: "architecture",
-  project: "{project}",
-  content: "change: {change-name}\nphase: {last-phase}\nartifact_store: engram\nartifacts:\n  proposal: true\n  specs: true\n  design: false\n  tasks: false\ntasks_progress:\n  completed: []\n  pending: []\nlast_updated: {ISO date}"
-)
-```
-
-Recovery: `mem_search("sdd/{change-name}/state")` → `mem_get_observation(id)` → parse YAML → restore orchestrator state.
 
 ### Example
 
@@ -58,36 +39,32 @@ mem_save(
 )
 ```
 
-## Recovery Protocol (2 steps)
+## Recovery Protocol (2 steps — MANDATORY)
 
-To retrieve an artifact, use this two-step process:
+To retrieve an artifact, ALWAYS use this two-step process:
 
 ```
 Step 1: Search by topic_key pattern
   mem_search(query: "sdd/{change-name}/{artifact-type}", project: "{project}")
-  → Returns a truncated preview (300 chars) with an observation ID
+  → Returns a truncated preview with an observation ID
 
-Step 2: Get full content (when you need the complete artifact)
+Step 2: Get full content (REQUIRED)
   mem_get_observation(id: {observation-id from step 1})
   → Returns complete, untruncated content
 ```
 
-The preview from `mem_search` is useful for identifying whether the result is what you're looking for. When you need the full content (e.g., reading SDD dependencies), ALWAYS call `mem_get_observation`.
+NEVER use `mem_search` results directly as the full artifact — they are truncated previews.
+ALWAYS call `mem_get_observation` to get the complete content.
 
 ### Retrieving Multiple Artifacts
 
-When a skill needs multiple artifacts as required dependencies (e.g., sdd-tasks needs proposal + spec + design), group all searches first, then all retrievals:
+When a skill needs multiple artifacts (e.g., sdd-tasks needs proposal + spec + design):
 
 ```
-STEP A — SEARCH (get IDs only — content is truncated):
-  1. mem_search(query: "sdd/{change-name}/proposal", project: "{project}") → save ID
-  2. mem_search(query: "sdd/{change-name}/spec", project: "{project}") → save ID
-  3. mem_search(query: "sdd/{change-name}/design", project: "{project}") → save ID
-
-STEP B — RETRIEVE FULL CONTENT (mandatory for required dependencies):
-  4. mem_get_observation(id: {proposal_id}) → full proposal
-  5. mem_get_observation(id: {spec_id}) → full spec
-  6. mem_get_observation(id: {design_id}) → full design
+1. mem_search(query: "sdd/{change-name}/proposal", project: "{project}") → get ID
+2. mem_search(query: "sdd/{change-name}/spec", project: "{project}") → get ID
+3. mem_search(query: "sdd/{change-name}/design", project: "{project}") → get ID
+4. mem_get_observation(id) for EACH → full content
 ```
 
 ### Loading Project Context
