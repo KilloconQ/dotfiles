@@ -155,11 +155,7 @@ ya_zed() {
 # ——————————————————————————————————————————————
 # 9. OpenCode
 # ——————————————————————————————————————————————
-if [[ "$OS" == "darwin" ]]; then
-  export PATH="$HOME/.opencode/bin:$PATH"
-else
-  export PATH="$HOME/.opencode/bin:$PATH"
-fi
+export PATH="$HOME/.opencode/bin:$PATH"
 
 # ——————————————————————————————————————————————
 # 10. Google Cloud SDK (opcional)
@@ -172,11 +168,6 @@ fi
 # ——————————————————————————————————————————————
 eval "$(mise activate zsh)"
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/home/killoconq/Descargas/google-cloud-sdk/path.zsh.inc' ]; then . '/home/killoconq/Descargas/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/home/killoconq/Descargas/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/killoconq/Descargas/google-cloud-sdk/completion.zsh.inc'; fi
 export PATH="/usr/local/opt/openjdk@21/bin:$PATH"
 
 # Resend CLI

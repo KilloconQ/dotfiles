@@ -1,0 +1,20 @@
+# Ephemeral — no versionar
+backups/
+cache/
+debug/
+downloads/
+file-history/
+ide/
+mcp/
+mcp-needs-auth-cache.json
+paste-cache/
+plans/
+plugins/
+projects/
+session-env/
+sessions/
+shell-snapshots/
+tasks/
+telemetry/
+history.jsonl
+memory/

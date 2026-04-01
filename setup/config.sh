@@ -142,7 +142,7 @@ fi
 # ---------------------------------------------------------
 if [[ "$OS_TYPE" == "arch" ]]; then
   log_info "Instalando JetBrainsMono Nerd Font desde AUR..."
-  $PACKAGE_MANAGER -S --noconfirm nerd-fonts-jetbrains-mono
+  $PACKAGE_MANAGER -S --noconfirm ttf-jetbrains-mono-nerd
 else
   safe_source ./scripts/setup_fonts.sh
 fi
@@ -152,13 +152,15 @@ fi
 # ---------------------------------------------------------
 safe_source ./scripts/install_packages.sh
 safe_source ./scripts/setup_fish.sh
-safe_source ./scripts/setup_volta.sh
+safe_source ./scripts/setup_mise.sh
+safe_source ./scripts/setup_fnm.sh
 safe_source ./scripts/setup_bun.sh
 safe_source ./scripts/setup_rust.sh
 safe_source ./scripts/setup_go.sh
 safe_source ./scripts/setup_starship.sh
 safe_source ./scripts/setup_symlinks.sh
 safe_source ./scripts/setup_opencode.sh
+safe_source ./scripts/setup_claudecode.sh
 
 # ---------------------------------------------------------
 # SELECCIÓN DE TERMINAL

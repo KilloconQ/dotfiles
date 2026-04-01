@@ -265,21 +265,18 @@ for pkg in "${PACKAGES[@]}"; do
 done
 
 # -------------------------------
-# Instalación de Volta y Node.js
+# Instalación de fnm y Node.js
 # -------------------------------
-log_info "Instalando Volta..."
-curl -fsSL https://get.volta.sh | bash
-
-if ! command -v node &>/dev/null; then
-  log_info "Instalando Volta..."
-  curl -fsSL https://get.volta.sh | bash
-  export VOLTA_HOME="$HOME/.volta"
-  export PATH="$VOLTA_HOME/bin:$PATH"
-  volta install node@lts
+if ! command -v fnm &>/dev/null; then
+  log_info "Instalando fnm..."
+  curl -fsSL https://fnm.vercel.app/install | bash
+  export PATH="$HOME/.local/share/fnm:$PATH"
+  eval "$(fnm env)"
 fi
 
-# Verifica la versión de Node
-fish -c 'node -v'
+fnm install --lts
+fnm use lts-latest
+fnm default lts-latest
 
 log_info "Instalando pnpm y typescript globalmente..."
 npm install -g pnpm typescript

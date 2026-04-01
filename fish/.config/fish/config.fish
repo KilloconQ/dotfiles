@@ -6,7 +6,6 @@ set -gx OS (string lower (uname -s))
 # ——————————————————————————————————————————————
 # 2) Entorno principal
 # ——————————————————————————————————————————————
-set -gx VOLTA_HOME $HOME/.volta
 set -gx BUN_INSTALL $HOME/.bun
 set -gx EDITOR nvim
 set -gx VISUAL nvim
@@ -28,7 +27,6 @@ end
 # 4) PATH (ordenado)
 # ——————————————————————————————————————————————
 # fish_add_path coloca al inicio del PATH si no existe
-fish_add_path $VOLTA_HOME/bin
 fish_add_path $BUN_INSTALL/bin
 fish_add_path $HOME/bin
 fish_add_path $HOME/.local/bin
@@ -63,6 +61,11 @@ status is-interactive; and begin
     # atuin
     if type -q atuin
         atuin init fish | source
+    end
+
+    # fnm (Node version manager)
+    if type -q fnm
+        fnm env --use-on-cd --shell fish | source
     end
 
     # bun (PATH ya agregado arriba)
@@ -179,13 +182,7 @@ end
 # ——————————————————————————————————————————————
 # 10) OpenCode (rutas específicas)
 # ——————————————————————————————————————————————
-if test "$OS" = darwin
-    fish_add_path /Users/fernandocorrales/.opencode/bin
-else if test "$OS" = linux
-    fish_add_path /home/killoconq/.opencode/bin
-end
-# Duplicado por si acaso (manteniendo compatibilidad con tu zsh)
-fish_add_path /home/killoconq/.opencode/bin
+fish_add_path $HOME/.opencode/bin
 
 # ——————————————————————————————————————————————
 # 11) PNPM

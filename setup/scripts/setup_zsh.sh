@@ -3,7 +3,7 @@
 log_info "Configurando Zsh..."
 
 # ---------------------------------------------------------
-# instalar Zsh si no existe
+# Instalar Zsh si no existe
 # ---------------------------------------------------------
 if ! command -v zsh &>/dev/null; then
   log_info "Instalando Zsh..."
@@ -32,32 +32,28 @@ if ! grep -q "$ZSH_PATH" /etc/shells; then
 fi
 
 # ---------------------------------------------------------
-# Symlink de tu .zshrc
+# Oh My Zsh
 # ---------------------------------------------------------
-if [[ -f "$DOTFILES_DIR/zsh/.zshrc" ]]; then
-  ln -sfn "$DOTFILES_DIR/zsh/.zshrc" "$HOME/.zshrc"
-  log_info "Symlink .zshrc creado → $DOTFILES_DIR/zsh/.zshrc"
+if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+  log_info "Instalando Oh My Zsh..."
+  RUNZSH=no CHSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 else
-  log_warn "No se encontró $DOTFILES_DIR/zsh/.zshrc"
+  log_info "Oh My Zsh ya está instalado."
 fi
 
 # ---------------------------------------------------------
-# Symlink de tu carpeta .config/zsh (opcional)
+# Plugins de Oh My Zsh
 # ---------------------------------------------------------
-if [[ -d "$DOTFILES_DIR/zsh" ]]; then
-  mkdir -p "$HOME/.config"
-  ln -sfn "$DOTFILES_DIR/zsh" "$HOME/.config/zsh"
-  log_info "Symlink ~/.config/zsh creado"
+ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
+  log_info "Instalando zsh-autosuggestions..."
+  git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
 fi
 
-# ---------------------------------------------------------
-# Plugins (Zsh plugin manager opcional)
-# Si usas zinit o antibody o oh-my-zsh
-# ---------------------------------------------------------
-if [[ -f "$DOTFILES_DIR/zsh/plugins.sh" ]]; then
-  log_info "Instalando plugins de Zsh…"
-  # shellcheck disable=SC1090
-  source "$DOTFILES_DIR/zsh/plugins.sh"
+if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]]; then
+  log_info "Instalando zsh-syntax-highlighting..."
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
 fi
 
 # ---------------------------------------------------------
