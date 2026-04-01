@@ -7,7 +7,6 @@ OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 # 2. Entorno principal
 # ——————————————————————————————————————————————
 export ZSH="$HOME/.oh-my-zsh"
-export VOLTA_HOME="$HOME/.volta"
 export BUN_INSTALL="$HOME/.bun"
 export EDITOR="nvim"
 export VISUAL="nvim"
@@ -31,7 +30,7 @@ fi
 # 4. PATH limpio y ordenado
 # ——————————————————————————————————————————————
 export FLUTTER_HOME="$HOME/dev/flutter"
-export PATH="$FLUTTER_HOME/bin:$VOLTA_HOME/bin:$BUN_INSTALL/bin:$HOME/bin:$HOME/.local/bin:$PATH"
+export PATH="$FLUTTER_HOME/bin:$BUN_INSTALL/bin:$HOME/bin:$HOME/.local/bin:$PATH"
 
 # PNPM
 export PNPM_HOME="$HOME/.local/share/pnpm"
@@ -59,8 +58,6 @@ eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 eval "$(atuin init zsh)"
 
-# ng completions
-command -v ng &>/dev/null && eval "$(ng completion script)"
 
 # ——————————————————————————————————————————————
 # 7. Historial
@@ -83,6 +80,7 @@ alias f='fzf'
 alias dot='z dotfiles; nvim .'
 alias lg='lazygit'
 alias v='nvim'
+alias vk='NVIM_APPNAME="nvim-kickstart" nvim'
 alias cat='bat'
 
 alias zwork='zellij a work'
@@ -188,3 +186,7 @@ export ANDROID_HOME="$HOME/Library/Android/sdk"
 export ANDROID_SDK_ROOT="$HOME/Library/Android/sdk"
 export PATH="$PATH:$ANDROID_HOME/cmdline-tools/latest/bin"
 export PATH="$PATH:$ANDROID_HOME/platform-tools"
+
+eval "$(fnm env --use-on-cd --shell zsh)"
+# ng completions
+command -v ng &>/dev/null && eval "$(ng completion script)"
