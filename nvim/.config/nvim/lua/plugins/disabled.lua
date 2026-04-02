@@ -26,10 +26,10 @@ return {
   },
   {
     "NickvanDyke/opencode.nvim",
-    enabled = true,
+    enabled = false,
   },
   {
     "coder/claudecode.nvim",
-    enabled = false,
+    enabled = true,
   },
 }
