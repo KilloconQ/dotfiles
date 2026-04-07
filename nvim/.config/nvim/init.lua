@@ -4,6 +4,7 @@ require("config.snippets")
 
 -- en tu options.lua o init.lua
 vim.opt.autoread = true
+vim.cmd("packadd nvim.undotree")
 
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
   pattern = "*",

@@ -11,6 +11,8 @@ vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 
 vim.keymap.set({ "i", "n", "v" }, "<C-c>", [[<C-\><C-n>]])
 
+vim.keymap.set("n", "<leader>u", function() require("undotree").toggle() end, { desc = "Toggle Undotree" })
+
 ----- OBSIDIAN -----
 vim.keymap.set("n", "<leader>oc", "<cmd>ObsidianCheck<CR>", { desc = "Obsidian Check Checkbox" })
 

@@ -21,6 +21,16 @@ return {
   --   },
   -- },
   {
+    "folke/tokyonight.nvim",
+    opts = {
+      transparent = true,
+      styles = {
+        sidebar = "transparent",
+        floats = "transparent",
+      },
+    },
+  },
+  {
     "rebelot/kanagawa.nvim",
     priority = 1000,
     lazy = true,
