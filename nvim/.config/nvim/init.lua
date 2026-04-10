@@ -2,7 +2,6 @@
 require("config.lazy")
 require("config.snippets")
 
--- en tu options.lua o init.lua
 vim.opt.autoread = true
 vim.cmd("packadd nvim.undotree")
 
