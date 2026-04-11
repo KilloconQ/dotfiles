@@ -181,3 +181,6 @@ export PATH="$PATH:$ANDROID_HOME/platform-tools"
 eval "$(fnm env --use-on-cd --shell zsh)"
 # ng completions
 command -v ng &>/dev/null && eval "$(ng completion script)"
+
+# bun completions
+[ -s "/home/killoconq/.bun/_bun" ] && source "/home/killoconq/.bun/_bun"
