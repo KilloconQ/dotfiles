@@ -2,6 +2,8 @@
 require("config.lazy")
 require("config.snippets")
 
+vim.g.have_nerd_font = true
+
 vim.opt.autoread = true
 vim.cmd("packadd nvim.undotree")
 
