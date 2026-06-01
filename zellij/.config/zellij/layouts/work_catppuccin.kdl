@@ -19,7 +19,7 @@ layout {
               border_format   "#[fg=#9D8F6F]{char}"
               border_position "top"
 
-              hide_frame_for_single_pane "true"
+              hide_frame_for_single_pane "false"
 
               mode_normal  "#[bg=#C34043] "
               mode_tmux    "#[bg=#f1fa8c] "

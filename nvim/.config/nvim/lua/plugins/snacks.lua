@@ -5,7 +5,6 @@ return {
       sources = {
         files = {
           finder = "files",
-          args = { "--no-ignore-vcs" }, -- ignora solo .gitignore, no .ignore de fd
           exclude = {
             "node_modules",
             ".git",
