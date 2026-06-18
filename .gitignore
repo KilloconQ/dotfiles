@@ -1,2 +1,6 @@
 nushell/history.txt
 nvim/.config/nvim/lazy-lock.json
+
+# tmux: TPM-managed plugins are cloned dependencies, not versioned config.
+# The @plugin lines in tmux.conf are the source of truth; restore with prefix + I.
+tmux/.config/tmux/plugins/

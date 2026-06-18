@@ -75,7 +75,7 @@ bindkey '^[[B' down-line-or-search
 # 8. Aliases
 # ——————————————————————————————————————————————
 alias so='source ~/.zshrc'
-alias c='clear'
+alias cl='clear'
 alias f='fzf'
 alias dot='z dotfiles; nvim .'
 alias lg='lazygit'
@@ -83,9 +83,15 @@ alias v='nvim'
 alias vk='NVIM_APPNAME="nvim-kickstart" nvim'
 alias cat='bat'
 
+# Zellij
 alias zwork='zellij a work'
 alias zdev='zellij a dev'
 alias zlearn='zellij a learn'
+
+# Tmux
+alias twork='tmux new -A -t work'
+alias tdev='tmux new -A -t dev'
+alias tlearn='tmux new -A -t learn'
 alias gen='kqgen'
 
 # Git
