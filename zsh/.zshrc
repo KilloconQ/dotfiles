@@ -75,7 +75,7 @@ bindkey '^[[B' down-line-or-search
 # 8. Aliases
 # ——————————————————————————————————————————————
 alias so='source ~/.zshrc'
-alias cl='clear'
+alias c='clear'
 alias f='fzf'
 alias dot='z dotfiles; nvim .'
 alias lg='lazygit'
@@ -128,13 +128,6 @@ alias bi='bun install'
 alias brd='bun run dev'
 alias brt='bun run test'
 alias bx='bunx'
-
-alias pr='pnpm run'
-alias pa='pnpm add'
-alias pi='pnpm install'
-alias prd='pnpm run dev'
-alias prt='pnpm run test'
-alias px='pnpm dlx'
 
 # eza
 if command -v eza >/dev/null; then
@@ -189,3 +182,6 @@ command -v ng &>/dev/null && eval "$(ng completion script)"
 
 # bun completions
 [ -s "/home/killoconq/.bun/_bun" ] && source "/home/killoconq/.bun/_bun"
+
+# Pi
+export PATH="/Users/fernandocorrales/.local/share/fnm/node-versions/v24.15.0/installation/bin:$PATH"
