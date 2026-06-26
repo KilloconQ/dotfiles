@@ -6,7 +6,7 @@ return {
     -- URL: https://github.com/akinsho/bufferline.nvim
     -- Description: A snazzy buffer line (with tabpage integration) for Neovim.
     "akinsho/bufferline.nvim",
-    enabled = false, -- Disable this plugin
+    enabled = true, -- Disable this plugin
   },
   {
     "NickvanDyke/opencode.nvim",
