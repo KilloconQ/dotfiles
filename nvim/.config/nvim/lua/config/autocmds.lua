@@ -10,6 +10,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+-- Disable LSP document color highlighting: Neovim 0.12's document_color
+-- asserts on a stale client id when conform applies text edits, crashing format.
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    if vim.lsp.document_color then
+      vim.lsp.document_color.enable(false, { bufnr = args.buf })
+    end
+  end,
+})
+
 vim.api.nvim_create_autocmd("ColorScheme", {
   callback = function()
     vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { underline = true, sp = "Red" })
