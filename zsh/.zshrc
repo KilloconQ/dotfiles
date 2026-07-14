@@ -81,7 +81,14 @@ alias dot='z dotfiles; nvim .'
 alias lg='lazygit'
 alias v='nvim'
 alias vk='NVIM_APPNAME="nvim-kickstart" nvim'
-alias cat='bat'
+
+if command -v bat &> /dev/null; then
+    alias cat="bat --style=plain"
+fi
+
+if command -v rg &> /dev/null; then
+    alias grep="rg"
+fi
 
 # Zellij
 alias zwork='zellij a work'
@@ -89,9 +96,9 @@ alias zdev='zellij a dev'
 alias zlearn='zellij a learn'
 
 # Tmux
-alias twork='tmux new -A -t work'
-alias tdev='tmux new -A -t dev'
-alias tlearn='tmux new -A -t learn'
+alias twork='tmux new -A -s work'
+alias tdev='tmux new -A -s dev'
+alias tlearn='tmux new -A -s learn'
 alias gen='kqgen'
 
 # Git
