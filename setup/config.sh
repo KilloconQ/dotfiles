@@ -157,7 +157,6 @@ safe_source ./scripts/setup_fnm.sh
 safe_source ./scripts/setup_bun.sh
 safe_source ./scripts/setup_rust.sh
 safe_source ./scripts/setup_go.sh
-safe_source ./scripts/setup_starship.sh
 safe_source ./scripts/setup_symlinks.sh
 safe_source ./scripts/setup_opencode.sh
 safe_source ./scripts/setup_claudecode.sh

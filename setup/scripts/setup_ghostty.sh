@@ -7,20 +7,23 @@ if command -v ghostty &>/dev/null; then
   exit 0
 fi
 
-case "$PACKAGE_MANAGER" in
-yay)
-  yay -S --noconfirm ghostty
+case "$OS_TYPE" in
+arch)
+  $PACKAGE_MANAGER -S --noconfirm ghostty
   ;;
-pacman)
-  log_warn "Ghostty no está en pacman. Instalando via cargo..."
+ubuntu)
+  if ! sudo apt install -y ghostty 2>/dev/null; then
+    log_warn "Ghostty no está en los repos de apt de esta versión de Ubuntu, instalando vía snap..."
+    sudo snap install ghostty --classic
+  fi
+  ;;
+mac)
+  brew install --cask ghostty
+  ;;
+*)
+  log_error "Sistema no soportado para instalar Ghostty."
+  exit 1
   ;;
 esac
 
-if ! command -v cargo &>/dev/null; then
-  log_info "Instalando Rust..."
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-  source "$HOME/.cargo/env"
-fi
-
-cargo install ghostty
 log_success "Ghostty instalado correctamente."
