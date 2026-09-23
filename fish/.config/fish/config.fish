@@ -9,6 +9,7 @@ set -gx OS (string lower (uname -s))
 set -gx BUN_INSTALL $HOME/.bun
 set -gx EDITOR nvim
 set -gx VISUAL nvim
+set -gx FLUTTER_HOME $HOME/dev/flutter
 
 # ——————————————————————————————————————————————
 # 3) Homebrew (macOS / Linuxbrew)
@@ -27,6 +28,7 @@ end
 # 4) PATH (ordenado)
 # ——————————————————————————————————————————————
 # fish_add_path coloca al inicio del PATH si no existe
+fish_add_path $FLUTTER_HOME/bin
 fish_add_path $BUN_INSTALL/bin
 fish_add_path $HOME/bin
 fish_add_path $HOME/.local/bin
@@ -78,6 +80,13 @@ status is-interactive; and begin
 end
 
 # ——————————————————————————————————————————————
+# mise (LO MÁS IMPORTANTE — ACTIVADOR)
+# ——————————————————————————————————————————————
+if type -q mise
+    mise activate fish | source
+end
+
+# ——————————————————————————————————————————————
 # 6) Historial (fish ya comparte y persiste por defecto)
 # ——————————————————————————————————————————————
 # Opcional: tamaño del historial (por defecto es grande)
@@ -91,7 +100,7 @@ function fzf_widget --description 'Abrir fzf'
     commandline -f repaint
 end
 
-function ya_zed_widget --description 'Abrir yazi chooser y enviar a zed'
+function ya_zed --description 'Abrir yazi chooser y enviar a zed'
     set -l tmp (mktemp -t yazi-chooser.XXXXXXXXXX)
     yazi --chooser-file $tmp $argv
     if test -s $tmp
@@ -101,6 +110,10 @@ function ya_zed_widget --description 'Abrir yazi chooser y enviar a zed'
         end
     end
     rm -f -- $tmp
+end
+
+function ya_zed_widget --description 'Abrir yazi chooser y enviar a zed'
+    ya_zed
     commandline -f repaint
 end
 
@@ -116,16 +129,31 @@ bind \cz ya_zed_widget
 # ——————————————————————————————————————————————
 # fish soporta 'alias' y 'abbr'. Usa 'alias' para comandos directos:
 alias so='source ~/.config/fish/config.fish'
-alias cl='clear'
+alias c='clear'
 alias f='fzf'
 alias dot='z dotfiles; nvim .'
 alias lg='lazygit'
 alias v='nvim'
-alias cat='bat'
+alias vk='NVIM_APPNAME=nvim-kickstart nvim'
+
+if type -q bat
+    alias cat='bat --style=plain'
+end
+
+if type -q rg
+    alias grep='rg'
+end
+
+# Zellij
 alias zwork='zellij a work'
+alias zdev='zellij a dev'
 alias zlearn='zellij a learn'
-# En zoxide, usa 'z' igual que en zsh:
-functions -q z; or alias cd='z'   # solo si quieres reemplazar cd por z (opcional)
+
+# Tmux
+alias twork='tmux new -A -s work'
+alias tdev='tmux new -A -s dev'
+alias tlearn='tmux new -A -s learn'
+
 alias gen='kqgen'
 
 # Git
@@ -152,6 +180,7 @@ alias gf='git fetch'
 alias nr='npm run'
 alias ni='npm install'
 alias nrd='npm run dev'
+alias nrdp='npm run deploy'
 
 alias br='bun run'
 alias ba='bun add'
@@ -189,6 +218,17 @@ fish_add_path $HOME/.opencode/bin
 # ——————————————————————————————————————————————
 set -gx PNPM_HOME "$HOME/.local/share/pnpm"
 fish_add_path $PNPM_HOME
+
+# ——————————————————————————————————————————————
+# OpenJDK / Android SDK / Resend
+# ——————————————————————————————————————————————
+fish_add_path /usr/local/opt/openjdk@21/bin
+fish_add_path $HOME/.resend/bin
+
+set -gx ANDROID_HOME $HOME/Library/Android/sdk
+set -gx ANDROID_SDK_ROOT $HOME/Library/Android/sdk
+fish_add_path $ANDROID_HOME/cmdline-tools/latest/bin
+fish_add_path $ANDROID_HOME/platform-tools
 
 # ——————————————————————————————————————————————
 # 12) Google Cloud SDK (si instalado)

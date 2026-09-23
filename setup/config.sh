@@ -64,7 +64,7 @@ else
   log_info "Dotfiles ya existen, usando carpeta existente."
 fi
 
-cd "$DOTFILES_DIR"
+cd "$DOTFILES_DIR/setup"
 
 # ---------------------------------------------------------
 # SAFE SOURCE
@@ -151,7 +151,6 @@ fi
 # INSTALAR PAQUETES Y ENTORNO
 # ---------------------------------------------------------
 safe_source ./scripts/install_packages.sh
-safe_source ./scripts/setup_fish.sh
 safe_source ./scripts/setup_mise.sh
 safe_source ./scripts/setup_fnm.sh
 safe_source ./scripts/setup_bun.sh
@@ -160,6 +159,30 @@ safe_source ./scripts/setup_go.sh
 safe_source ./scripts/setup_symlinks.sh
 safe_source ./scripts/setup_opencode.sh
 safe_source ./scripts/setup_claudecode.sh
+
+# ---------------------------------------------------------
+# SELECCIÓN DE SHELL
+# ---------------------------------------------------------
+echo "¿Qué shell querés usar?"
+select SHELL_CHOICE in "zsh" "fish" "ninguno"; do
+  case $SHELL_CHOICE in
+  zsh)
+    safe_source ./scripts/setup_zsh.sh
+    break
+    ;;
+  fish)
+    safe_source ./scripts/setup_fish.sh
+    break
+    ;;
+  ninguno)
+    log_info "Saltando configuración de shell..."
+    break
+    ;;
+  *)
+    log_warn "Opción inválida."
+    ;;
+  esac
+done
 
 # ---------------------------------------------------------
 # SELECCIÓN DE TERMINAL
