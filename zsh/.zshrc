@@ -7,7 +7,11 @@ OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 # 2. Entorno principal
 # ——————————————————————————————————————————————
 export ZSH="$HOME/.oh-my-zsh"
+export ZSH_CUSTOM="${ZSH_CUSTOM:-$ZSH/custom}"
 export BUN_INSTALL="$HOME/.bun"
+
+# zsh-completions necesita estar en fpath antes de que oh-my-zsh corra compinit
+fpath=("$ZSH_CUSTOM/plugins/zsh-completions/src" $fpath)
 export EDITOR="nvim"
 export VISUAL="nvim"
 
@@ -45,7 +49,7 @@ fi
 # ——————————————————————————————————————————————
 # 5. Oh My Zsh + plugins
 # ——————————————————————————————————————————————
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting vi-mode)
+plugins=(git zsh-autosuggestions fast-syntax-highlighting you-should-use zsh-abbr vi-mode)
 source "$ZSH/oh-my-zsh.sh"
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
@@ -57,6 +61,7 @@ source "$ZSH/oh-my-zsh.sh"
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 eval "$(atuin init zsh)"
+command -v direnv &>/dev/null && eval "$(direnv hook zsh)"
 
 
 # ——————————————————————————————————————————————

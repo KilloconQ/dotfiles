@@ -19,15 +19,21 @@ fi
 
 ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
 
-if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]]; then
-  log_info "Instalando plugin zsh-autosuggestions..."
-  git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
-fi
+clone_plugin() {
+  local repo="$1"
+  local name="$2"
+  shift 2
+  if [[ ! -d "$ZSH_CUSTOM/plugins/$name" ]]; then
+    log_info "Instalando plugin $name..."
+    git clone --depth=1 "$@" "https://github.com/$repo" "$ZSH_CUSTOM/plugins/$name"
+  fi
+}
 
-if [[ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]]; then
-  log_info "Instalando plugin zsh-syntax-highlighting..."
-  git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
-fi
+clone_plugin "zsh-users/zsh-autosuggestions" "zsh-autosuggestions"
+clone_plugin "zdharma-continuum/fast-syntax-highlighting" "fast-syntax-highlighting"
+clone_plugin "zsh-users/zsh-completions" "zsh-completions"
+clone_plugin "MichaelAquilina/zsh-you-should-use" "you-should-use"
+clone_plugin "olets/zsh-abbr" "zsh-abbr" --recurse-submodules
 
 ZSH_PATH="$(which zsh)"
 
