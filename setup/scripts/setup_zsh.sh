@@ -10,30 +10,19 @@ if ! command -v zsh &>/dev/null; then
   esac
 fi
 
-if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
-  log_info "Instalando Oh My Zsh..."
-  RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
+
+if [[ ! -d "$ZINIT_HOME" ]]; then
+  log_info "Instalando Zinit..."
+  mkdir -p "$(dirname "$ZINIT_HOME")"
+  git clone --depth=1 https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 else
-  log_info "Oh My Zsh ya está instalado."
+  log_info "Zinit ya está instalado."
 fi
 
-ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-
-clone_plugin() {
-  local repo="$1"
-  local name="$2"
-  shift 2
-  if [[ ! -d "$ZSH_CUSTOM/plugins/$name" ]]; then
-    log_info "Instalando plugin $name..."
-    git clone --depth=1 "$@" "https://github.com/$repo" "$ZSH_CUSTOM/plugins/$name"
-  fi
-}
-
-clone_plugin "zsh-users/zsh-autosuggestions" "zsh-autosuggestions"
-clone_plugin "zdharma-continuum/fast-syntax-highlighting" "fast-syntax-highlighting"
-clone_plugin "zsh-users/zsh-completions" "zsh-completions"
-clone_plugin "MichaelAquilina/zsh-you-should-use" "you-should-use"
-clone_plugin "olets/zsh-abbr" "zsh-abbr" --recurse-submodules
+# Los plugins (autosuggestions, fast-syntax-highlighting, zsh-completions,
+# you-should-use, zsh-abbr, vi-mode) los declara el .zshrc y Zinit los
+# descarga solo la primera vez que abres zsh.
 
 ZSH_PATH="$(which zsh)"
 

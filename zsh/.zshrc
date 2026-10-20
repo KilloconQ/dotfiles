@@ -6,12 +6,7 @@ OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 # ——————————————————————————————————————————————
 # 2. Entorno principal
 # ——————————————————————————————————————————————
-export ZSH="$HOME/.oh-my-zsh"
-export ZSH_CUSTOM="${ZSH_CUSTOM:-$ZSH/custom}"
 export BUN_INSTALL="$HOME/.bun"
-
-# zsh-completions necesita estar en fpath antes de que oh-my-zsh corra compinit
-fpath=("$ZSH_CUSTOM/plugins/zsh-completions/src" $fpath)
 export EDITOR="nvim"
 export VISUAL="nvim"
 
@@ -47,10 +42,51 @@ if command -v go >/dev/null 2>&1; then
 fi
 
 # ——————————————————————————————————————————————
-# 5. Oh My Zsh + plugins
+# 5. Zinit + plugins
 # ——————————————————————————————————————————————
-plugins=(git zsh-autosuggestions fast-syntax-highlighting you-should-use zsh-abbr vi-mode)
-source "$ZSH/oh-my-zsh.sh"
+# Zinit se instala solo la primera vez que abres el shell
+ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
+if [[ ! -d "$ZINIT_HOME" ]]; then
+  mkdir -p "$(dirname "$ZINIT_HOME")"
+  git clone --depth=1 https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+source "$ZINIT_HOME/zinit.zsh"
+
+# Síncronos: tienen que estar antes de compinit / de los bindkey de abajo
+# zsh-completions solo agrega a fpath (blockf evita que lo modifique a su manera)
+zinit ice blockf
+zinit light zsh-users/zsh-completions
+# vi-mode de Oh My Zsh, pero solo ese archivo (sin el framework)
+zinit snippet OMZP::vi-mode
+
+# compinit con caché: regenera el dump 1 vez al día, el resto usa -C
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
+
+# Diferidos (turbo): cargan justo después de mostrar el primer prompt
+zinit wait lucid for \
+  zdharma-continuum/fast-syntax-highlighting \
+  atload"_zsh_autosuggest_start" zsh-users/zsh-autosuggestions \
+  MichaelAquilina/zsh-you-should-use \
+  olets/zsh-abbr
+
+# Valores por defecto que antes daba Oh My Zsh
+setopt AUTO_CD AUTO_PUSHD PUSHD_IGNORE_DUPS PUSHD_SILENT
+setopt INTERACTIVE_COMMENTS COMPLETE_IN_WORD ALWAYS_TO_END
+setopt HIST_IGNORE_DUPS HIST_IGNORE_SPACE HIST_VERIFY EXTENDED_HISTORY
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'r:|[._-]=* r:|=*'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+bindkey '^[[Z' reverse-menu-complete      # Shift+Tab
+bindkey '^[[H' beginning-of-line          # Home
+bindkey '^[[F' end-of-line                # End
+bindkey '^[[3~' delete-char               # Supr
+bindkey '^[[1;5C' forward-word            # Ctrl+→
+bindkey '^[[1;5D' backward-word           # Ctrl+←
 
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -s "$BUN_INSTALL/_bun" ]] && source "$BUN_INSTALL/_bun"
@@ -125,8 +161,6 @@ alias gr='git remote'
 alias gl='git log --all --graph --oneline --decorate'
 alias gcl='git clone'
 alias gf='git fetch'
-
-unalias gga
 
 # NPM / Bun / pnpm
 alias nr='npm run'
