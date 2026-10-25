@@ -1,0 +1,136 @@
+{
+  "version": 3,
+  "workspaces": [
+    {
+      "id": "w3",
+      "custom_name": "cotizador",
+      "identity_cwd": "/Users/fernandocorrales/Dev/work/workflow-cotizador/cotizador",
+      "public_pane_numbers": {
+        "7": 43,
+        "2": 40,
+        "11": 47,
+        "13": 49
+      },
+      "next_public_pane_number": 50,
+      "public_tab_numbers": [
+        38,
+        41,
+        45,
+        47
+      ],
+      "next_public_tab_number": 48,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 2
+          },
+          "panes": {
+            "2": {
+              "cwd": "/Users/fernandocorrales/Dev/work/workflow-cotizador/cotizador",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "e2d959a0-3cee-4bee-a539-571d04120824"
+              }
+            }
+          },
+          "zoomed": false,
+          "focused": 2,
+          "root_pane": 2
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 7
+          },
+          "panes": {
+            "7": {
+              "cwd": "/Users/fernandocorrales/Dev/work/workflow-cotizador/cotizador",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "e26bf384-844e-41d2-abb5-e3a1592f0419"
+              }
+            }
+          },
+          "zoomed": false,
+          "focused": 7,
+          "root_pane": 7
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 11
+          },
+          "panes": {
+            "11": {
+              "cwd": "/Users/fernandocorrales/Dev/work/workflow-cotizador/cotizador",
+              "agent_session": {
+                "source": "herdr:claude",
+                "agent": "claude",
+                "kind": "id",
+                "value": "34ad95a3-db55-4155-8236-d9d6b0606f76"
+              }
+            }
+          },
+          "zoomed": false,
+          "focused": 11,
+          "root_pane": 11
+        },
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 13
+          },
+          "panes": {
+            "13": {
+              "cwd": "/Users/fernandocorrales/Dev/work/workflow-cotizador/cotizador"
+            }
+          },
+          "zoomed": false,
+          "focused": 13,
+          "root_pane": 13
+        }
+      ],
+      "active_tab": 0
+    },
+    {
+      "id": "w6",
+      "custom_name": "projects",
+      "identity_cwd": "/Users/fernandocorrales/Dev/work/workflow-cotizador/cotizador",
+      "public_pane_numbers": {
+        "14": 1
+      },
+      "next_public_pane_number": 2,
+      "public_tab_numbers": [
+        1
+      ],
+      "next_public_tab_number": 2,
+      "tabs": [
+        {
+          "custom_name": null,
+          "layout": {
+            "Pane": 14
+          },
+          "panes": {
+            "14": {
+              "cwd": "/Users/fernandocorrales/Dev/work/workflow-cotizador/cotizador"
+            }
+          },
+          "zoomed": false,
+          "focused": 14,
+          "root_pane": 14
+        }
+      ],
+      "active_tab": 0
+    }
+  ],
+  "active": 1,
+  "selected": 1,
+  "sidebar_width": 26,
+  "sidebar_section_split": 0.5,
+  "collapsed_space_keys": []
+}

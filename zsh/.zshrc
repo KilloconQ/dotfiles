@@ -176,7 +176,6 @@ export PATH="$HOME/.opencode/bin:$PATH"
 # ——————————————————————————————————————————————
 # 11. Mise (LO MÁS IMPORTANTE — ACTIVADOR)
 # ——————————————————————————————————————————————
-eval "$(mise activate zsh)"
 
 export PATH="/usr/local/opt/openjdk@21/bin:$PATH"
 
@@ -197,3 +196,8 @@ command -v ng &>/dev/null && eval "$(ng completion script)"
 
 # Pi
 export PATH="/Users/fernandocorrales/.local/share/fnm/node-versions/v24.15.0/installation/bin:$PATH"
+
+# Cotizador — VPS (INT-116)
+export SERVIDOR_COTIZADOR=64.177.87.202
+
+eval "$(/Users/fernandocorrales/.local/bin/mise activate zsh)" # added by https://mise.run/zsh
